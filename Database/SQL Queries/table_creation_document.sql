@@ -1,7 +1,7 @@
-USE Nexus
-GO
+USE NexusTmp;
 
-CREATE TABLE Document (
-	DocumentID INT PRIMARY KEY,
-	DocumentData VARBINARY(MAX)
-);
+GO
+    CREATE TABLE Document (
+        DocumentID INT PRIMARY KEY,
+        DocumentData VARBINARY(MAX)
+    );

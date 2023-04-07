@@ -1,10 +1,10 @@
-USE Nexus
-GO
+USE NexusTmp;
 
-CREATE TABLE Organization (
-	OrganizationID INT PRIMARY KEY,
-	Name VARCHAR(20),
-	DateOfCreation DATE,
-	Description VARCHAR(200),
-	JoinMethod VARCHAR(50)
-);
+GO
+	CREATE TABLE Organization (
+		OrganizationID INT PRIMARY KEY,
+		Name VARCHAR(20),
+		DateOfCreation DATE,
+		Description VARCHAR(200),
+		JoinMethod VARCHAR(50)
+	);

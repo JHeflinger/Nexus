@@ -1,8 +1,8 @@
-USE Nexus
-GO
+USE NexusTmp;
 
-CREATE TABLE Category (
-	CategoryID INT PRIMARY KEY,
-	CategoryName VARCHAR(20),
-	Description VARCHAR(200)
-);
+GO
+    CREATE TABLE Category (
+        CategoryID INT PRIMARY KEY,
+        CategoryName VARCHAR(20),
+        Description VARCHAR(200)
+    );

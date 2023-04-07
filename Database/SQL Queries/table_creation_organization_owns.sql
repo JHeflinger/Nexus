@@ -1,9 +1,9 @@
-USE Nexus
-GO
+USE NexusTmp;
 
-CREATE TABLE OrganizationOwns (
-	OrganizationID INT NOT NULL,
-	DocumentID INT NOT NULL,
-	FOREIGN KEY (OrganizationID) REFERENCES Organization(OrganizationID),
-	FOREIGN KEY (DocumentID) REFERENCES Document(DocumentID)
-);
+GO
+	CREATE TABLE OrganizationOwns (
+		OrganizationID INT NOT NULL,
+		DocumentID INT NOT NULL,
+		FOREIGN KEY (OrganizationID) REFERENCES Organization(OrganizationID) ON DELETE CASCADE ON UPDATE CASCADE,
+		FOREIGN KEY (DocumentID) REFERENCES Document(DocumentID) ON DELETE CASCADE ON UPDATE CASCADE
+	);
