@@ -1,0 +1,33 @@
+@import '../styles/_vars';
+
+.SVGWrapper {
+    position: absolute;
+    z-index: 100;
+    left: 0%;
+    top: 0%;
+    grid-column: 1;
+    grid-row: 1;
+    pointer-events: none;
+}
+
+.highlightedRectangle {
+    z-index: 0;
+    pointer-events: auto;
+    transition-duration: 0.2s;
+    fill: rgba(0, 100, 0, 0.5);
+    stroke: purple;
+    stroke-width: 2px;
+}
+
+.highlightedRectangle:hover {
+    fill: rgba(255, 0, 0, 0.5);
+}
+
+.point {
+    z-index: 1;
+    pointer-events: auto;
+}
+
+.point:hover {
+    fill: red;
+}

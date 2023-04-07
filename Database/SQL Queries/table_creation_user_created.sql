@@ -1,0 +1,9 @@
+USE Nexus
+GO
+
+CREATE TABLE UserCreated (
+	UserName VARCHAR(20) NOT NULL,
+	DataID INT NOT NULL,
+	FOREIGN KEY (UserName) REFERENCES Users(UserName),
+	FOREIGN KEY (DataID) REFERENCES UserInputtedData(DataID)
+);

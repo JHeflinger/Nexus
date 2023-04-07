@@ -1,0 +1,57 @@
+$dark-bg: #1C222B;
+$dark-accent: #1f78ff; //#562C80;
+$light-accent: #9DC5FF; //#B28ED7;
+$light: #EAEAEA;
+
+$white-0: #FDFFFF;
+$white-1: #F0F0F0;
+$white-2: #E0E0E0;
+
+// $dark-0: #0e1428; $dark-0_5: #103150;
+// $dark-1: #153655;
+// $dark-2: #1d4971;
+// $dark-3: #245b8e;
+// $dark-4: #2b6daa;
+// $dark-5: #327fc7;
+// $dark-6: #4c91d1;
+// $dark-7: #68a2d8;
+// $dark-8: #85b4df;
+// $dark-9: #a1c5e7;
+
+$lightness-scalar: 0.85;
+
+$twilight: rgba(0, 5, 20, 0.2);
+$twilight-hard: rgba(0, 5, 20, 1);
+
+$dark-0: hsl(209,48,11); $dark-0_5: hsl(0.63,0.48,15);
+$dark-1: hsl(209,48,19 * $lightness-scalar);
+$dark-2: hsl(209,48,23 * $lightness-scalar);
+$dark-3: hsl(209,48,27 * $lightness-scalar);
+$dark-4: hsl(209,48,31 * $lightness-scalar);
+$dark-5: hsl(209,48,35 * $lightness-scalar);
+$dark-6: hsl(209,48,39 * $lightness-scalar);
+$dark-7: hsl(209,48,43 * $lightness-scalar);
+$dark-8: hsl(209,48,47 * $lightness-scalar);
+$dark-9: hsl(209,48,51 * $lightness-scalar);
+
+$shadow: rgba(14, 20, 40, 0.8);
+// $glow: rgba(255, 255, 255, 0.2);
+$glow: rgba(255, 255, 255, 0.5);
+$highlight: rgba(255, 255, 255, 0.9);
+
+.noselect {
+    //From Stack OverFlow user Blowsie
+    -webkit-touch-callout: none;
+    /* iOS Safari */
+    -webkit-user-select: none;
+    /* Safari */
+    -khtml-user-select: none;
+    /* Konqueror HTML */
+    -moz-user-select: none;
+    /* Old versions of Firefox */
+    -ms-user-select: none;
+    /* Internet Explorer/Edge */
+    user-select: none;
+    /* Non-prefixed version, currently
+                                    supported by Chrome, Edge, Opera and Firefox */
+}

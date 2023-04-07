@@ -1,0 +1,125 @@
+@import '../styles/_vars';
+
+html,
+body {
+    background: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    font-family: 'Din Alternate', sans-serif;
+    color: $white-0;
+    left: 0;
+    top: 0;
+}
+
+*:focus {
+    outline: none;
+}
+
+.flexbox {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.outer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    overflow: none;
+}
+
+.inner {
+    @extend .outer;
+    width: calc(100vw - 6vh);
+    height: 94vh;
+    display: block;
+}
+
+.column {
+    height: 100%;
+}
+
+.btn {
+    width: 250px;
+    height: 60px;
+    line-height: 60px;
+    cursor: pointer;
+    font-size: 25px;
+    border-radius: 40px;
+    font-weight: 800;
+    text-align: center;
+    background: $dark-1;
+    box-shadow: 0 0 40px $glow;
+    transition: 0.5s;
+}
+
+.btn:hover {
+    background: $dark-0_5;
+    transition: 0.2s;
+    transform: translateY(-2px);
+    width: 252px;
+    height: 62px;
+    font-size: 26px;
+    box-shadow: 0 0 40px $highlight;
+}
+
+.btn:active {
+    transform: translateY(4px);
+}
+
+.noScroll {
+    overflow: hidden;
+}
+
+::-webkit-scrollbar {
+    width: 0.75vw;
+    margin-right: 2vw;
+}
+
+::-webkit-scrollbar-track {
+    background-color: rgba($color: #000000, $alpha: 0.0);
+    border-radius: 0.75vw;
+
+}
+
+::-webkit-scrollbar-thumb {
+    background: $dark-accent;
+    border-radius: 0.75vw;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: $light-accent;
+}
+
+.noselect {
+    //From Stack OverFlow user Blowsie
+    -webkit-touch-callout: none;
+    /* iOS Safari */
+    -webkit-user-select: none;
+    /* Safari */
+    -khtml-user-select: none;
+    /* Konqueror HTML */
+    -moz-user-select: none;
+    /* Old versions of Firefox */
+    -ms-user-select: none;
+    /* Internet Explorer/Edge */
+    user-select: none;
+    /* Non-prefixed version, currently
+                                    supported by Chrome, Edge, Opera and Firefox */
+}
+
+.devHide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    visibility: hidden;
+    display: none;
+    z-index: -999;
+}

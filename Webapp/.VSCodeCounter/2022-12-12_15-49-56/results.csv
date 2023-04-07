@@ -1,0 +1,13 @@
+"filename", "language", "JavaScript", "SCSS", "comment", "blank", "total"
+"d:\Code\PythonMassScanner\WebAppp\frontend\components\coolButton.js", "JavaScript", 35, 0, 0, 5, 40
+"d:\Code\PythonMassScanner\WebAppp\frontend\components\coolButton.module.scss", "SCSS", 0, 13, 0, 3, 16
+"d:\Code\PythonMassScanner\WebAppp\frontend\components\displayPreviews.js", "JavaScript", 54, 0, 10, 6, 70
+"d:\Code\PythonMassScanner\WebAppp\frontend\components\displayPreviews.module.scss", "SCSS", 0, 6, 3, 1, 10
+"d:\Code\PythonMassScanner\WebAppp\frontend\components\imageManipulator.js", "JavaScript", 260, 0, 12, 47, 319
+"d:\Code\PythonMassScanner\WebAppp\frontend\components\imageManipulator.module.scss", "SCSS", 0, 18, 0, 3, 21
+"d:\Code\PythonMassScanner\WebAppp\frontend\components\layout.js", "JavaScript", 67, 0, 0, 2, 69
+"d:\Code\PythonMassScanner\WebAppp\frontend\components\layout.module.scss", "SCSS", 0, 13, 0, 2, 15
+"d:\Code\PythonMassScanner\WebAppp\frontend\components\openCVprocessing.js", "JavaScript", 83, 0, 8, 30, 121
+"d:\Code\PythonMassScanner\WebAppp\frontend\components\svgImageAnnotations.js", "JavaScript", 65, 0, 0, 4, 69
+"d:\Code\PythonMassScanner\WebAppp\frontend\components\svgImageAnnotations.module.scss", "SCSS", 0, 28, 0, 5, 33
+"Total", "-", 564, 78, 33, 108, 783

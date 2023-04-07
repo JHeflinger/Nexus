@@ -1,0 +1,96 @@
+@import './_vars';
+
+.heading2Xl {
+    font-size: 2.5rem;
+    line-height: 1.2;
+    font-weight: 800;
+    letter-spacing: -0.05rem;
+    margin: 1rem 0;
+}
+
+.headingXl {
+    font-size: 2rem;
+    line-height: 1.3;
+    font-weight: 800;
+    letter-spacing: -0.05rem;
+    margin: 1rem 0;
+}
+
+.headingLg {
+    font-size: 1.5rem;
+    line-height: 1.4;
+    margin: 1rem 0;
+}
+
+.headingMd {
+    font-size: 1.2rem;
+    line-height: 1.5;
+}
+
+.borderCircle {
+    border-radius: 9999px;
+}
+
+.colorInherit {
+    color: inherit;
+}
+
+.padding1px {
+    padding-top: 1px;
+}
+
+.list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.listItem {
+    margin: 0 0 1.25rem;
+}
+
+.lightText {
+    color: #666;
+}
+
+.autoGlow {
+    box-shadow: 0 0 15px $glow;
+    transition-duration: 0.2s !important;
+}
+
+.autoGlow:hover {
+    box-shadow: 0 0 30px $highlight;
+    transition-duration: 0.2s !important;
+}
+
+.twilightGlass::before {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    z-index: -1;
+    background-color: transparent;
+    box-shadow: inset 0 0 120px black;
+    backdrop-filter: blur(3px) saturate(180%);
+}
+
+.widget {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    background-color: $twilight;
+    border-radius: 3vh;
+}
+
+.dropdownWrapper {
+    // width: 6vh;
+    // height: 6vh;
+    width: 45px;
+    height: 45px;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1;
+}

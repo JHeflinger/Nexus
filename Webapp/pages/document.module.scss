@@ -1,0 +1,302 @@
+@import '../styles/_vars';
+@import '../styles/utils.module.scss';
+
+.docViewer {
+    @extend .autoGlow;
+    @extend .twilightGlass;
+    @extend .widget;
+    height: 95vh;
+    width: 65vw;
+    margin-right: 2vw;
+    overflow: scroll;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.docViewer::before {
+    width: 65vw;
+    height: 95vh;
+}
+
+.docEditor {
+    @extend .autoGlow;
+    @extend .twilightGlass;
+    @extend .widget;
+    height: 95vh;
+    width: 30vw;
+    // overflow: hidden;
+}
+
+.docEditor::before {
+    width: 30vw;
+    height: 95vh;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.header {
+    text-align: center;
+    padding: 15px;
+    font-weight: 900;
+}
+
+.titleHeader {
+    padding: 15px;
+    font-weight: 900;
+    margin: 15px;
+}
+
+.titleInput {
+    width: 60%;
+    margin: 15px;
+    margin-top: 30px;
+    padding: 5px;
+    font-size: 16px;
+    border-radius: 40px;
+    border: 2px solid white;
+    color: white;
+    background: $dark-0;
+    transition: 0.2s;
+    box-shadow: 0 0 0px $glow;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.titleInput:focus {
+    border: 2px solid transparent;
+    box-shadow: 0 0 15px $glow;
+    transition: 0.2s;
+}
+
+.descInput {
+    box-shadow: 0 0 0px $glow;
+    width: 90%;
+    margin-left: 5%;
+    box-sizing: border-box;
+    resize: none;
+    overflow-y: scroll;
+    height: 18vh;
+    margin-top: 15px;
+    margin-bottom: 30px;
+    border: 2px solid white;
+    color: white;
+    background: $dark-0;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 16px;
+    transition: 0.2s;
+}
+
+.tags {
+    width: 90%;
+    margin-left: 5%;
+    box-sizing: border-box;
+    height: 20vh;
+    overflow-y: scroll;
+    margin: 15px;
+}
+
+.tag {
+    margin: 4px;
+    background-color: $dark-accent;
+    padding: 5px;
+    border-radius: 5px; 
+    cursor: pointer;
+    transition: 0.3s;
+    display: inline-block;
+    float: left;
+}
+
+.tag:hover {
+    background-color: red;
+    transition: 0.3s;
+}
+
+.tag span {
+    font-weight: 600;
+    padding-right: 4px;
+    padding-left: 2px;
+}
+
+.descInput:focus {
+    border: 2px solid transparent;
+    box-shadow: 0 0 15px $glow;
+    transition: 0.2s;
+}
+
+.tagInput {
+    padding: 5px;
+    font-size: 16px;
+    border-radius: 40px;
+    border: 2px solid white;
+    color: white;
+    background: $dark-0;
+    transition: 0.2s;
+    box-shadow: 0 0 0px $glow;
+    margin-left: 5%;
+    width: calc(90% - 130px);
+    box-sizing: border-box;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.likes {
+    position: absolute;
+    color: white;
+    font-size: 24px;
+    top: 4vh;
+    left: 5vh;
+    z-index: 999;
+    letter-spacing: 1px;
+}
+
+.likes div {
+    color: rgb(255, 59, 59);
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.views {
+    color: white;
+    position: absolute;
+    font-size: 24px;
+    top: 8vh;
+    left: 4.7vh;
+    z-index: 999;
+    letter-spacing: 1px;
+}
+
+.views div {
+    color: rgb(62, 62, 255);
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.addTagBtn {
+    background-color: $dark-1;
+    color: white;
+    text-align: center;
+    width: 100px;
+    padding: 8px;
+    border-radius: 100px;
+    font-weight: 900;
+    font-size: 15px;
+    display: inline-block;
+    margin-left: 15px;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    transition: 0.2s;
+}
+
+.addTagBtn:hover {
+    transform: translateY(-2px);
+}
+
+.addTagBtn:active {
+    transform: translateY(4px);
+}
+
+.buttonBar {
+    margin-top: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.deleteBtn {
+    padding: 5px;
+    background-color: red;
+    font-weight: 900;
+    border-radius: 50px;
+    width: 80px;
+    text-align: center;
+    margin-left: 5%;
+    margin-right: 10%;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.deleteBtn:hover {
+    background-color: rgb(139, 0, 0);
+    transition: 0.2s;
+    transform: translateY(-2px);
+}
+
+.deleteBtn:active {
+    transform: translateY(4px);
+    transition: 0.2s;
+}
+
+.cancelBtn {
+    padding: 5px;
+    background-color: $dark-accent;
+    font-weight: 900;
+    border-radius: 50px;
+    width: 80px;
+    text-align: center;
+    margin-right: 2%;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.cancelBtn:hover {
+    background-color: $dark-1;
+    transition: 0.2s;
+    transform: translateY(-2px);
+}
+
+.cancelBtn:active {
+    transform: translateY(4px);
+    transition: 0.2s;
+}
+
+.updateBtn {
+    padding: 5px;
+    background-color: $dark-accent;
+    font-weight: 900;
+    border-radius: 50px;
+    width: 80px;
+    text-align: center;
+    margin-right: 5%;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.updateBtn:hover {
+    background-color: $dark-1;
+    transition: 0.2s;
+    transform: translateY(-2px);
+}
+
+.updateBtn:active {
+    transform: translateY(4px);
+    transition: 0.2s;
+}
+
+.downloadBtn {
+    padding: 5px;
+    background-color: $dark-accent;
+    font-weight: 900;
+    border-radius: 50px;
+    width: 140px;
+    text-align: center;
+    margin-right: 2%;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.downloadBtn:hover {
+    background-color: $dark-1;
+    transition: 0.2s;
+    transform: translateY(-2px);
+}
+
+.downloadBtn:active {
+    transform: translateY(4px);
+    transition: 0.2s;
+}

@@ -1,0 +1,213 @@
+@import '../styles/_vars';
+@import '../styles/utils.module.scss';
+
+._fileUploadWrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+}
+
+.fileUploadWrapperVisible {
+    @extend ._fileUploadWrapper;
+    visibility: visible;
+    animation: visible 0.5s ease 0s forwards;
+    z-index: 999;
+}
+
+.fileUploadWrapperHidden {
+    @extend ._fileUploadWrapper;
+    visibility: hidden;
+    animation: visibleReversed 0.2s ease 0s forwards;
+    z-index: -999;
+}
+
+.innerWrapper {
+    width: 90%;
+    height: 90%;
+    margin: auto;
+    overflow: hidden;
+}
+
+
+.svg {
+    filter: invert(100%) sepia(1%) saturate(7500%) hue-rotate(267deg) brightness(101%) contrast(102%);
+}
+
+.dropzone {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    border: dashed 3px #ccc;
+    border-radius: 1rem;
+    padding: 2rem;
+}
+
+.active {
+    border: dashed 3px dodgerblue;
+}
+
+.uploadMessage h3 {
+    margin-top: 1rem;
+}
+
+.files {
+    border: 0;
+    clip: rect(0, 0, 0, 0);
+    height: 1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute !important;
+    white-space: nowrap;
+    width: 1px;
+}
+
+.files+label {
+    margin-top: 1rem;
+    background-color: #0d6efd;
+    border-radius: 4rem;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    text-align: center;
+    user-select: none;
+}
+
+.files+label:focus,
+.files+label:hover {
+    background-color: #0a58ca;
+    color: #fff;
+}
+
+.files+label:focus {
+    outline: 1px dotted #fff;
+}
+
+.uploadBtn {
+    width: auto;
+    color: white;
+    text-transform: uppercase;
+    margin: 2rem;
+    margin-right: 0rem;
+    background-color: #0d6efd;
+    border-radius: 4rem;
+    cursor: pointer;
+    padding: 0.75rem;
+    text-align: center;
+}
+
+.fileList {
+    display: flex;
+    margin-top: 1rem;
+    gap: 1rem;
+    width: fit-content;
+    max-width: 400px;
+}
+
+.centerWrapper {
+    height: 100vh;
+}
+
+.fileContainer {
+    // margin: auto;
+    // transform: translateY(-50%);
+    // position: relative;
+    // top: 50%;
+    padding: 0;
+    margin: 0;
+}
+
+.fileName {
+    // margin-left: 2rem;
+}
+
+.main {
+    // min-height: 92vh;
+    margin: auto;
+    width: max-content;
+    min-width: 200px;
+    padding: 0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.title {
+    margin: 0 0 1rem 0;
+    line-height: 1.15;
+    font-size: min( 2rem,  4vw);
+    text-align: center;
+    // font-family: Lato;
+    font-weight: 100;
+}
+
+.footer {
+    display: flex;
+    flex: 1;
+    padding: 1rem 0;
+    border-top: 1px solid #eaeaea;
+    justify-content: center;
+    align-items: center;
+}
+.previewWrapper {
+    max-height: 40vh;
+    overflow: auto;
+    overflow-x: clip;
+}
+
+.closeButton {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 1rem;
+    font-size: 2rem;
+    cursor: pointer;
+    background: transparent;
+    font-family: Lato;
+    font-weight: 100;
+    font-size: 4vh;
+    color: $light;
+    text-align: center;
+    justify-content: center;
+    // padding: 1vw;    
+    border-radius: 100%;
+    // border: 0.1vw solid $light;
+    // transition-duration: 0.2s;
+}
+
+.hiddenButton {
+    visibility: hidden;
+}
+
+// .closeButton:hover {
+//     background: $light;
+//     color: $twilight-hard;
+// }
+
+@keyframes visible {
+    0% {
+        backdrop-filter: blur(0px) saturate(100%) contrast(100%) brightness(100%);
+    }
+
+    100% {
+        backdrop-filter: blur(10px) saturate(50%) contrast(100%) brightness(60%);
+    }
+}
+
+@keyframes visibleReversed {
+    0% {
+        backdrop-filter: blur(0px) saturate(100%) contrast(100%) brightness(100%);
+        // visibility: visible;
+    }
+
+    100% {
+        backdrop-filter: blur(10px) saturate(50%) contrast(100%) brightness(60%);
+        // visibility: hidden;
+    }
+}

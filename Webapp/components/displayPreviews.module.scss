@@ -1,0 +1,25 @@
+@import '../styles/_vars';
+
+.scannedPagesWrapper{
+    // overflow-y: auto;
+    // overflow-x: hidden;
+    flex-grow: 1;
+    // max-height: 100%;
+    margin-right: 0.4vw;
+    margin-bottom: 0.15vw;
+    overflow: auto;
+    overflow-x: hidden;
+}
+
+.scannedPageImage{
+    height: auto;
+    width: 100%;
+}
+
+@media (orientation: portrait) {
+    .scannedPagesWrapper{
+
+        // overflow: show;
+        overflow:visible;   
+    }
+}

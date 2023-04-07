@@ -1,0 +1,326 @@
+@import '../styles/_vars';
+@import '../styles/utils.module.scss';
+/*
+    NOTE: Rewrite the hbar classes to use SASS FUNCTIONS!!
+*/
+
+$dropdownButtonBG: $dark-2;
+$dropdownButtonOutline: $light;
+$dropdownButtonHover: $dark-8;
+$dropdownButtonIcon: white;
+$puddleAnimation: white;
+$puddleAnimationBG: transparent;
+// $puddleAnimationBG: $dark-0;
+// $puddleAnimationBG: $twilight-hard;
+$borderSize: 2px;
+
+$dropdownAnimationDuration: 0.3s;
+
+.toggleButton {
+    background: $dropdownButtonBG;
+    border-radius: 50%;
+    aspect-ratio: 1/1;
+    width: 100%;
+    transition-duration: 0.2s;
+    position: absolute;
+    z-index: 999;
+    border: solid $borderSize $dropdownButtonOutline;
+
+}
+
+.toggleButton:hover {
+    animation: puddleAnimationOut 0.5s ease 0s backwards;
+    transform: scale(1.1);
+    background: $dropdownButtonHover;
+}
+
+.toggleButton:active {
+    transform: scale(0.9);
+}
+
+._hbar {
+    width: 50%;
+    height: 5%;
+    background: $dropdownButtonIcon;
+    margin: 0;
+    margin-top: 0px;
+    // transform: translate(50%, 500%);
+    position: absolute;
+    left: 25%;
+}
+
+.hbar1 {
+    @extend ._hbar;
+    top: 20%;
+
+}
+
+.hbar1Closed {
+    animation: bar1CollapseXUp $dropdownAnimationDuration ease 0s forwards;
+
+}
+
+.hbar1Open {
+    animation: bar1CollapseXReverseUp $dropdownAnimationDuration ease 0s forwards;
+}
+
+.hbar2 {
+    @extend ._hbar;
+    top: 45%;
+}
+
+.hbar2Closed {
+    animation: bar2CollapseXUp $dropdownAnimationDuration ease 0s forwards;
+}
+
+.hbar2Open {
+    animation: bar2CollapseXReverseUp $dropdownAnimationDuration ease 0s forwards;
+}
+
+
+
+.hbar3 {
+    @extend ._hbar;
+    top: 70%;
+}
+
+.hbar3Closed {
+    animation: bar3CollapseXUp $dropdownAnimationDuration ease 0s forwards;
+}
+
+.hbar3Open {
+    animation: bar3CollapseXReverseUp $dropdownAnimationDuration ease 0s forwards;
+}
+
+.menuWrapper {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 999;
+}
+
+.menu {
+    position: absolute;
+    padding: 0%;
+    z-index: 999;
+}
+
+.openMenu {
+    @extend .menu;
+    position: absolute;
+    left: 0%;
+    bottom: 100%;
+    margin: 0;
+}
+
+.closedMenu {
+    @extend .menu;
+    // margin-top: -900em;
+}
+
+@for $i from 1 through 10 {
+    .menu li:nth-child(#{$i}) {
+        bottom: 55px * ($i - 1) + 10; 
+    }
+}
+
+
+._menuItem {
+    // width: 225%;
+    // height: 225%;
+    // width: 100%;
+    width: 45px;
+    height: 45px;
+    height: auto;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    background-color: $dropdownButtonBG;
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin: 50% 0%;
+    transition-duration: 0.2s;
+    // position: relative;
+    transform-origin: center;
+    z-index: -1;
+    // bottom: 100%
+    position: absolute;
+}
+
+._menuItem >  * { //[class^= 'fa'] {
+    color: $dropdownButtonIcon;
+}
+
+.menuItemClosed {
+    @extend ._menuItem;
+    animation: collapseItem ease 0.2s forwards;
+    visibility: hidden;
+}
+
+.menuItemOpen {
+    @extend ._menuItem;
+    animation: collapseItemReverse ease 0.2s forwards;
+    border: solid $borderSize $dropdownButtonOutline;
+}
+
+@keyframes collapseItem {
+    0% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(1);
+        bottom: -45px;
+    }
+}
+
+@keyframes collapseItemReverse {
+    0% {
+        transform: scale(1);
+        bottom: -45px;
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+._menuItem:hover {
+    background-color: $dropdownButtonHover;
+    transform: scale(1.1) !important;
+    border: solid $borderSize $dropdownButtonOutline;
+}
+
+._menuItem:active {
+    background-color: $dropdownButtonHover;
+    transform: scale(0.9) !important;
+}
+
+@keyframes puddleAnimationOut {
+    0% {
+        box-shadow: 0 0 0px 0px $puddleAnimationBG, 0 0 0px 0px $puddleAnimation;
+    }
+
+    1% {
+        box-shadow: 0 0 1px 0px $puddleAnimationBG, 0 0 1px 2px $puddleAnimation;
+    }
+
+    100% {
+        box-shadow: 0 0 1px 8px $puddleAnimationBG, 0 0 1px 10px rgba($color: #ffffff, $alpha: 0);
+    }
+}
+
+@keyframes bar1CollapseXUp {
+    0% {}
+
+    50% {
+        top: 20%;
+    }
+
+    75% {
+        top: 20%;
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(45deg);
+        top: 45%;
+    }
+}
+
+@keyframes bar1CollapseXReverseUp {
+    0% {
+        transform: rotate(-45deg);
+        top: 45%;
+    }
+
+    50% {
+        top: 20%;
+    }
+
+    75% {
+        top: 20%;
+        transform: rotate(0deg);
+    }
+
+    100% {}
+}
+
+@keyframes bar2CollapseXUp {
+    0% {}
+
+    50% {
+        top: 20%;
+    }
+
+    75% {
+        top: 20%;
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(-45deg);
+        top: 45%;
+    }
+}
+
+@keyframes bar2CollapseXReverseUp {
+    0% {
+        transform: rotate(45deg);
+        top: 45%;
+    }
+
+    50% {
+        top: 20%;
+    }
+
+    75% {
+        top: 20%;
+        transform: rotate(0deg);
+    }
+
+    100% {}
+}
+
+@keyframes bar3CollapseXUp {
+    0% {}
+
+    50% {
+        top: 20%;
+        // transform: rotate(0deg);
+    }
+
+    75% {
+        top: 20%;
+        transform: rotate(0deg);
+        opacity: 1;
+    }
+
+    100% {
+        transform: rotate(45deg);
+        top: 45%;
+        opacity: 0;
+    }
+}
+
+@keyframes bar3CollapseXReverseUp {
+    0% {
+        transform: rotate(-45deg);
+        top: 45%;
+        opacity: 0;
+    }
+
+    50% {
+        top: 20%;
+        transform: rotate(0deg);
+        opacity: 1;
+    }
+
+    75% {
+        top: 20%;
+        transform: rotate(0deg);
+    }
+
+    100% {}
+}

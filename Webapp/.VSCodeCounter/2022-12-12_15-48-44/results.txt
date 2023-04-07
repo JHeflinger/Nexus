@@ -1,0 +1,32 @@
+Date : 2022-12-12 15:48:44
+Directory : d:\Code\PythonMassScanner\WebAppp\frontend\pages
+Total : 6 files,  350 codes, 7 comments, 45 blanks, all 402 lines
+
+Languages
++------------+------------+------------+------------+------------+------------+
+| language   | files      | code       | comment    | blank      | total      |
++------------+------------+------------+------------+------------+------------+
+| JavaScript |          4 |        208 |          1 |         20 |        229 |
+| SCSS       |          2 |        142 |          6 |         25 |        173 |
++------------+------------+------------+------------+------------+------------+
+
+Directories
++----------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                 | files      | code       | comment    | blank      | total      |
++----------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                    |          6 |        350 |          7 |         45 |        402 |
+| posts                                                                |          1 |         27 |          0 |          1 |         28 |
++----------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++----------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| filename                                                             | language   | code       | comment    | blank      | total      |
++----------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| d:\Code\PythonMassScanner\WebAppp\frontend\pages\_app.js             | JavaScript |          4 |          0 |          1 |          5 |
+| d:\Code\PythonMassScanner\WebAppp\frontend\pages\index.js            | JavaScript |         33 |          0 |          5 |         38 |
+| d:\Code\PythonMassScanner\WebAppp\frontend\pages\index.module.scss   | SCSS       |         23 |          0 |          3 |         26 |
+| d:\Code\PythonMassScanner\WebAppp\frontend\pages\posts\first-post.js | JavaScript |         27 |          0 |          1 |         28 |
+| d:\Code\PythonMassScanner\WebAppp\frontend\pages\scanner.js          | JavaScript |        144 |          1 |         13 |        158 |
+| d:\Code\PythonMassScanner\WebAppp\frontend\pages\scanner.module.scss | SCSS       |        119 |          6 |         22 |        147 |
+| Total                                                                |            |        350 |          7 |         45 |        402 |
++----------------------------------------------------------------------+------------+------------+------------+------------+------------+

@@ -1,0 +1,76 @@
+@use "sass:list";
+@use "sass:map";
+
+$maxBlur: 10;
+$animationDuration: 300s;
+
+@function multiple-box-shadow ($n, $blur) {
+    $value: '#{random(3000) * 0.05}vw #{random(10000) * 0.05}vh #{$blur}px #FFF';
+
+    @for $i from 2 through $n {
+        $value: '#{$value}, #{random(3000) * 0.05}vw #{random(10000) * 0.05}vh #{$blur}px #FFF';
+    }
+
+    @return unquote($value);
+}
+
+
+$blurLevels: (
+);
+
+@for $i from 0 through $maxBlur {
+    $blurLevels: append($blurLevels,
+        (multiple-box-shadow(3000, $i),
+            multiple-box-shadow(700, $i),
+            multiple-box-shadow(300, $i)));
+}
+
+.starsWrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -999;
+    width: 120vw;
+    height: 100vh;
+    background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+    overflow: hidden;
+}
+
+@for $j from 1 through 3 {
+    @for $i from 1 through $maxBlur {
+        @debug $i;
+
+        .stars#{$j}_b#{$i} {
+            width: #{$j}px;
+            height: #{$j}px;
+            top: #{random(100)}px;
+            left: 0%;
+            transform: translateX(-#{random(50)}vh);
+            position: absolute;
+            background: transparent;
+            box-shadow: nth(nth($blurLevels, $i), $j);
+            $duration: $animationDuration - 50 * $j;
+            animation: animStar $duration linear infinite;
+
+            &:after {
+                content: '';
+                position: absolute;
+                top: 2000px;
+                width: #{$j}px;
+                height: #{$j}px;
+                background: transparent;
+                box-shadow: nth(nth($blurLevels, $i), $j);
+            }
+        }
+    }
+}
+
+@keyframes animStar {
+    0% {
+        transform: translateY(0);
+    }
+
+    100% {
+        transform: translateY(-200vh);
+    }
+}
