@@ -1,4 +1,4 @@
-USE NexusTmp;
+USE Nexus;
 
 GO
     CREATE TABLE Users (
@@ -23,6 +23,15 @@ GO
     );
 
 GO
+    CREATE TABLE Organization (
+        OrganizationID INT PRIMARY KEY,
+        Name VARCHAR(20),
+        DateOfCreation DATE,
+        Description VARCHAR(200),
+        JoinMethod VARCHAR(50)
+    );
+
+GO
     CREATE TABLE InAnOrganization (
         UserName VARCHAR(20) NOT NULL,
         OrganizationID INT NOT NULL,
@@ -39,12 +48,10 @@ GO
     );
 
 GO
-    CREATE TABLE Organization (
-        OrganizationID INT PRIMARY KEY,
-        Name VARCHAR(20),
-        DateOfCreation DATE,
-        Description VARCHAR(200),
-        JoinMethod VARCHAR(50)
+    CREATE TABLE UserInputtedData (
+        DataID INT PRIMARY KEY,
+        LastModified DATE,
+        DateOfCreation DATE
     );
 
 GO
@@ -61,13 +68,6 @@ GO
         CategoryID INT NOT NULL,
         FOREIGN KEY (DocumentID) REFERENCES Document(DocumentID) ON DELETE CASCADE ON UPDATE CASCADE,
         FOREIGN KEY (CategoryID) REFERENCES Category(CategoryID) ON DELETE CASCADE ON UPDATE CASCADE
-    );
-
-GO
-    CREATE TABLE UserInputtedData (
-        DataID INT PRIMARY KEY,
-        LastModified DATE,
-        DateOfCreation DATE
     );
 
 GO

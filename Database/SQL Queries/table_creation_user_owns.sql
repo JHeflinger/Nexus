@@ -1,4 +1,4 @@
-USE NexusTmp;
+USE Nexus;
 GO
 	CREATE TABLE UserOwns (
 		UserName VARCHAR(20) NOT NULL,
