@@ -24,7 +24,7 @@ GO
 
 GO
     CREATE TABLE Organization (
-        OrganizationID INT PRIMARY KEY,
+        OrganizationID INT IDENTITY(1,1) PRIMARY KEY,
         Name VARCHAR(20),
         DateOfCreation DATE,
         Description VARCHAR(200),
@@ -36,7 +36,8 @@ GO
         UserName VARCHAR(20) NOT NULL,
         OrganizationID INT NOT NULL,
         FOREIGN KEY (UserName) REFERENCES Users(UserName) ON DELETE CASCADE ON UPDATE CASCADE,
-        FOREIGN KEY (OrganizationID) REFERENCES Organization(OrganizationID) ON DELETE CASCADE ON UPDATE CASCADE
+        FOREIGN KEY (OrganizationID) REFERENCES Organization(OrganizationID) ON DELETE CASCADE ON UPDATE CASCADE,
+        PRIMARY KEY(UserName, OrganizationID)
     );
 
 GO
@@ -71,7 +72,7 @@ GO
     );
 
 GO
-    CREATE TABLE UserOwns (
+    CREATE TABLE UserOwns ( -- Don't need a separate table for 1 to Many relationship put a UserName key in Document
         UserName VARCHAR(20) NOT NULL,
         DocumentID INT NOT NULL,
         FOREIGN KEY (UserName) REFERENCES Users(UserName) ON DELETE CASCADE ON UPDATE CASCADE,
