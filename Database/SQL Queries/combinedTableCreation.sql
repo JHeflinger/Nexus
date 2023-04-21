@@ -18,7 +18,7 @@ GO
 
 GO
     CREATE TABLE Document (
-        DocumentID INT PRIMARY KEY,
+        DocumentID INT PRIMARY KEY IDENTITY(1,1),
         DocumentData VARBINARY(MAX)
     );
 
