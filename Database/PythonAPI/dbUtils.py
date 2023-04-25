@@ -138,4 +138,9 @@ class Server:
             print(pt.importantTextBad("Execution Failed!"))
             pyodbc.Error.__traceback__()
             return False, None
-        return True, [x for x in self.cursor]
+        retList = [x for x in self.cursor]
+        if self.__logging:
+            print(pt.importantTextGood("Execution Successful!"))
+        if not noDisconnect:
+            self.__disconnect()
+        return True, retList
