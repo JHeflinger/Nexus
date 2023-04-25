@@ -1,2 +1,3 @@
 node_modules
-*.code-workspace
+*.code-workspace/
+/Database/PythonAPI/__pycache__/
