@@ -4,10 +4,12 @@ const serverURL = "http://192.168.68.136:8080"
 
 export default class Database {
 
-    static async uploadFile(file, uid) {
+    static async uploadFile(file, uid, name="") {
         const formData = new FormData();
+        const fileName = name ? name : file.name;
         formData.append("file", file);
         formData.append("uid", uid);
+        formData.append("name", fileName);
         let promise = undefined;
         try {
             promise = fetch(serverURL + '/uploadFile', {
@@ -28,7 +30,7 @@ export default class Database {
         for (let i = 0; i < filesToUpload; i++) {
             promises.push(Database.uploadFile(files[i], uid));
         }
-        return Promise.all(promises); // Make this have better partial failure handling
+        return promises[0]; // Make this have better partial failure handling
     }
 
     static async updateFile(formData) {

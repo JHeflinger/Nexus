@@ -27,11 +27,17 @@ async def root():
 @app.post("/uploadFile")
 async def uploadFile(
     file: Annotated[bytes, File()],
-    uid: Annotated[str, Form(...)],    
+    uid: Annotated[str, Form(...)],
+    name: Annotated[str, Form(...)],
 ):
-    print(file)
+    print(name)
     
-    # Nexus = Server("titan.csse.rose-hulman.edu", "Nexus")
+    Nexus = Server("titan.csse.rose-hulman.edu", "Nexus")
+    Nexus.disconnect()
+    success, results =  Nexus.execute("EXEC dbo.AddDocument @DocumentData= ?", binParams=(Server.convertToBinaryData(file)), username="consaljj")
+    # success, results = Nexus.execute("SELECT * FROM dbo.Document", username="consaljj")
+    if success:
+        print(results)
     
 
 
