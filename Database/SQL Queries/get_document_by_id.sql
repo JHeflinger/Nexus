@@ -3,25 +3,25 @@ GO
 
 IF EXISTS (SELECT *
 FROM sys.objects
-WHERE type = 'P' AND name = 'GetDocumentByID')
+WHERE type = 'P' AND name = 'GetFileByID')
 BEGIN
-    DROP PROCEDURE GetDocumentByID;
+    DROP PROCEDURE GetFileByID;
 END
 GO
 
-CREATE PROCEDURE GetDocumentByID
-    @id INT
+CREATE PROCEDURE GetFileByID
+    @docID INT
 AS
 
 BEGIN
-    IF @id IS NULL
+    IF @docID IS NULL
     BEGIN
         RAISERROR('Document ID cannot be null', 16, 1);
         RETURN 1;
     END
 
-    SELECT DocumentData
+    SELECT Document.DocumentData
 	FROM Document
-	WHERE Document.DocumentID = @id
+	WHERE Document.DocumentID = @docID
 END;
 GO

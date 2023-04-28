@@ -191,7 +191,7 @@ export default function Home() {
     if (uidRef.current == "") {
       return;
     }
-    // console.log("Getting user files from user id: " + uidRef.current);
+    // console.log("Getting user files from user id: " + uidRef.current)
     Database.getFileIDsByUser(uidRef.current).then((response) => {
       const files = response.json().then((data) => {
         // console.log("Files: " + data);
