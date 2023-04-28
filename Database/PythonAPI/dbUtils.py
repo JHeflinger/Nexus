@@ -84,7 +84,19 @@ class Server:
         except:
             print(pt.importantTextBad(f"Failed to disconnect from {self.databaseName}@{self.serverName}"))
 
-    def testConnection(self, username: str = None, noDisconnect:bool = False) -> bool:
+    def disconnect(self) -> bool:
+        '''
+        Disconnect Function
+        -------------------
+        Params: None
+        Returns:
+        - bool - True if disconnect successful, False if disconnect failed
+
+        Attempts to disconnect from the database and reset the values of cursor, connection, and connectedUser
+        '''
+        return self.__disconnect()
+
+    def testConnection(self, username: str = None, noDisconnect: bool = False) -> bool:
         '''
         Test Connection Function
         ------------------------
@@ -111,7 +123,20 @@ class Server:
             if not noDisconnect:
                 self.__disconnect()
 
-    def execute(self, command, username: str = None, noDisconnect: bool = False) -> Tuple[bool, List]:
+    @staticmethod
+    def convertToBinaryData(data: bytes) -> pyodbc.Binary:
+        '''
+        Convert to Binary Data Function
+        -------------------------------
+        Params:
+        - data: bytes - the data to be converted to pyodbc.Binary format
+
+        Returns:
+        - pyodbc.Binary - the data in pyodbc.Binary format
+        '''
+        return pyodbc.Binary(data)
+
+    def execute(self, command, binParams: Tuple = None, username: str = None, noDisconnect: bool = False) -> Tuple[bool, List]:
         '''
         Main Execution Function
         -----------------------
@@ -133,14 +158,38 @@ class Server:
             print(pt.importantTextBad("No user connected! Please specify a username."))
             return False, None
         try:
-            self.cursor.execute(command)
+            self.cursor = self.__getCursor()
+            if binParams is not None:
+                self.cursor.execute(command, binParams)
+            else:
+                self.cursor.execute(command)
         except pyodbc.Error:
             print(pt.importantTextBad("Execution Failed!"))
             pyodbc.Error.__traceback__()
+            self.__disconnect()
             return False, None
-        retList = [x for x in self.cursor]
+        except Exception as e:
+            print(pt.importantTextBad("Execution Failed! - not pyodbc error"))
+            print(e)
+            self.__disconnect()
+            return False, None
+
+        if (self.__logging):
+            print(pt.importantTextMedium("Attempting to Parse Results"))
+        # print("Description:")
+        # print(self.cursor.description)
+        # print("End Description.")
+        try:
+            retList = [x for x in self.cursor]
+        except pyodbc.Error:
+            print(pt.importantTextBad("Parsing Failed!"))
+            pyodbc.Error.__traceback__()
+            self.__disconnect()
+            return False, None
         if self.__logging:
             print(pt.importantTextGood("Execution Successful!"))
+        self.connection.commit()
         if not noDisconnect:
             self.__disconnect()
+        
         return True, retList
