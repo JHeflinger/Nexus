@@ -20,6 +20,26 @@ export default class Database {
         const data = await result.json();
         console.log("Data from userExists:");
         console.log(data);
+
+        if (data.exists === false) {
+            console.log("User does not exist, creating user...");
+            promise = undefined;
+            const formData = new FormData();
+            formData.append("uid", uid);
+            formData.append("userName", username);
+            formData.append("firstName", "tmp");
+            formData.append("middleName", "tmp");
+            formData.append("lastName", "tmp");
+            try {
+                promise = fetch(serverURL + `/addUser/`, {
+                    method: 'POST',
+                    body: formData,
+                });
+            }
+            catch (error) {
+                console.log(error);
+            }
+        }
     }
 
     static async uploadFile(file, uid, name="") {

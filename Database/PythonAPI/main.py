@@ -54,8 +54,8 @@ async def userExists(FBToken: str):
     query = f"EXEC UserExists @FirebaseToken={FBToken}"
     success, result = Nexus.execute(query, username="consaljj")
     if success:
-        print(result)
-        return {"exists": result}
+        print(result[0],[0])
+        return {"exists": result[0][0]}
     else:
         return False
 
