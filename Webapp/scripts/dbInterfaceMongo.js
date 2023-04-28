@@ -1,16 +1,17 @@
 
-const serverURL = "http://192.168.68.136:8080"
-// const serverURL = "http://137.112.207.134:8080"
+const serverURL = "http://137.112.198.113:8080/api"
+// const serverURL = "http://192.168.68.128:8080/api"
+// const serverURL = "http://137.112.136.162:8080/api"
 
 export default class Database {
 
-    static async uploadFile(file, uid) {
+    static async uploadFiles(files, uid) {
         const formData = new FormData();
-        formData.append("file", file);
+        files.forEach((file) => formData.append("files", file));
         formData.append("uid", uid);
         let promise = undefined;
         try {
-            promise = fetch(serverURL + '/uploadFile', {
+            promise = fetch(serverURL + '/upload', {
                 method: 'POST',
                 body: formData,
             });
@@ -18,17 +19,6 @@ export default class Database {
             console.log(error);
         }
         return promise;
-    }
-
-
-    static async uploadFiles(files, uid) {
-        const filesToUpload = files.length;
-        let filesUploaded = 0;
-        let promises = [];
-        for (let i = 0; i < filesToUpload; i++) {
-            promises.push(Database.uploadFile(files[i], uid));
-        }
-        return Promise.all(promises); // Make this have better partial failure handling
     }
 
     static async updateFile(formData) {
