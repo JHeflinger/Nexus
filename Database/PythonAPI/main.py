@@ -92,7 +92,7 @@ async def getFileIDsByUser(UID: str):
     Nexus.disconnect()
 
     query = f"EXEC GetUserFileIDS @Username ={UID}"
-    success, result = Nexus.execute(query, username="heflinjn")
+    success, result = Nexus.execute(query, username="consaljj")
     if success:
         print(result)
         return {"exists": result}
@@ -111,7 +111,7 @@ async def getFileByObjectID(DocID: int):
     Nexus.disconnect()
 
     query = f"EXEC GetFileByID @docID ={DocID}"
-    success, result = Nexus.execute(query, username="heflinjn")
+    success, result = Nexus.execute(query, username="consaljj")
     if success:
         print(result)
         return {"exists": result}
