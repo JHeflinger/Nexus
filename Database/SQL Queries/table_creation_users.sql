@@ -6,5 +6,6 @@ CREATE TABLE Users (
 	FirstName VARCHAR(20) NOT NULL,
 	MiddleName VARCHAR(20),
 	LastName VARCHAR(50) NOT NULL,
-	Password VARCHAR(50) NOT NULL
+	Password VARCHAR(50) NOT NULL,
+	FirebaseToken VARCHAR(30) NOT NULL
 );
