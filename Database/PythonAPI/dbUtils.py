@@ -174,15 +174,11 @@ class Server:
             print(e)
             self.__disconnect()
             return False, None
-
-        if (self.__logging):
-            print(pt.importantTextMedium("Attempting to Parse Results"))
-        # print("Description:")
-        # print(self.cursor.description)
-        # print("End Description.")
         retList = None
         if self.cursor.description is not None:
             try:
+                if (self.__logging):
+                    print(pt.importantTextMedium("Attempting to Parse Results"))
                 retList = [x for x in self.cursor]
             except pyodbc.Error as ex:
                 print(pt.importantTextBad("Parsing Failed!"))

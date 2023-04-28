@@ -7,6 +7,7 @@ import Link from 'next/link';
 import cx from 'classnames';
 import { Lato } from '@next/font/google';
 import { useState, useRef } from 'react'
+import Database from '../scripts/dbInterface';
 
 //firebase
 import { initializeApp } from "firebase/app";
@@ -60,6 +61,10 @@ export default function Home() {
       const credential = GoogleAuthProvider.credentialFromResult(result);
       const token = credential.accessToken;
       const user = result.user;
+      
+      console.log("Checking if user exists...");
+      Database.makeUserIfNotExists(user.uid, user.displayName);
+      
       router.push("./search");
     }).catch((error) => {
       const errorCode = error.code;
