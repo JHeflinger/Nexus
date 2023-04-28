@@ -1,8 +1,15 @@
 USE Nexus
 GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = 'AddUser')
+BEGIN
+	DROP PROCEDURE AddUser;
+END
+GO
+
 CREATE PROCEDURE [dbo].[AddUser]
-	@username NVARCHAR(20),
-	@firstname NVARCHAR(20),
+	@username NVARCHAR(30),
+	@firstname NVARCHAR(30),
 	@middlename NVARCHAR(20),
 	@lastname NVARCHAR(50),
 	@password NVARCHAR(50)
@@ -20,7 +27,7 @@ BEGIN
 		PRINT 'ERROR: User already exists!';
 		RETURN (2)
 	END
-	INSERT INTO [Users](UserName, FirstName, MiddleName, LastName, [Password])
-	VALUES(@username, @firstname, @middlename, @lastname, @password);
+	INSERT INTO [Users](UserName, MiddleName, LastName, [Password])
+	VALUES(@username, @middlename, @lastname, @password);
 END
 GO
