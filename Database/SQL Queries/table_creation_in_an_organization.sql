@@ -1,9 +1,9 @@
-USE Nexus;
-
+USE Nexus
 GO
-	CREATE TABLE InAnOrganization (
-		UserName VARCHAR(20) NOT NULL,
-		OrganizationID INT NOT NULL,
-		FOREIGN KEY (UserName) REFERENCES Users(UserName) ON DELETE CASCADE ON UPDATE CASCADE,
-		FOREIGN KEY (OrganizationID) REFERENCES Organization(OrganizationID) ON DELETE CASCADE ON UPDATE CASCADE
-	);
+
+CREATE TABLE InAnOrganization (
+	UserName VARCHAR(20) NOT NULL,
+	OrganizationID INT NOT NULL,
+	FOREIGN KEY (UserName) REFERENCES Users(UserName),
+	FOREIGN KEY (OrganizationID) REFERENCES Organization(OrganizationID)
+);

@@ -1,9 +1,9 @@
-USE Nexus;
-
+USE Nexus
 GO
-	CREATE TABLE InACategory (
-		DocumentID INT NOT NULL,
-		CategoryID INT NOT NULL,
-		FOREIGN KEY (DocumentID) REFERENCES Document(DocumentID) ON DELETE CASCADE ON UPDATE CASCADE,
-		FOREIGN KEY (CategoryID) REFERENCES Category(CategoryID) ON DELETE CASCADE ON UPDATE CASCADE
-	);
+
+CREATE TABLE InACategory (
+	DocumentID INT NOT NULL,
+	CategoryID INT NOT NULL,
+	FOREIGN KEY (DocumentID) REFERENCES Document(DocumentID),
+	FOREIGN KEY (CategoryID) REFERENCES Category(CategoryID)
+);

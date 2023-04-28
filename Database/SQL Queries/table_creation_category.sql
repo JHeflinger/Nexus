@@ -1,8 +1,8 @@
-USE Nexus;
-
+USE Nexus
 GO
-    CREATE TABLE Category (
-        CategoryID INT PRIMARY KEY IDENTITY(1,1),
-        CategoryName VARCHAR(20),
-        Description VARCHAR(200)
-    );
+
+CREATE TABLE Category (
+	CategoryID INT PRIMARY KEY,
+	CategoryName VARCHAR(20),
+	Description VARCHAR(200)
+);

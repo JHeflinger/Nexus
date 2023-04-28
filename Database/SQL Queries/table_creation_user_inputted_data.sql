@@ -1,8 +1,8 @@
-USE Nexus;
-
+USE Nexus
 GO
-	CREATE TABLE UserInputtedData (
-		DataID INT PRIMARY KEY,
-		LastModified DATE,
-		DateOfCreation DATE
-	);
+
+CREATE TABLE UserInputtedData (
+	DataID INT PRIMARY KEY,
+	LastModified DATE,
+	DateOfCreation DATE
+);
