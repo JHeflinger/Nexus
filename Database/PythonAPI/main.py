@@ -86,9 +86,18 @@ async def updateFile():
     return {"message": "Update File Not Implemented"}
 
 
-@app.get("/getFileIDsByUser")
-async def getFileIDsByUser():
-    return {"message": "Get File IDs By User Not Implemented"}
+@app.get("/getFileIDsByUser/{UID}")
+async def getFileIDsByUser(UID: str):
+    Nexus = Server("titan.csse.rose-hulman.edu", "Nexus")
+    Nexus.disconnect()
+
+    query = f"EXEC GetUserFileIDS @Username ={UID}"
+    success, result = Nexus.execute(query, username="heflinjn")
+    if success:
+        print(result)
+        return {"exists": result}
+    else:
+        return False
 
 
 @app.get("/getFilesBySearch")
@@ -96,9 +105,18 @@ async def getFilesBySearch():
     return {"message": "Get Files By Search Not Implemented"}
 
 
-@app.get("/getFileByObjectID")
-async def getFileByObjectID():
-    return {"message": "Get File By Object ID Not Implemented"}
+@app.get("/getFileByObjectID/{DocID}")
+async def getFileByObjectID(DocID: int):
+    Nexus = Server("titan.csse.rose-hulman.edu", "Nexus")
+    Nexus.disconnect()
+
+    query = f"EXEC GetFileByID @docID ={DocID}"
+    success, result = Nexus.execute(query, username="heflinjn")
+    if success:
+        print(result)
+        return {"exists": result}
+    else:
+        return False
 
 
 @app.get("/getFileRefByObjectID")

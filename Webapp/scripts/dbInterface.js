@@ -66,12 +66,9 @@ export default class Database {
     }
 
     static async getFileIDsByUser(uid) {
-        console.log("inside getFilesByUser with uid: " + uid);
-        // const formData = new FormData();
-        // formData.append("uid", uid);
         let promise = undefined;
         try {
-            promise = fetch(serverURL + `/get_files/${uid}/__xXNULLXx__/__xXNULLXx__/__xXNULLXx__/`, {
+            promise = fetch(serverURL + `/getFileIDsByUser/${uid}`, {
                 method: 'GET',
             });
         } catch (error) {
@@ -112,6 +109,19 @@ export default class Database {
         try {
             console.log(`${serverURL}/get_file_ref/${objectID}`);
             promise = fetch(`${serverURL}/get_file_ref/${objectID}`, {
+                method: 'GET',
+            });
+        } catch (error) {
+            console.log(error);
+        }
+        return promise;
+    }
+
+    static async getFileContentByID(docID) {
+        let promise = undefined;
+        try {
+            console.log(`${serverURL}/getFileByObjectID/${docID}`);
+            promise = fetch(`${serverURL}/getFileByObjectID/${docID}`, {
                 method: 'GET',
             });
         } catch (error) {

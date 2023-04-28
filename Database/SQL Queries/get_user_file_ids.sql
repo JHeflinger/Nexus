@@ -10,7 +10,7 @@ END
 GO
 
 CREATE PROCEDURE GetUserFileIDS
-    @Username VARCHAR(20)
+    @Username VARCHAR(30)
 AS
 
 BEGIN
