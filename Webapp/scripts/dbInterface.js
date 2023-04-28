@@ -1,8 +1,26 @@
 
-const serverURL = "http://192.168.68.136:8080"
-// const serverURL = "http://137.112.207.134:8080"
+// const serverURL = "http://192.168.68.136:8080"
+const serverURL = "http://137.112.207.134:8080"
 
 export default class Database {
+
+
+    static async makeUserIfNotExists(uid, username) {
+        //Check if user exists
+        let promise = undefined;
+        try {
+            promise = fetch(serverURL + `/userExists/${uid}`, {
+                method: 'GET',
+            });
+        }
+        catch (error) {
+            console.log(error);
+        }
+        const result = await promise;
+        const data = await result.json();
+        console.log("Data from userExists:");
+        console.log(data);
+    }
 
     static async uploadFile(file, uid, name="") {
         const formData = new FormData();

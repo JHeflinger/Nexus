@@ -45,9 +45,9 @@ class Server:
                 'PWD=' + password + ';'
                 'Trusted_Connection=no;'
             )
-        except pyodbc.Error:
+        except pyodbc.Error as ex:
             print(pt.importantTextBad(f"Failed to connect for user: {username} {self.databaseName}@{self.serverName}"))
-            print(pyodbc.Error.__traceback__)
+            print(ex)
             return False
 
         # Run connection test
@@ -114,10 +114,10 @@ class Server:
             if self.__logging:
                 print(pt.importantTextGood("Connection Successful!"))
             return True
-        except pyodbc.Error:
+        except pyodbc.Error as ex:
             if self.__logging:
                 print(pt.importantTextBad("Connection Failed!"))
-            print
+            print(ex)
             return False
         finally:
             if not noDisconnect:
@@ -163,9 +163,10 @@ class Server:
                 self.cursor.execute(command, binParams)
             else:
                 self.cursor.execute(command)
-        except pyodbc.Error:
+        except pyodbc.Error as ex:
             print(pt.importantTextBad("Execution Failed!"))
-            pyodbc.Error.__traceback__()
+            print(ex)
+
             self.__disconnect()
             return False, None
         except Exception as e:
@@ -173,19 +174,17 @@ class Server:
             print(e)
             self.__disconnect()
             return False, None
-
-        if (self.__logging):
-            print(pt.importantTextMedium("Attempting to Parse Results"))
-        # print("Description:")
-        # print(self.cursor.description)
-        # print("End Description.")
-        try:
-            retList = [x for x in self.cursor]
-        except pyodbc.Error:
-            print(pt.importantTextBad("Parsing Failed!"))
-            pyodbc.Error.__traceback__()
-            self.__disconnect()
-            return False, None
+        retList = None
+        if self.cursor.description is not None:
+            try:
+                if (self.__logging):
+                    print(pt.importantTextMedium("Attempting to Parse Results"))
+                retList = [x for x in self.cursor]
+            except pyodbc.Error as ex:
+                print(pt.importantTextBad("Parsing Failed!"))
+                print(ex)
+                self.__disconnect()
+                return False, None
         if self.__logging:
             print(pt.importantTextGood("Execution Successful!"))
         self.connection.commit()
