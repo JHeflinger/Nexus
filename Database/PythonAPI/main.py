@@ -21,6 +21,21 @@ app.add_middleware(
 async def root():
     return {"message": "Nexus SQL API Root"}
 
+@app.get("/likeDocument")
+async def likeDocument(
+    uid: Annotated[str, Form(...)],
+    docid: Annotated[int, Form(...)]
+):
+    Nexus = Server("titan.csse.rose-hulman.edu", "Nexus")
+    Nexus.disconnect()
+
+    print(f"User {uid} likes document {docid}")
+
+    query = f"EXEC AddUserLike @Username={uid}, @docID={docid}"
+    success, result = Nexus.execute(query, username="consaljj")
+    if success:
+        print(result)
+
 
 def addTmpUser(uid: str) -> None:
     Nexus = Server("titan.csse.rose-hulman.edu", "Nexus")

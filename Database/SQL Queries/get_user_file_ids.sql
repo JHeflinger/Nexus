@@ -20,8 +20,9 @@ BEGIN
         RETURN 1;
     END
 
-    SELECT DocumentID
-	FROM UserOwns
+    SELECT DocumentID, DocumentName
+	FROM Document
+	LEFT JOIN UserOwns ON UserOwns.DocumentID = Document.DocumentID
 	WHERE UserOwns.UserName = @Username
 END;
 GO

@@ -11,26 +11,21 @@ GO
 
 CREATE PROCEDURE AddDocumentFromUser
     @DocumentData VARBINARY(MAX),
-	@Username VARCHAR(30)
+	@Username VARCHAR(30),
+	@DocumentName VARCHAR(100)
 AS
 
 BEGIN
-    IF @DocumentData IS NULL
+    IF (@DocumentData IS NULL OR @Username IS NULL OR @DocumentName IS NULL)
     BEGIN
-        RAISERROR('DocumentData cannot be null', 16, 1);
+        RAISERROR('params cannot be null', 16, 1);
         RETURN 1;
     END
 
-	IF @Username IS NULL
-    BEGIN
-        RAISERROR('Username cannot be null', 16, 1);
-        RETURN 2;
-    END
-
     INSERT INTO dbo.Document
-        (DocumentData, [Views])
+        (DocumentData, DocumentName, [Views])
     VALUES
-        (@DocumentData, 0);
+        (@DocumentData, @DocumentName, 0);
 
 	DECLARE @docID INT
 	SET @docID = SCOPE_IDENTITY()
