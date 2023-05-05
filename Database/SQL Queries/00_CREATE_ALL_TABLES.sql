@@ -2,9 +2,9 @@ USE Nexus;
 
 GO
     CREATE TABLE Users (
-        UserName VARCHAR(20) PRIMARY KEY,
-        FirstName VARCHAR(20),
-        MiddleName VARCHAR(20),
+        UserName VARCHAR(50) PRIMARY KEY,
+        FirstName VARCHAR(50),
+        MiddleName VARCHAR(50),
         LastName VARCHAR(50),
         Password VARCHAR(50)
     );
@@ -34,7 +34,7 @@ GO
 
 GO
     CREATE TABLE InAnOrganization (
-        UserName VARCHAR(20) NOT NULL,
+        UserName VARCHAR(50) NOT NULL,
         OrganizationID INT NOT NULL,
         FOREIGN KEY (UserName) REFERENCES Users(UserName) ON DELETE CASCADE ON UPDATE CASCADE,
         FOREIGN KEY (OrganizationID) REFERENCES Organization(OrganizationID) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -58,7 +58,7 @@ GO
 
 GO
     CREATE TABLE UserCreated (
-        UserName VARCHAR(20) NOT NULL,
+        UserName VARCHAR(50) NOT NULL,
         DataID INT NOT NULL,
         FOREIGN KEY (UserName) REFERENCES Users(UserName) ON DELETE CASCADE ON UPDATE CASCADE,
         FOREIGN KEY (DataID) REFERENCES UserInputtedData(DataID) ON DELETE CASCADE ON UPDATE CASCADE
@@ -74,7 +74,7 @@ GO
 
 GO
     CREATE TABLE UserOwns ( -- Don't need a separate table for 1 to Many relationship put a UserName key in Document
-        UserName VARCHAR(20) NOT NULL,
+        UserName VARCHAR(50) NOT NULL,
         DocumentID INT NOT NULL,
         FOREIGN KEY (UserName) REFERENCES Users(UserName) ON DELETE CASCADE ON UPDATE CASCADE,
         FOREIGN KEY (DocumentID) REFERENCES Document(DocumentID) ON DELETE CASCADE ON UPDATE CASCADE
@@ -82,7 +82,7 @@ GO
 
 GO
 	CREATE TABLE UserLikes (
-        UserName VARCHAR(20) NOT NULL,
+        UserName VARCHAR(50) NOT NULL,
         DocumentID INT NOT NULL,
         FOREIGN KEY (UserName) REFERENCES Users(UserName) ON DELETE CASCADE ON UPDATE CASCADE,
         FOREIGN KEY (DocumentID) REFERENCES Document(DocumentID) ON DELETE CASCADE ON UPDATE CASCADE

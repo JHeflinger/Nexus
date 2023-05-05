@@ -43,6 +43,8 @@ async def addUser(
     Nexus = Server("titan.csse.rose-hulman.edu", "Nexus")
     Nexus.disconnect()
 
+    print(f"Adding User: {uid} {userName} {firstName} {middleName} {lastName}")
+
     query = f"EXEC AddUser @username={uid}, @firstname={firstName}, @middlename={middleName}, @lastname={lastName}, @password=bob"
     success, result = Nexus.execute(query, username="consaljj")
     return {"success": success}
