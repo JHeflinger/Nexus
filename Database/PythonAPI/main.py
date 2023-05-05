@@ -45,7 +45,9 @@ async def addUser(
 
     query = f"EXEC AddUser @username={uid}, @firstname={firstName}, @middlename={middleName}, @lastname={lastName}, @password=bob"
     success, result = Nexus.execute(query, username="consaljj")
-    
+    return {"success": success}
+
+
 @app.get("/userExists/{FBToken}")
 async def userExists(FBToken: str):
     Nexus = Server("titan.csse.rose-hulman.edu", "Nexus")
@@ -54,10 +56,11 @@ async def userExists(FBToken: str):
     query = f"EXEC UserExists @FirebaseToken={FBToken}"
     success, result = Nexus.execute(query, username="consaljj")
     if success:
-        print(result[0],[0])
+        print(result[0], [0])
         return {"exists": result[0][0]}
     else:
         return False
+
 
 @app.post("/uploadFile")
 async def uploadFile(
@@ -91,7 +94,8 @@ async def getFileIDsByUser(UID: str):
     Nexus = Server("titan.csse.rose-hulman.edu", "Nexus")
     Nexus.disconnect()
 
-    query = f"EXEC GetUserFileIDS @Username ={UID}"
+    # query = f"EXEC GetUserFileIDS @Username ={UID}"
+    query = f"SELECT * FROM UserOwns WHERE UserOwns.UserName = '{UID}'"
     success, result = Nexus.execute(query, username="consaljj")
     if success:
         print(result)

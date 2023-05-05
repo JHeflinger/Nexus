@@ -29,5 +29,6 @@ BEGIN
 	END
 	INSERT INTO [Users](UserName, MiddleName, LastName, [Password])
 	VALUES(@username, @middlename, @lastname, @password);
+	RETURN (0);
 END
 GO

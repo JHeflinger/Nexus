@@ -51,6 +51,26 @@ export default function Home() {
   const popupClass = popupEnabled ? indexStyles.signInPopup : "";
   const btnClass = btnEnabled ? "btn" : "";
 
+  const checkUserSQL = (user) => {
+    console.log("Checking if user exists...");
+    Database.makeUserIfNotExists(user.uid, user.displayName).then((success) => {
+      console.log("SQL query success:");
+      // console.log(success);
+      const successVal = success.success;
+      console.log(successVal)
+      if (successVal === true) {
+        router.push("./search");
+      } else {
+        console.log("Error logging in");
+        alert("Error logging in to SQL database");
+      }
+    }).catch((error) => {
+      console.log("Error checking if user exists:");
+      console.log(error);
+    });
+
+  }
+
   const clickSignin = () => {
     //router.push("./search");
     //setFadeIn(false);
@@ -63,9 +83,9 @@ export default function Home() {
       const user = result.user;
       
       console.log("Checking if user exists...");
-      Database.makeUserIfNotExists(user.uid, user.displayName);
+      checkUserSQL(user);
       
-      router.push("./search");
+      // router.push("./search");
     }).catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -89,7 +109,8 @@ export default function Home() {
         var photoURL = user.photoURL;
         var phoneNumber = user.phoneNumber;
         var isAnonymous = user.isAnonymous;
-        router.push("./search");
+        // router.push("./search");
+        checkUserSQL(user);
         console.log(`uid: ${uid}, displayname: ${displayName}, email: ${email}, photoURL: ${photoURL}, phoneNumber: ${phoneNumber}, isAnonymous: ${isAnonymous}`);
       } else {
         console.log("No user signed in, please log in!");

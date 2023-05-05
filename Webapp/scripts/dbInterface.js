@@ -1,6 +1,6 @@
 
-// const serverURL = "http://192.168.68.136:8080"
-const serverURL = "http://137.112.207.134:8080"
+const serverURL = "http://192.168.1.137:8080"
+// const serverURL = "http://137.112.207.134:8080"
 
 export default class Database {
 
@@ -35,14 +35,16 @@ export default class Database {
                     method: 'POST',
                     body: formData,
                 });
+                return await (await promise).json();
             }
             catch (error) {
                 console.log(error);
+                return false;
             }
         }
     }
 
-    static async uploadFile(file, uid, name="") {
+    static async uploadFile(file, uid, name = "") {
         const formData = new FormData();
         const fileName = name ? name : file.name;
         formData.append("file", file);
