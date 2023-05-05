@@ -28,9 +28,9 @@ BEGIN
     END
 
     INSERT INTO dbo.Document
-        (DocumentData)
+        (DocumentData, [Views])
     VALUES
-        (@DocumentData);
+        (@DocumentData, 0);
 
 	DECLARE @docID INT
 	SET @docID = SCOPE_IDENTITY()

@@ -19,7 +19,8 @@ GO
 GO
     CREATE TABLE Document (
         DocumentID INT PRIMARY KEY IDENTITY(1,1),
-        DocumentData VARBINARY(MAX)
+        DocumentData VARBINARY(MAX),
+		[Views] INT
     );
 
 GO
@@ -73,6 +74,14 @@ GO
 
 GO
     CREATE TABLE UserOwns ( -- Don't need a separate table for 1 to Many relationship put a UserName key in Document
+        UserName VARCHAR(20) NOT NULL,
+        DocumentID INT NOT NULL,
+        FOREIGN KEY (UserName) REFERENCES Users(UserName) ON DELETE CASCADE ON UPDATE CASCADE,
+        FOREIGN KEY (DocumentID) REFERENCES Document(DocumentID) ON DELETE CASCADE ON UPDATE CASCADE
+    );
+
+GO
+	CREATE TABLE UserLikes (
         UserName VARCHAR(20) NOT NULL,
         DocumentID INT NOT NULL,
         FOREIGN KEY (UserName) REFERENCES Users(UserName) ON DELETE CASCADE ON UPDATE CASCADE,
