@@ -116,7 +116,7 @@ export default class Database {
     static async getFileByObjectID(objectID) {
         let promise = undefined;
         try {
-            promise = fetch(serverURL + `/get_fileID/${objectID}`, {
+            promise = fetch(serverURL + `/getFileByObjectID/${objectID}`, {
                 method: 'GET',
             });
 

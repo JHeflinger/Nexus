@@ -1,5 +1,6 @@
-from fastapi import FastAPI, Form, File
+from fastapi import FastAPI, Form, File, Response
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 from dbUtils import Server
 from typing import Annotated, List, Dict
 import uvicorn
@@ -75,8 +76,8 @@ async def uploadFile(
     Nexus = Server("titan.csse.rose-hulman.edu", "Nexus")
     Nexus.disconnect()
 
-    query = "EXEC AddDocumentFromUser @DocumentData= ?, @Username= ?"
-    params = (Server.convertToBinaryData(file), uid)
+    query = "EXEC AddDocumentFromUser @DocumentData= ?, @Username= ?, @DocumentName= ?"
+    params = (Server.convertToBinaryData(file), uid, name)
 
     success, results = Nexus.execute(query, binParams=params, username="consaljj")
     # success, results = Nexus.execute("SELECT * FROM dbo.Document", username="consaljj")
@@ -91,17 +92,40 @@ async def updateFile():
     return {"message": "Update File Not Implemented"}
 
 
-@app.get("/getFileIDsByUser/{UID}")
+class UserFile(BaseModel):
+    fileID: int
+    fileName: str
+
+
+class UserFiles(BaseModel):
+    docs: List[UserFile]
+
+
+@app.get("/getFileIDsByUser/{UID}", response_model=UserFiles)
 async def getFileIDsByUser(UID: str):
     Nexus = Server("titan.csse.rose-hulman.edu", "Nexus")
     Nexus.disconnect()
 
     # query = f"EXEC GetUserFileIDS @Username ={UID}"
-    query = f"SELECT * FROM UserOwns WHERE UserOwns.UserName = '{UID}'"
-    success, result = Nexus.execute(query, username="consaljj")
+    # query = f"SELECT * FROM UserOwns WHERE UserOwns.UserName = '{UID}'"
+    query = "EXEC GetUserFileIDS @Username = ?"
+    params = (UID)
+    success, result = Nexus.execute(query, binParams=params,  username="consaljj")
+    print(result)
+    result = [list(x) for x in result]
     if success:
         print(result)
-        return {"exists": result}
+
+        return {
+            "docs":
+                [
+                    {
+                        "fileID": x[0],
+                        "fileName": x[1]
+                    }
+                    for x in result
+                ]
+        }
     else:
         return False
 
@@ -111,16 +135,27 @@ async def getFilesBySearch():
     return {"message": "Get Files By Search Not Implemented"}
 
 
-@app.get("/getFileByObjectID/{DocID}")
+@app.get(
+    "/getFileByObjectID/{DocID}",
+    responses={
+
+        200: {
+            "content": {"application/pdf": {}},
+        }
+
+    },
+    response_class=Response
+)
 async def getFileByObjectID(DocID: int):
     Nexus = Server("titan.csse.rose-hulman.edu", "Nexus")
     Nexus.disconnect()
 
     query = f"EXEC GetFileByID @docID ={DocID}"
     success, result = Nexus.execute(query, username="consaljj")
+    result = [x[0] for x in result][0]
     if success:
-        print(result)
-        return {"exists": result}
+        # print(result)
+        return Response(content=result, media_type="application/pdf")
     else:
         return False
 

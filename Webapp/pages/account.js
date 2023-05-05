@@ -194,12 +194,16 @@ export default function Home() {
     // console.log("Getting user files from user id: " + uidRef.current)
     Database.getFileIDsByUser(uidRef.current).then((response) => {
       const files = response.json().then((data) => {
+        console.log("Data:")
+        console.log(data)
         // console.log("Files: " + data);
         // console.log(data);
         const fileIDs = [];
-        for (let dataObject of data) {
+        for (let dataObject of data.docs) {
+          console.log(dataObject);
           // console.log(dataObject.filename);
-          fileIDs.push([dataObject._id, dataObject.metadata.title]);
+          // fileIDs.push([dataObject._id, dataObject.metadata.title]);
+          fileIDs.push([dataObject.fileID, dataObject.fileName]);
         }
         // console.log("length: " + data.length);
         setUserFileIDs(fileIDs);
