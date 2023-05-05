@@ -221,7 +221,7 @@ async def getFileByObjectID(DocID: int):
         return False
 
 
-@app.get("/getFileRefByObjectID")
+@app.get("/getFileRefByObjectID/{DocID}")
 async def getFileRefByObjectID():
     return {"message": "Get File Ref By Object ID Not Implemented"}
 
