@@ -142,8 +142,8 @@ export default class Database {
     static async getFileContentByID(docID) {
         let promise = undefined;
         try {
-            console.log(`${serverURL}/getFileByObjectID/${docID}`);
-            promise = fetch(`${serverURL}/getFileByObjectID/${docID}`, {
+            console.log(`${serverURL}/getFileRefByObjectID/${docID}`);
+            promise = fetch(`${serverURL}/getFileRefByObjectID/${docID}`, {
                 method: 'GET',
             });
         } catch (error) {
