@@ -11,7 +11,7 @@ GO
 
 CREATE PROCEDURE AddDocumentFromUser
     @DocumentData VARBINARY(MAX),
-	@Username VARCHAR(30),
+	@Username VARCHAR(50),
 	@DocumentName VARCHAR(100)
 AS
 

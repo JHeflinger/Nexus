@@ -21,7 +21,7 @@ app.add_middleware(
 async def root():
     return {"message": "Nexus SQL API Root"}
 
-@app.get("/likeDocument")
+@app.post("/likeDocument")
 async def likeDocument(
     uid: Annotated[str, Form(...)],
     docid: Annotated[int, Form(...)]
@@ -36,6 +36,52 @@ async def likeDocument(
     if success:
         print(result)
 
+@app.post("/unlikeDocument")
+async def unlikeDocument(
+    uid: Annotated[str, Form(...)],
+    docid: Annotated[int, Form(...)]
+):
+    Nexus = Server("titan.csse.rose-hulman.edu", "Nexus")
+    Nexus.disconnect()
+
+    print(f"User {uid} no longer likes document {docid}")
+
+    query = f"EXEC DeleteUserLike @Username={uid}, @docID={docid}"
+    success, result = Nexus.execute(query, username="consaljj")
+    if success:
+        print(result)
+
+@app.post("/addDocumentView/{docid}")
+async def userExists(docid: int):
+    Nexus = Server("titan.csse.rose-hulman.edu", "Nexus")
+    Nexus.disconnect()
+
+    query = f"EXEC AddDocumentView @docID={docid}"
+    success, result = Nexus.execute(query, username="consaljj")
+    if success:
+        print(result)
+
+@app.get("/GetDocumentViews/{docid}")
+async def getDocumentViews(docid: int):
+    Nexus = Server("titan.csse.rose-hulman.edu", "Nexus")
+    Nexus.disconnect()
+
+    query = f"EXEC GetDocumentViews @docID={docid}"
+    success, result = Nexus.execute(query, username="consaljj")
+    if success:
+        print(result[0], [0])
+        return result
+    
+@app.get("/GetDocumentLikes/{docid}")
+async def getDocumentLikes(docid: int):
+    Nexus = Server("titan.csse.rose-hulman.edu", "Nexus")
+    Nexus.disconnect()
+
+    query = f"EXEC GetDocumentLikes @docID={docid}"
+    success, result = Nexus.execute(query, username="consaljj")
+    if success:
+        print(result[0], [0])
+        return result
 
 def addTmpUser(uid: str) -> None:
     Nexus = Server("titan.csse.rose-hulman.edu", "Nexus")
