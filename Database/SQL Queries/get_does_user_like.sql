@@ -10,7 +10,7 @@ END
 GO
 
 CREATE PROCEDURE GetDoesUserLike
-    @Username VARCHAR(30),
+    @Username VARCHAR(50),
     @docID INT,
 	@userLikes BIT OUTPUT
 AS

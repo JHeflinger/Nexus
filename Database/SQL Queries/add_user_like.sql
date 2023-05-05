@@ -10,7 +10,7 @@ END
 GO
 
 CREATE PROCEDURE AddUserLike
-    @Username VARCHAR(30),
+    @Username VARCHAR(50),
     @docID INT
 AS
 

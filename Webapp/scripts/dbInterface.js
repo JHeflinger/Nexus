@@ -1,5 +1,5 @@
 
-const serverURL = "http://192.168.1.137:8080"
+const serverURL = "http://localhost:8080"
 // const serverURL = "http://137.112.207.134:8080"
 
 export default class Database {
@@ -161,6 +161,76 @@ export default class Database {
                 headers: {
                     'Content-type': 'application/json'
                 }
+            });
+        } catch (error) {
+            console.log(error);
+        }
+        return promise;
+    }
+
+    static async likeFileWithUser(uid, docid) {
+        let promise = undefined;
+        const formData = new FormData();
+        formData.append("uid", uid);
+        formData.append("docid", docid);
+        try {
+            promise = fetch(serverURL + `/likeDocument/`, {
+                method: 'POST',
+                body: formData,
+            });
+            return await (await promise).json();
+        } catch (error) {
+            console.log(error);
+            return false;
+        }
+    }
+
+    static async unlikeFileWithUser(uid, docid) {
+        let promise = undefined;
+        const formData = new FormData();
+        formData.append("uid", uid);
+        formData.append("docid", docid);
+        try {
+            promise = fetch(serverURL + `/unlikeDocument/`, {
+                method: 'POST',
+                body: formData,
+            });
+            return await (await promise).json();
+        } catch (error) {
+            console.log(error);
+            return false;
+        }
+    }
+
+    static async addDocumentView(docid) {
+        let promise = undefined;
+        try {
+            promise = fetch(`${serverURL}/addDocumentView/${docid}`, {
+                method: 'POST'
+            });
+        } catch (error) {
+            console.log(error);
+        }
+        return promise;
+    }
+
+    static async getDocumentViews(docid) {
+        let promise = undefined;
+        try {
+            promise = fetch(`${serverURL}/GetDocumentViews/${docid}`, {
+                method: 'GET'
+            });
+        } catch (error) {
+            console.log(error);
+        }
+        return promise;
+    }
+
+    static async getDocumentLikes(docid) {
+        let promise = undefined;
+        try {
+            promise = fetch(`${serverURL}/GetDocumentVLikes/${docid}`, {
+                method: 'GET'
             });
         } catch (error) {
             console.log(error);
