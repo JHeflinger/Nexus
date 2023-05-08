@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import Head from 'next/head';
+// import Head from 'next/document';
 import Link from 'next/link';
 import Image from 'next/image';
 import Stars from '../components/stars';
@@ -7,6 +8,7 @@ import FileUploader from '../components/fileUploader';
 import Dropdown from '../components/dropdown';
 import cx from 'classnames';
 import Database from '../scripts/dbInterface';
+
 
 import { useEffect, useRef, useState } from 'react';
 import accountStyles from './account.module.scss';
@@ -254,10 +256,10 @@ export default function Home() {
     <>
       <Head>
         <title>{siteTitle}</title>
-        <Link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,200,300,400,500,600,700"></Link>
+        {/* <Link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,200,300,400,500,600,700"></Link>
         <Link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons"></Link>
         <Link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"></Link>
-        <Link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css"></Link>
+        <Link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css"></Link> */}
       </Head>
       <Stars />
       <FileUploader
@@ -274,7 +276,7 @@ export default function Home() {
                 className={accountStyles.pfp}
                 src={pfpToDisplayRef.current}
                 alt="profile picture"
-                referrerpolicy="no-referrer"
+                referrerPolicy="no-referrer"
                 width={256}
                 height={256}
               />
