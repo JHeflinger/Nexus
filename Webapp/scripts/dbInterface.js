@@ -44,12 +44,26 @@ export default class Database {
         }
     }
 
-    static async uploadFile(file, uid, name = "") {
+    static async uploadFile(
+        file,
+        uid,
+        name = "",
+        description = "",
+        lastModified = "",
+        dateOfCreation = "",
+        annotations = []
+    ) {
         const formData = new FormData();
         const fileName = name ? name : file.name;
-        formData.append("file", file);
         formData.append("uid", uid);
-        formData.append("name", fileName);
+        
+        formData.append("DocumentData", file);
+        formData.append("DocumentName", fileName);
+        formData.append("Description", description);
+        formData.append("LastModified", lastModified);
+        formData.append("DateOfCreation", dateOfCreation);
+        formData.append("Annotations", annotations);
+
         let promise = undefined;
         try {
             promise = fetch(serverURL + '/uploadFile', {
