@@ -277,7 +277,7 @@ export default function Home() {
             <div id="activHL" className={cx(activHLClass, searchStyles.orderFilter)} onClick={() => orderFilterClick("activHL")}>ACTIVITY: HIGH TO LOW</div>
             <div id="activLH" className={cx(activLHClass, searchStyles.orderFilter)} onClick={() => orderFilterClick("activLH")}>ACTIVITY: LOW TO HIGH</div>
             <hr></hr>
-            <label for="tagInput">ADD TAG:</label>
+            <label>ADD TAG:</label>
             <input id="tagInput" type="text" className={searchStyles.addTagText} placeholder="NEW TAG..." />
             <div id="tagContainer" className={searchStyles.tagContainer}></div>
           </div>

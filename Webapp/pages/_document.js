@@ -20,6 +20,7 @@ export default function Document() {
                 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons"></link>
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"></link>
                 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css"></link>
+                <link rel="stylesheet" type="text/css" href="https://www.gstatic.com/firebasejs/ui/4.6.1/firebase-ui-auth.css"></link>
             </Head>
             <body>
                 <Main />

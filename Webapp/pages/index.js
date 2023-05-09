@@ -1,9 +1,5 @@
 import { useRouter } from 'next/router';
-import utilStyles from '../styles/utils.module.scss';
-import CoolButton from '../components/coolButton';
 import Stars from '../components/stars';
-import Head from 'next/head';
-import Link from 'next/link';
 import cx from 'classnames';
 import { Lato } from '@next/font/google';
 import { useState, useRef } from 'react'
@@ -120,13 +116,6 @@ export default function Home() {
 
   return (
     <>
-      <Head>
-        <title>{siteTitle}</title>
-        <Link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,200,300,400,500,600,700"></Link>
-        <Link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons"></Link>
-        <Link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"></Link>
-        <Link rel="stylesheet" type="text/css" href="https://www.gstatic.com/firebasejs/ui/4.6.1/firebase-ui-auth.css"></Link>
-      </Head>
       <script src="https://www.gstatic.com/firebasejs/ui/4.6.1/firebase-ui-auth.js"></script>
       <Stars
         blur={2}
