@@ -244,13 +244,7 @@ export default function Home() {
 
   return (
     <>
-      <Head>
-        <title>{siteTitle}</title>
-        <Link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,200,300,400,500,600,700"></Link>
-        <Link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons"></Link>
-        <Link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"></Link>
-        <Link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css"></Link>
-      </Head>
+      <title>{siteTitle}</title>
       <Stars
         blur={5}
       />
