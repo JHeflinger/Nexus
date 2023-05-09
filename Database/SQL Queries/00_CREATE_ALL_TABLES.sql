@@ -21,7 +21,10 @@ GO
         DocumentID INT PRIMARY KEY IDENTITY(1,1),
         DocumentData VARBINARY(MAX),
 		DocumentName VARCHAR(100),
-		[Views] INT
+		[Description] VARCHAR(2000),
+        LastModified DATE,
+        DateOfCreation DATE,
+		Annotations VARBINARY(MAX)
     );
 
 GO
@@ -51,21 +54,6 @@ GO
     );
 
 GO
-    CREATE TABLE UserInputtedData (
-        DataID INT PRIMARY KEY,
-        LastModified DATE,
-        DateOfCreation DATE
-    );
-
-GO
-    CREATE TABLE UserCreated (
-        UserName VARCHAR(50) NOT NULL,
-        DataID INT NOT NULL,
-        FOREIGN KEY (UserName) REFERENCES Users(UserName) ON DELETE CASCADE ON UPDATE CASCADE,
-        FOREIGN KEY (DataID) REFERENCES UserInputtedData(DataID) ON DELETE CASCADE ON UPDATE CASCADE
-    );
-
-GO
     CREATE TABLE InACategory (
         DocumentID INT NOT NULL,
         CategoryID INT NOT NULL,
@@ -85,6 +73,30 @@ GO
 	CREATE TABLE UserLikes (
         UserName VARCHAR(50) NOT NULL,
         DocumentID INT NOT NULL,
+        FOREIGN KEY (UserName) REFERENCES Users(UserName) ON DELETE CASCADE ON UPDATE CASCADE,
+        FOREIGN KEY (DocumentID) REFERENCES Document(DocumentID) ON DELETE CASCADE ON UPDATE CASCADE
+    );
+
+GO
+
+	CREATE TABLE UserViewed (
+        UserName VARCHAR(50) NOT NULL,
+        DocumentID INT NOT NULL,
+        FOREIGN KEY (UserName) REFERENCES Users(UserName) ON DELETE CASCADE ON UPDATE CASCADE,
+        FOREIGN KEY (DocumentID) REFERENCES Document(DocumentID) ON DELETE CASCADE ON UPDATE CASCADE
+    );
+
+GO
+
+	CREATE TABLE [RegionLabel] (
+		LabelID INT PRIMARY KEY,
+        UserName VARCHAR(50) NOT NULL,
+        DocumentID INT NOT NULL,
+		XPos INT NOT NULL,
+		YPos INT NOT NULL,
+		Width INT NOT NULL,
+		Height INT NOT NULL,
+		Content VARCHAR(1000) NOT NULL,
         FOREIGN KEY (UserName) REFERENCES Users(UserName) ON DELETE CASCADE ON UPDATE CASCADE,
         FOREIGN KEY (DocumentID) REFERENCES Document(DocumentID) ON DELETE CASCADE ON UPDATE CASCADE
     );

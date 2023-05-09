@@ -41,6 +41,8 @@ export default class Database {
                 console.log(error);
                 return false;
             }
+        } else {
+            return {"success": true}
         }
     }
 

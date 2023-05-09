@@ -10,8 +10,7 @@ END
 GO
 
 CREATE PROCEDURE GetDocumentViews
-    @docID INT,
-	@views INT OUTPUT
+    @docID INT
 AS
 
 BEGIN
@@ -21,8 +20,8 @@ BEGIN
         RETURN 1;
     END
 
-    SELECT @views = Document.[Views]
-	FROM Document
-	WHERE Document.DocumentID = @docID
+    SELECT COUNT(*) AS [Views]
+	FROM UserViewed
+	WHERE UserViewed.DocumentID = @docID
 END;
 GO
