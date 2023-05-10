@@ -10,29 +10,33 @@ END
 GO
 
 CREATE PROCEDURE AddDocumentFromUser
+    @UID VARCHAR(50),
     @DocumentData VARBINARY(MAX),
-	@Username VARCHAR(50),
-	@DocumentName VARCHAR(100)
+    @DocumentName VARCHAR(100),
+    @Desc VARCHAR(2000),
+    @LastModified DATE,
+    @DateOfCreation DATE,
+    @Annotations VARBINARY(MAX)
 AS
 
 BEGIN
-    IF (@DocumentData IS NULL OR @Username IS NULL OR @DocumentName IS NULL)
+    IF (@DocumentData IS NULL OR @UID IS NULL OR @DocumentName IS NULL)
     BEGIN
         RAISERROR('params cannot be null', 16, 1);
         RETURN 1;
     END
 
     INSERT INTO dbo.Document
-        (DocumentData, DocumentName, [Views])
+        (DocumentData, DocumentName, [Description], LastModified, DateOfCreation, Annotations)
     VALUES
-        (@DocumentData, @DocumentName, 0);
+        (@DocumentData, @DocumentName, @Desc, @LastModified, @DateOfCreation, @Annotations);
 
-	DECLARE @docID INT
-	SET @docID = SCOPE_IDENTITY()
+    DECLARE @docID INT;
+    SET @docID = SCOPE_IDENTITY();
 
-	INSERT INTO dbo.UserOwns
-		(UserName, DocumentID)
-	VALUES
-		(@Username, @docID)
+    INSERT INTO dbo.UserOwns
+        (UserName, DocumentID)
+    VALUES
+        (@UID, @docID);
 END;
 GO

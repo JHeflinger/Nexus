@@ -47,24 +47,24 @@ export default class Database {
     }
 
     static async uploadFile(
-        file,
         uid,
+        file,
         name = "",
         description = "",
         lastModified = "",
         dateOfCreation = "",
-        annotations = []
+        annotations = {tmp: "tmp"}
     ) {
         const formData = new FormData();
         const fileName = name ? name : file.name;
-        formData.append("uid", uid);
         
         formData.append("DocumentData", file);
+        formData.append("uid", uid);
         formData.append("DocumentName", fileName);
         formData.append("Description", description);
         formData.append("LastModified", lastModified);
         formData.append("DateOfCreation", dateOfCreation);
-        formData.append("Annotations", annotations);
+        formData.append("Annotations", JSON.stringify(annotations));
 
         let promise = undefined;
         try {
@@ -83,10 +83,21 @@ export default class Database {
         const filesToUpload = files.length;
         let filesUploaded = 0;
         let promises = [];
+
+        const currentISODate = new Date().toISOString();
+        console.log(`Current ISO Date: ${currentISODate}`);
+
         for (let i = 0; i < filesToUpload; i++) {
-            promises.push(Database.uploadFile(files[i], uid));
+            promises.push(Database.uploadFile(
+                uid,
+                files[i],
+                files[i].name,
+                "Add a description.",
+                currentISODate,
+                currentISODate,
+                {tmp: "tmp"}));
         }
-        return promises[0]; // Make this have better partial failure handling
+        return promises[0]; // TODO: Make this have better partial failure handling!!!!!
     }
 
     static async updateFile(formData) {

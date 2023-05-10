@@ -1,9 +1,17 @@
+import json
 from fastapi import FastAPI, Form, File, Response
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.param_functions import Depends
 from pydantic import BaseModel
 from dbUtils import Server
-from typing import Annotated, List, Dict
+from typing import Annotated, List, Dict, Any
+from datetime import datetime
 import uvicorn
+
+import logging
+from fastapi import Request, status
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
 
 app = FastAPI()
 
@@ -18,9 +26,18 @@ app.add_middleware(
 )
 
 
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request: Request, exc: RequestValidationError):
+    exc_str = f'{exc}'.replace('\n', ' ').replace('   ', ' ')
+    logging.error(f"{request}: {exc_str}")
+    content = {'status_code': 10422, 'message': exc_str, 'data': None}
+    return JSONResponse(content=content, status_code=status.HTTP_422_UNPROCESSABLE_ENTITY)
+
+
 @app.get("/")
 async def root():
     return {"message": "Nexus SQL API Root"}
+
 
 @app.post("/likeDocument")
 async def likeDocument(
@@ -37,6 +54,7 @@ async def likeDocument(
     if success:
         print(result)
 
+
 @app.post("/unlikeDocument")
 async def unlikeDocument(
     uid: Annotated[str, Form(...)],
@@ -52,6 +70,7 @@ async def unlikeDocument(
     if success:
         print(result)
 
+
 @app.post("/addDocumentView/{docid}")
 async def userExists(docid: int):
     Nexus = Server("titan.csse.rose-hulman.edu", "Nexus")
@@ -61,6 +80,7 @@ async def userExists(docid: int):
     success, result = Nexus.execute(query, username="consaljj")
     if success:
         print(result)
+
 
 @app.get("/GetDocumentViews/{docid}")
 async def getDocumentViews(docid: int):
@@ -72,7 +92,8 @@ async def getDocumentViews(docid: int):
     if success:
         print(result[0], [0])
         return result
-    
+
+
 @app.get("/GetDocumentLikes/{docid}")
 async def getDocumentLikes(docid: int):
     Nexus = Server("titan.csse.rose-hulman.edu", "Nexus")
@@ -83,6 +104,7 @@ async def getDocumentLikes(docid: int):
     if success:
         print(result[0], [0])
         return result
+
 
 def addTmpUser(uid: str) -> None:
     Nexus = Server("titan.csse.rose-hulman.edu", "Nexus")
@@ -126,19 +148,62 @@ async def userExists(FBToken: str):
         return False
 
 
+# class UploadDocument(BaseModel):
+#     uid: str
+#     DocumentData: bytes
+#     DocumentName: str
+#     Description: str
+#     LastModified: str
+#     DateOfCreation: str
+#     Annotations: Dict[str, str]
+
+class DocAnnotations(BaseModel):
+    Annotations: Dict[str, str] #TODO: make this a list of annotations when they are implemented
+
+
 @app.post("/uploadFile")
 async def uploadFile(
-    file: Annotated[bytes, File()],
+    # form_data: UploadDocument = Depends()
+    DocumentData: Annotated[bytes, File()],
     uid: Annotated[str, Form(...)],
-    name: Annotated[str, Form(...)],
+    DocumentName: Annotated[str, Form(...)],
+    Description: Annotated[str, Form(...)],
+    LastModified: Annotated[str, Form(...)],
+    DateOfCreation: Annotated[str, Form(...)],
+    Annotations: Annotated[str, Form(...)]
 ):
-    print(name)
+    # uid = form_data.uid
+    # DocumentData = form_data.DocumentData
+    # DocumentName = form_data.DocumentName
+    # Description = form_data.Description
+    # LastModified = form_data.LastModified
+    # DateOfCreation = form_data.DateOfCreation
+    # Annotations = form_data.Annotations
+
     print(uid)
+    print(DocumentName)
     Nexus = Server("titan.csse.rose-hulman.edu", "Nexus")
     Nexus.disconnect()
+    
+    # Annotations = {"test": "test"}
+    # Annotations = json.loads(Annotations)
 
-    query = "EXEC AddDocumentFromUser @DocumentData= ?, @Username= ?, @DocumentName= ?"
-    params = (Server.convertToBinaryData(file), uid, name)
+    #Convert Annotations to bytes
+    Annotations = Server.convertToBinaryData(bytes(Annotations, "utf-8"))
+
+    LastModifiedDate = datetime.strptime(LastModified, "%Y-%m-%dT%H:%M:%S.%fZ")
+    DateOfCreationDate = datetime.strptime(DateOfCreation, "%Y-%m-%dT%H:%M:%S.%fZ")
+
+    query = '''EXEC AddDocumentFromUser
+                @UID = ?,
+                @DocumentData = ?,
+                @DocumentName = ?,
+                @Desc = ?,
+                @LastModified = ?,
+                @DateOfCreation = ?,
+                @Annotations = ?
+            '''
+    params = (uid, Server.convertToBinaryData(DocumentData), DocumentName, Description, LastModifiedDate, DateOfCreationDate, Annotations)
 
     success, results = Nexus.execute(query, binParams=params, username="consaljj")
     # success, results = Nexus.execute("SELECT * FROM dbo.Document", username="consaljj")
