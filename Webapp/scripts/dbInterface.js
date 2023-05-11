@@ -256,7 +256,7 @@ export default class Database {
     static async getDocumentLikes(docid) {
         let promise = undefined;
         try {
-            promise = fetch(`${serverURL}/GetDocumentVLikes/${docid}`, {
+            promise = fetch(`${serverURL}/GetDocumentLikes/${docid}`, {
                 method: 'GET'
             });
         } catch (error) {

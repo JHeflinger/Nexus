@@ -90,8 +90,8 @@ async def getDocumentViews(docid: int):
     query = f"EXEC GetDocumentViews @docID={docid}"
     success, result = Nexus.execute(query, username="consaljj")
     if success:
-        print(result[0], [0])
-        return result
+        print("document views: " + str(result[0][0]))
+        return result[0][0]
 
 
 @app.get("/GetDocumentLikes/{docid}")
@@ -102,8 +102,8 @@ async def getDocumentLikes(docid: int):
     query = f"EXEC GetDocumentLikes @docID={docid}"
     success, result = Nexus.execute(query, username="consaljj")
     if success:
-        print(result[0], [0])
-        return result
+        print("document likes: " + str(result[0][0]))
+        return result[0][0]
 
 
 def addTmpUser(uid: str) -> None:
@@ -255,7 +255,6 @@ async def getFileIDsByUser(UID: str):
     else:
         return False
 
-
 @app.get("/getFilesBySearch")
 async def getFilesBySearch():
     return {"message": "Get Files By Search Not Implemented"}
@@ -294,7 +293,6 @@ async def getFileRefByObjectID():
 @app.delete("/getFileByFileID")
 async def deleteFileByObjectID():
     return {"message": "Delete File By Object ID Not Implemented"}
-
 
 if __name__ == "__main__":
     # Run server and accept network connections

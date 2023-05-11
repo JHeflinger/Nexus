@@ -88,6 +88,22 @@ export default function Home() {
         });
     }
 
+    const getLikes = (docID) => {
+        Database.getDocumentLikes(docID).then((response) => {
+            response.json().then((data) => {
+                document.getElementById("likesCount").innerHTML = data;
+            });
+        });
+    }
+
+    const getViews = (docID) => {
+        Database.getDocumentViews(docID).then((response) => {
+            response.json().then((data) => {
+                document.getElementById("viewsCount").innerHTML = data;
+            });
+        });
+    }
+
     const addTag = () => {
         tagData.push(document.getElementById("tagInput").value);
         document.getElementById("tagInput").value = "";
@@ -116,6 +132,8 @@ export default function Home() {
         const docID = urlParams.get('fileID');
         setFileID(docID);
         fillPage(docID);
+        getLikes(docID);
+        getViews(docID);
     }, []);
 
 
@@ -211,13 +229,7 @@ export default function Home() {
 
     return (
         <>
-            <Head>
-                <title>{siteTitle}</title>
-                <Link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,200,300,400,500,600,700"></Link>
-                <Link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons"></Link>
-                <Link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"></Link>
-                <Link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css"></Link>
-            </Head>
+            <title>{siteTitle}</title>
             <Stars />
             <div id="likes" className={documentStyles.likes}><div><FontAwesomeIcon icon={faHeart} /></div><span id="likesCount">999</span></div>
             <div id="views" className={documentStyles.views}><div><FontAwesomeIcon icon={faEye} /></div><span id="viewsCount">999</span></div>
@@ -258,7 +270,7 @@ export default function Home() {
 
                     </div>
                     <div className={documentStyles.docEditor}>
-                        <label for="titleInput" className={documentStyles.titleHeader}>TITLE</label>
+                        <label className={documentStyles.titleHeader}>TITLE</label>
                         <input id="titleInput" className={documentStyles.titleInput} type="text"></input>
                         <hr></hr>
                         <div className={documentStyles.header}>DESCRIPTION</div>
