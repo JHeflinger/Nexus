@@ -146,6 +146,7 @@
 }
 
 .likes {
+    cursor: pointer;
     position: absolute;
     color: white;
     font-size: 24px;
@@ -156,7 +157,7 @@
 }
 
 .likes div {
-    color: rgb(255, 59, 59);
+    color: rgb(160, 160, 160);
     display: inline-block;
     margin-right: 10px;
 }

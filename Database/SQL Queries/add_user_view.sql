@@ -21,13 +21,14 @@ BEGIN
         RETURN 1;
     END
 
-	IF EXISTS (SELECT * FROM UserViewed WHERE UserViewed.UserName = @Username AND UserViewed.DocumentID = @docID)
+	IF NOT EXISTS (SELECT * FROM UserViewed WHERE UserViewed.UserName = @Username AND UserViewed.DocumentID = @docID)
 	BEGIN
-		RAISERROR('user already likes this', 16, 1);
-		RETURN 2;
+		INSERT INTO UserViewed (UserName, DocumentID)
+		VALUES (@Username, @docID);
 	END
-
-	INSERT INTO UserViewed (UserName, DocumentID)
-	VALUES (@Username, @docID);
+	ELSE
+	BEGIN
+		PRINT('User has already viewed this. No changes were made')
+	END
 END;
 GO

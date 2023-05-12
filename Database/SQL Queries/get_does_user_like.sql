@@ -11,8 +11,7 @@ GO
 
 CREATE PROCEDURE GetDoesUserLike
     @Username VARCHAR(50),
-    @docID INT,
-	@userLikes BIT OUTPUT
+    @docID INT
 AS
 
 BEGIN
@@ -21,11 +20,12 @@ BEGIN
         RAISERROR('params cannot be null', 16, 1);
         RETURN 1;
     END
-
-	SET @userLikes = 0;
+	DECLARE @foundLike BIT
+	SET @foundLike = 0
     IF EXISTS (SELECT * FROM UserLikes WHERE UserLikes.UserName = @Username AND UserLikes.DocumentID = @docID)
 	BEGIN
-		SET @userLikes = 1;
+		SET @foundLike = 1
 	END
+	SELECT @foundLike AS FoundLike 
 END;
 GO

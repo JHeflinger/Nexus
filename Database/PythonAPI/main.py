@@ -71,16 +71,34 @@ async def unlikeDocument(
         print(result)
 
 
-@app.post("/addDocumentView/{docid}")
-async def userExists(docid: int):
+@app.post("/addDocumentView/{username}/{docid}")
+async def userExists(docid: int, username: str):
     Nexus = Server("titan.csse.rose-hulman.edu", "Nexus")
     Nexus.disconnect()
 
-    query = f"EXEC AddDocumentView @docID={docid}"
+    query = f"EXEC AddUserViewed @Username={username}, @docID={docid}"
     success, result = Nexus.execute(query, username="consaljj")
     if success:
         print(result)
 
+@app.post("/toggleUserLike/{username}/{docid}")
+async def toggleUserLike(docid: int, username: str):
+    Nexus = Server("titan.csse.rose-hulman.edu", "Nexus")
+    Nexus.disconnect()
+
+    query = f"EXEC ToggleUserLike @Username={username}, @docID={docid}"
+    success, result = Nexus.execute(query, username="consaljj")
+    if success:
+        print(result)
+
+@app.get("/getDoesUserLike/{username}/{docid}")
+async def getDoesUserLike(docid: int, username: str):
+    Nexus = Server("titan.csse.rose-hulman.edu", "Nexus")
+    Nexus.disconnect()
+
+    query = f"EXEC GetDoesUserLike @Username={username}, @docID={docid}"
+    success, result = Nexus.execute(query, username="consaljj")
+    return result[0][0]
 
 @app.get("/GetDocumentViews/{docid}")
 async def getDocumentViews(docid: int):
