@@ -273,9 +273,32 @@ async def getFileIDsByUser(UID: str):
     else:
         return False
 
-@app.get("/getFilesBySearch")
-async def getFilesBySearch():
-    return {"message": "Get Files By Search Not Implemented"}
+@app.get("/getFilesBySearch/{uid}")
+async def getFilesBySearch(uid: str):
+    Nexus = Server("titan.csse.rose-hulman.edu", "Nexus")
+    Nexus.disconnect()
+
+    query = "EXEC GetAvailableDocumentsFromUser @Username = ?"
+    params = (uid)
+    success, result = Nexus.execute(query, binParams=params,  username="consaljj")
+    print(result)
+    result = [list(x) for x in result]
+    if success:
+        print(result)
+
+        return {
+            "docs":
+                [
+                    {
+                        "fileID": x[0],
+                        "fileName": x[1],
+                        "description": x[2],
+                    }
+                    for x in result
+                ]
+        }
+    else:
+        return False
 
 
 @app.get(

@@ -126,6 +126,18 @@ export default class Database {
         return promise;
     }
 
+    static async getAvailableFilesByUser(uid) {
+        let promise = undefined;
+        try {
+            promise = fetch(serverURL + `/getFilesBySearch/${uid}`, {
+                method: 'GET',
+            });
+        } catch (error) {
+            console.log(error);
+        }
+        return promise;
+    }
+
     static async getFilesBySearch(params) {
         console.log("grabbing files with params:");
         console.log(params);
