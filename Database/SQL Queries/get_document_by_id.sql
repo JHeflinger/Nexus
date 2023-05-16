@@ -20,8 +20,14 @@ BEGIN
         RETURN 1;
     END
 
-    SELECT Document.DocumentData
+    SELECT 
+            Document.DocumentName,
+            Document.DocumentData,
+            Document.Description,
+            Document.LastModified,
+            Document.DateOfCreation,
+            Document.Annotations
 	FROM Document
-	WHERE Document.DocumentID = @docID
+	WHERE Document.DocumentID = @docID;
 END;
 GO

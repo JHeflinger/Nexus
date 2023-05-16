@@ -325,7 +325,11 @@ export default function Home() {
                     // console.log(fileURL);
                     // }
                     return (
-                      <div className={accountStyles.pageWrapper} onClick={generateFileOnClick(fileId)}>
+                      <div
+                        className={accountStyles.pageWrapper}
+                        onClick={generateFileOnClick(fileId)}
+                        key={fileId}
+                      >
                         <div className={accountStyles.pageTitle}>
                           <FontAwesomeIcon icon={faFile} className={accountStyles.fileIcon} />
                           {fileName}

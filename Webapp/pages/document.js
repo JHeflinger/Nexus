@@ -56,9 +56,12 @@ export default function Home() {
 
 
     const fillPage = (docID) => {
-        Database.getFileRefByObjectID(docID).then((response) => {
+        return;
+        Database.getFileByObjectID(docID).then((response) => {
             response.json().then((data) => {
-                setFileID(data._id);
+                setFileID(docIDs);
+                console.log("Here comes the data!");
+                console.log(data);
                 if (data.metadata.title) {
                     document.getElementById("titleInput").value = data.metadata.title;
                     setFileName(data.metadata.title);
@@ -121,6 +124,9 @@ export default function Home() {
 
     useEffect(() => {
         Database.getFileByObjectID(fileID).then((data) => {
+            console.log("Here comes the data! (in use effect)");
+            console.log(data);
+
             data.blob().then((text) => {
                 text = URL.createObjectURL(text);
                 setFileData(text);
@@ -213,10 +219,6 @@ export default function Home() {
         <>
             <Head>
                 <title>{siteTitle}</title>
-                <Link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,200,300,400,500,600,700"></Link>
-                <Link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons"></Link>
-                <Link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"></Link>
-                <Link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css"></Link>
             </Head>
             <Stars />
             <div id="likes" className={documentStyles.likes}><div><FontAwesomeIcon icon={faHeart} /></div><span id="likesCount">999</span></div>
@@ -258,7 +260,7 @@ export default function Home() {
 
                     </div>
                     <div className={documentStyles.docEditor}>
-                        <label for="titleInput" className={documentStyles.titleHeader}>TITLE</label>
+                        <label htmlFor="titleInput" className={documentStyles.titleHeader}>TITLE</label>
                         <input id="titleInput" className={documentStyles.titleInput} type="text"></input>
                         <hr></hr>
                         <div className={documentStyles.header}>DESCRIPTION</div>
