@@ -140,7 +140,7 @@ export default function Home() {
         let resultData = [];
         for (let i = 0; i < data.docs.length; i++) {
           let grabDoc = false;
-          if (data.docs[i].fileName.includes(searchText) || data.docs[i].description.includes(searchText)) grabDoc = true;
+          if (data.docs[i].fileName.includes(searchText) || data.docs[i].description.includes(searchText) || searchText == "") grabDoc = true;
           if (grabDoc) {
             resultData.push({
               title: data.docs[i].fileName,
@@ -208,6 +208,10 @@ export default function Home() {
         searchDocs();
       }
     });
+
+    setTimeout(function(){
+      searchDocs();
+     }, 1000);
   }, [])
 
   
