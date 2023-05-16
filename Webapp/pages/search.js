@@ -134,46 +134,21 @@ export default function Home() {
   const searchDocs = () => {
     let searchText = document.getElementById("searchbar").value;
     document.getElementById("searchbar").value = "";
-    let params = {
-      uid: uidRef.current,
-      tags: "__xXNULLXx__",
-      title: searchText,
-      desc: "__xXNULLXx__",
-    }
-    Database.getFilesBySearch(params).then((response) => {
+    Database.getAvailableFilesByUser(uidRef.current).then((response) => {
       const files = response.json().then((data) => {
-        console.log(data);
-        let tagList = [];
-        let tags = document.getElementById("tagContainer").children;
-        for(var i=0; i<tags.length; i++){
-            var tag = tags[i];
-            tagList.push(tag.innerHTML.split(">")[2]);
-        }
         let result = <div className={searchStyles.searchResult}><div>{}</div><br></br><span>{}</span></div>
         let resultData = [];
-        for(let i = 0; i < data.length; i++) {
-          let grabDoc = true;
-
-          let tagValidate = tagList.length == 0;
-          let dataTags = data[i].metadata.tags ? data[i].metadata.tags : [];
-          for(let j = 0; j < dataTags.length; j++) {
-            if (tagList.includes(dataTags[j])) tagValidate = true;
-          }
-          if (tagValidate == false) grabDoc = false;
-
+        for (let i = 0; i < data.docs.length; i++) {
+          let grabDoc = false;
+          if (data.docs[i].fileName.includes(searchText) || data.docs[i].description.includes(searchText)) grabDoc = true;
           if (grabDoc) {
             resultData.push({
-              title: data[i].metadata.title,
-              desc: data[i].metadata.desc,
-              _id: data[i]._id
+              title: data.docs[i].fileName,
+              desc: data.docs[i].description,
+              _id: data.docs[i].fileID
             });
           }
         }
-
-        if (tempRef.current) {
-          resultData = resultData.reverse();
-        }
-
         const children = resultData.map((val) => (
           <div onClick={() => goToDocument(val._id)} className={searchStyles.searchResult}><div>{val.title}</div><br></br><span>{val.desc}</span></div>
         ));

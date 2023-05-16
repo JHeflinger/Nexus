@@ -22,6 +22,7 @@ const lato = Lato({
 });
 
 export default function Home() {
+
     const siteTitle = "DOCUMENT";
     const tagData = [];
 
@@ -91,6 +92,37 @@ export default function Home() {
         });
     }
 
+    const getLikes = (docID) => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const uid = urlParams.get('uid');
+        Database.getDocumentLikes(docID).then((response) => {
+            response.json().then((data) => {
+                document.getElementById("likesCount").innerHTML = data;
+            });
+            Database.getDoesUserLike(uid, docID).then((response) => {
+                response.json().then((data) => {
+                    if (data) {
+                        document.getElementById("likesdiv").style.color = "rgb(255, 59, 59)";
+                    } else {
+                        document.getElementById("likesdiv").style.color = "rgb(160, 160, 160)";
+                    }
+                })
+            });
+        });
+    }
+
+    const getViews = (docID) => {
+        Database.getDocumentViews(docID).then((response) => {
+            response.json().then((data) => {
+                document.getElementById("viewsCount").innerHTML = data;
+            });
+        });
+    }
+
+    const addView = (uid, docID) => {
+        Database.addDocumentView(uid, docID);
+    }
+
     const addTag = () => {
         tagData.push(document.getElementById("tagInput").value);
         document.getElementById("tagInput").value = "";
@@ -99,6 +131,15 @@ export default function Home() {
             <span onClick={() => deleteTag({ val })} className={documentStyles.tag}><span className={lato.className}>X</span>{val}</span>
         ));
         ReactDOM.render(children, container);
+    }
+
+    const toggleLike = () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const docID = urlParams.get('fileID');
+        const uid = urlParams.get('uid');
+        Database.toggleDocumentLike(uid, docID).then((data) => {
+            getLikes(docID);
+        });
     }
 
     useEffect(() => {
@@ -117,8 +158,12 @@ export default function Home() {
 
         const urlParams = new URLSearchParams(window.location.search);
         const docID = urlParams.get('fileID');
+        const uidLocal = urlParams.get('uid');
         setFileID(docID);
         fillPage(docID);
+        getLikes(docID);
+        getViews(docID);
+        addView(uidLocal, docID);
     }, []);
 
 
@@ -221,7 +266,7 @@ export default function Home() {
                 <title>{siteTitle}</title>
             </Head>
             <Stars />
-            <div id="likes" className={documentStyles.likes}><div><FontAwesomeIcon icon={faHeart} /></div><span id="likesCount">999</span></div>
+            <div id="likes" className={documentStyles.likes} onClick={toggleLike}><div id="likesdiv"><FontAwesomeIcon icon={faHeart} /></div><span id="likesCount">999</span></div>
             <div id="views" className={documentStyles.views}><div><FontAwesomeIcon icon={faEye} /></div><span id="viewsCount">999</span></div>
             <div className='outer'>
                 <div className={cx('inner', documentStyles.container)}>

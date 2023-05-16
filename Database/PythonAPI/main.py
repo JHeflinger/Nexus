@@ -71,16 +71,34 @@ async def unlikeDocument(
         print(result)
 
 
-@app.post("/addDocumentView/{docid}")
-async def userExists(docid: int):
+@app.post("/addDocumentView/{username}/{docid}")
+async def userExists(docid: int, username: str):
     Nexus = Server("titan.csse.rose-hulman.edu", "Nexus")
     Nexus.disconnect()
 
-    query = f"EXEC AddDocumentView @docID={docid}"
+    query = f"EXEC AddUserViewed @Username={username}, @docID={docid}"
     success, result = Nexus.execute(query, username="consaljj")
     if success:
         print(result)
 
+@app.post("/toggleUserLike/{username}/{docid}")
+async def toggleUserLike(docid: int, username: str):
+    Nexus = Server("titan.csse.rose-hulman.edu", "Nexus")
+    Nexus.disconnect()
+
+    query = f"EXEC ToggleUserLike @Username={username}, @docID={docid}"
+    success, result = Nexus.execute(query, username="consaljj")
+    if success:
+        print(result)
+
+@app.get("/getDoesUserLike/{username}/{docid}")
+async def getDoesUserLike(docid: int, username: str):
+    Nexus = Server("titan.csse.rose-hulman.edu", "Nexus")
+    Nexus.disconnect()
+
+    query = f"EXEC GetDoesUserLike @Username={username}, @docID={docid}"
+    success, result = Nexus.execute(query, username="consaljj")
+    return result[0][0]
 
 @app.get("/GetDocumentViews/{docid}")
 async def getDocumentViews(docid: int):
@@ -90,8 +108,8 @@ async def getDocumentViews(docid: int):
     query = f"EXEC GetDocumentViews @docID={docid}"
     success, result = Nexus.execute(query, username="consaljj")
     if success:
-        print(result[0], [0])
-        return result
+        print("document views: " + str(result[0][0]))
+        return result[0][0]
 
 
 @app.get("/GetDocumentLikes/{docid}")
@@ -102,8 +120,8 @@ async def getDocumentLikes(docid: int):
     query = f"EXEC GetDocumentLikes @docID={docid}"
     success, result = Nexus.execute(query, username="consaljj")
     if success:
-        print(result[0], [0])
-        return result
+        print("document likes: " + str(result[0][0]))
+        return result[0][0]
 
 
 def addTmpUser(uid: str) -> None:
@@ -255,10 +273,32 @@ async def getFileIDsByUser(UID: str):
     else:
         return False
 
+@app.get("/getFilesBySearch/{uid}")
+async def getFilesBySearch(uid: str):
+    Nexus = Server("titan.csse.rose-hulman.edu", "Nexus")
+    Nexus.disconnect()
 
-@app.get("/getFilesBySearch")
-async def getFilesBySearch():
-    return {"message": "Get Files By Search Not Implemented"}
+    query = "EXEC GetAvailableDocumentsFromUser @Username = ?"
+    params = (uid)
+    success, result = Nexus.execute(query, binParams=params,  username="consaljj")
+    print(result)
+    result = [list(x) for x in result]
+    if success:
+        print(result)
+
+        return {
+            "docs":
+                [
+                    {
+                        "fileID": x[0],
+                        "fileName": x[1],
+                        "description": x[2],
+                    }
+                    for x in result
+                ]
+        }
+    else:
+        return False
 
 
 @app.get(
@@ -297,7 +337,6 @@ async def getFileRefByObjectID():
 @app.delete("/getFileByFileID")
 async def deleteFileByObjectID():
     return {"message": "Delete File By Object ID Not Implemented"}
-
 
 if __name__ == "__main__":
     # Run server and accept network connections

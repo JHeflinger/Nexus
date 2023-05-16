@@ -126,6 +126,18 @@ export default class Database {
         return promise;
     }
 
+    static async getAvailableFilesByUser(uid) {
+        let promise = undefined;
+        try {
+            promise = fetch(serverURL + `/getFilesBySearch/${uid}`, {
+                method: 'GET',
+            });
+        } catch (error) {
+            console.log(error);
+        }
+        return promise;
+    }
+
     static async getFilesBySearch(params) {
         console.log("grabbing files with params:");
         console.log(params);
@@ -229,10 +241,34 @@ export default class Database {
         }
     }
 
-    static async addDocumentView(docid) {
+    static async addDocumentView(uid, docid) {
         let promise = undefined;
         try {
-            promise = fetch(`${serverURL}/addDocumentView/${docid}`, {
+            promise = fetch(`${serverURL}/addDocumentView/${uid}/${docid}`, {
+                method: 'POST'
+            });
+        } catch (error) {
+            console.log(error);
+        }
+        return promise;
+    }
+
+    static async getDoesUserLike(uid, docid) {
+        let promise = undefined;
+        try {
+            promise = fetch(`${serverURL}/getDoesUserLike/${uid}/${docid}`, {
+                method: 'GET'
+            });
+        } catch (error) {
+            console.log(error);
+        }
+        return promise;
+    }
+
+    static async toggleDocumentLike(uid, docid) {
+        let promise = undefined;
+        try {
+            promise = fetch(`${serverURL}/toggleUserLike/${uid}/${docid}`, {
                 method: 'POST'
             });
         } catch (error) {
@@ -256,7 +292,7 @@ export default class Database {
     static async getDocumentLikes(docid) {
         let promise = undefined;
         try {
-            promise = fetch(`${serverURL}/GetDocumentVLikes/${docid}`, {
+            promise = fetch(`${serverURL}/GetDocumentLikes/${docid}`, {
                 method: 'GET'
             });
         } catch (error) {

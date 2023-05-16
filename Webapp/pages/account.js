@@ -242,7 +242,7 @@ export default function Home() {
     return () => {
       router.push({
         pathname: '/document',
-        query: { fileID: fileID },
+        query: { fileID: fileID, uid: uidRef.current},
       });
     }
   }
