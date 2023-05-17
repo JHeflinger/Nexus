@@ -40,7 +40,7 @@ export default function PageAnnotation(props) {
                 height: props.referenceRef.current.offsetHeight,
                 width: props.referenceRef.current.offsetWidth
             });
-            console.log('PageAnnotation dimensions: ', dimensionsRef.current);
+            // console.log('PageAnnotation dimensions: ', dimensionsRef.current);
         }
         // props.setForceReload(1 - props.forceReload);
     }
@@ -53,24 +53,33 @@ export default function PageAnnotation(props) {
             spamPreventionTimer = setTimeout(updateDimensions, TIMER_TIMEOUT);
         });
         updateDimensions();
+        // const ctx = canvasRef.current.getContext('2d');
+        // if (props.initialAnnotation) {
+        //     console.log(object);("initial annotation found")
+        //     console.log(props.initialAnnotation);
+        //     ctx.putImageData(props.annotationData, 0, 0);
+        // }
     }, []);
 
     const loadedPage = (stuff) => {
         console.log("LOADED PAGE");
         console.log(stuff.height);
         console.log("resizing canvas");
-        console.log(ref.current.boundingRect);
         if (canvasRef.current && ref.current) {
             const canvas = canvasRef.current;
             canvas.width = stuff.height;
             canvas.height = dimensionsRef.current.height;
             const ctx = canvas.getContext('2d');
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            // ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-            // ctx.fillRect(0, 0, canvas.width, canvas.height);
-            // ctx.fillStyle = 'rgba(0, 0, 0, 1)';
-            // ctx.font = '30px Arial';
-            // ctx.fillText(`Page ${props.pageNumber}`, 10, 50);
+            console.log(props.initialAnnotation);
+            if (props.initialAnnotation) {
+                console.log("initial annotation found")
+                // const parsedData = JSON.parse(props.initialAnnotation);
+                // console.log(parsedData);
+                console.log(props.initialAnnotation);
+                const newImageData = new ImageData(parsedData.data, parsedData.width, parsedData.height);
+                // ctx.putImageData(newImageData, 0, 0);
+            }
         }
     }
 
@@ -83,22 +92,36 @@ export default function PageAnnotation(props) {
         pos.y = e.clientY - rect.y;
     }
 
+    const updateStoredAnnotations = (ctx) => {
+        const imageData = ctx.getImageData(0, 0, canvasRef.current.width, canvasRef.current.height);
+        // const stringifiedData = JSON.stringify(imageData);
+        const dataToSave = {
+            data: imageData.data,
+            width: imageData.width,
+            height: imageData.height,
+        }
+        props.updateAnnotation(props.pageNumber, dataToSave);
+    }
+    
+
     const draw = (e) => {
         if (e.buttons !== 1) return;
-
         const ctx = canvasRef.current.getContext('2d');
-
         ctx.beginPath();
-
         ctx.lineWidth = 5;
         ctx.lineCap = 'round';
-        ctx.strokeStyle = '#c0392b';
-
+        ctx.strokeStyle = '#000000';
         ctx.moveTo(pos.x, pos.y);
         setPos(e);
         ctx.lineTo(pos.x, pos.y);
-
         ctx.stroke();
+        
+    }
+
+    const update = (e) => {
+        const ctx = canvasRef.current.getContext('2d');
+        updateStoredAnnotations(ctx);
+        console.log("UPDATING ANNOTATIONS");
     }
 
 
@@ -111,6 +134,7 @@ export default function PageAnnotation(props) {
             onMouseMove={draw}
             ref={ref}
             onMouseEnter={setPos}
+            onMouseUp={update}
         >
             <canvas
                 ref={canvasRef}

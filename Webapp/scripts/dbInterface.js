@@ -53,7 +53,7 @@ export default class Database {
         description = "",
         lastModified = "",
         dateOfCreation = "",
-        annotations = {tmp: "tmp"}
+        annotations = {},
     ) {
         const formData = new FormData();
         const fileName = name ? name : file.name;
@@ -117,12 +117,14 @@ export default class Database {
     static async updateFile(
         DocumentID = 0,
         DocumentName = "",
-        Description = ""
+        Description = "",
+        Annotations = {},
     ) {
         const formData = new FormData();
         formData.append("DocumentID", DocumentID);
         formData.append("DocumentName", DocumentName);
         formData.append("Description", Description);
+        formData.append("Annotations", JSON.stringify(Annotations));
 
         let promise = undefined;
         try {

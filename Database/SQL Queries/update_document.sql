@@ -12,7 +12,8 @@ GO
 CREATE PROCEDURE UpdateDocument
     @DocID INT,
 	@DocumentName VARCHAR(100),
-	@Description VARCHAR(2000)
+	@Description VARCHAR(2000),
+    @Annotation VARBINARY(MAX)
 AS
 
 BEGIN
@@ -23,7 +24,9 @@ BEGIN
     END
 
     UPDATE Document
-	SET Document.DocumentName = @DocumentName, Document.[Description] = @Description
-	WHERE DocumentID = @DocID
+	SET Document.DocumentName = @DocumentName,
+        Document.[Description] = @Description,
+        Document.Annotations = @Annotation
+	WHERE DocumentID = @DocID;
 END;
 GO

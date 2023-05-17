@@ -180,6 +180,9 @@ export default function Home() {
                     const fileDataString = data["data"];
                     const text = hexToBytes(fileDataString);
                     const url = URL.createObjectURL(new Blob([new Uint8Array(text)], { type: "application/pdf" }));
+                    pageAnnotations.current = JSON.parse(data["metadata"]["annotations"]);
+                    console.log("Here comes the annotations!");
+                    console.log(pageAnnotations.current);
                     setFileData(url);
                     document.getElementById("titleInput").value = data["metadata"]["documentName"];
                     document.getElementById("descInput").value = data["metadata"]["description"];
@@ -265,7 +268,9 @@ export default function Home() {
         const docID = urlParams.get('fileID');
         let documentName = document.getElementById("titleInput").value;
         let documentDescription = document.getElementById("descInput").value;
-        Database.updateFile(docID, documentName, documentDescription).then((response) => {
+        console.log("saving page annotations:");
+        console.log(pageAnnotations.current);
+        Database.updateFile(docID, documentName, documentDescription, pageAnnotations.current).then((response) => {
             console.log(response.status);
         });
 
@@ -302,6 +307,13 @@ export default function Home() {
 
     const parentRef = useRef(null);
 
+    const pageAnnotations = useRef({});
+
+
+    const updateAnnotation = (pageNumber, annotation) => {
+        pageAnnotations.current[pageNumber] = annotation;
+    }
+
     return (
         <>
             <Head>
@@ -317,16 +329,6 @@ export default function Home() {
                     className={cx('inner', documentStyles.container)}
                 >
                     <div className={documentStyles.docViewer}>
-
-                        {/* <Document file={fileData}>
-                            <Page
-                                pageNumber={1}
-                                width={200}
-                                renderAnnotationLayer={false}
-                                renderTextLayer={false}
-                            />
-                        </Document> */}
-                        {/* <PDFViewer> */}
                         <Document file={fileData} onLoadSuccess={onDocumentLoadSuccess}>
                             {
                                 Array.from(Array(numberOfPages).keys()).map((pageNumber) => {
@@ -336,6 +338,8 @@ export default function Home() {
                                                 pageNumber={pageNumber + 1}
                                                 referenceRef={parentRef}
                                                 key={pageNumber + 1}
+                                                updateAnnotation={updateAnnotation}
+                                                initialAnnotation={pageAnnotations.current[pageNumber + 1]}
                                             />
                                             <hr></hr>
                                         </>
