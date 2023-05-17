@@ -283,6 +283,7 @@ export default function Home() {
 
     }
 
+    const parentRef = useRef(null);
 
     return (
         <>
@@ -293,7 +294,11 @@ export default function Home() {
             <div id="likes" className={documentStyles.likes} onClick={toggleLike}><div id="likesdiv"><FontAwesomeIcon icon={faHeart} /></div><span id="likesCount">999</span></div>
             <div id="views" className={documentStyles.views}><div><FontAwesomeIcon icon={faEye} /></div><span id="viewsCount">999</span></div>
             <div className='outer'>
-                <div className={cx('inner', documentStyles.container)}>
+                <div
+                    ref={parentRef}
+                    id="documentContainer"
+                    className={cx('inner', documentStyles.container)}
+                >
                     <div className={documentStyles.docViewer}>
 
                         {/* <Document file={fileData}>
@@ -312,6 +317,7 @@ export default function Home() {
                                         <>
                                             <PageAnnotation
                                                 pageNumber={pageNumber + 1}
+                                                referenceRef={parentRef}
                                                 key={pageNumber + 1}
                                             />
                                             <hr></hr>

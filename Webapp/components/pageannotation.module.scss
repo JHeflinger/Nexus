@@ -1,2 +1,19 @@
 @import '../styles/_vars';
 @import '../styles/utils.module.scss';
+
+
+.pageAnnotationCanvas {
+    position: relative;
+    z-index: 100;
+    left: 0%;
+    top: 0%;
+    grid-column: 1;
+    grid-row: 1;
+    pointer-events: none;
+}
+
+.page {
+    grid-column: 1;
+    grid-row: 1;
+    z-index: 1;
+}
