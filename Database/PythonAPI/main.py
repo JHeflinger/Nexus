@@ -111,8 +111,10 @@ async def getDocumentViews(docid: int):
     query = f"EXEC GetDocumentViews @docID={docid}"
     success, result = Nexus.execute(query, username="consaljj")
     if success:
-        print("document views: " + str(result[0][0]))
-        return result[0][0]
+        if (len(result) > 0):
+            if (len(result[0]) > 0):
+                return result[0][0]
+    return 0
 
 @app.get("/getUserAccountLikes/{uid}")
 async def getUserAccountLikes(uid: str):
@@ -123,7 +125,7 @@ async def getUserAccountLikes(uid: str):
     success, result = Nexus.execute(query, username="consaljj")
     if success:
         if (len(result) > 0):
-            if (len(result[0] > 0)):
+            if (len(result[0]) > 0):
                 return result[0][0]
         return 0
     
@@ -260,6 +262,7 @@ async def uploadFile(
 @app.post("/updateDocument")
 async def updateDocument(
     # form_data: UploadDocument = Depends()
+    DocumentID: Annotated[int, Form(...)],
     DocumentName: Annotated[str, Form(...)],
     Description: Annotated[str, Form(...)]
 ):
@@ -270,7 +273,7 @@ async def updateDocument(
                 @DocID = ?,
                 @DocumentName = ?
             '''
-    params = (DocumentName, Description)
+    params = (DocumentID, DocumentName)
 
     success, results = Nexus.execute(query, binParams=params, username="consaljj")
     if success:

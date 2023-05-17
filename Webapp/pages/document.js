@@ -230,9 +230,11 @@ export default function Home() {
         } else {
             metaTags = metaTags.substring(0, metaTags.length - 1);
         }*/
+        const urlParams = new URLSearchParams(window.location.search);
+        const docID = urlParams.get('fileID');
         let documentName = document.getElementById("titleInput").value;
         let documentDescription = document.getElementById("descInput").value;
-        Database.updateFile(documentName, documentDescription).then((response) => {
+        Database.updateFile(docID, documentName, documentDescription).then((response) => {
             console.log(response.status);
         });
     }
