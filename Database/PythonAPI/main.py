@@ -265,7 +265,8 @@ async def updateDocument(
     # form_data: UploadDocument = Depends()
     DocumentID: Annotated[int, Form(...)],
     DocumentName: Annotated[str, Form(...)],
-    Description: Annotated[str, Form(...)]
+    Description: Annotated[str, Form(...)],
+    Annotations: Annotated[str, Form(...)]
 ):
     Nexus = Server("titan.csse.rose-hulman.edu", "Nexus")
     Nexus.disconnect()
@@ -273,9 +274,12 @@ async def updateDocument(
     query = '''EXEC UpdateDocument
                 @DocID = ?,
                 @DocumentName = ?,
-                @Description = ?
+                @Description = ?,
+                @Annotation = ?
             '''
-    params = (DocumentID, DocumentName, Description)
+            
+    Annotations = Server.convertToBinaryData(bytes(Annotations, "utf-8"))
+    params = (DocumentID, DocumentName, Description, Annotations)
 
     success, results = Nexus.execute(query, binParams=params, username="consaljj")
     if success:
@@ -405,6 +409,8 @@ async def getFileByObjectID(DocID: int):
     lastModified = result[3]
     dateOfCreation = result[4]
     annotations = result[5]
+    
+    annotations = bytes.decode(annotations)
     
     if success:
         # print(result)
