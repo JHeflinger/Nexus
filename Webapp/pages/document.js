@@ -213,6 +213,7 @@ export default function Home() {
     }
 
     const updateDoc = () => {
+        /*
         let tagList = [];
         let tags = document.getElementById("tags").children;
         for (var i = 0; i < tags.length; i++) {
@@ -233,14 +234,10 @@ export default function Home() {
             console.log(tagList);
         } else {
             metaTags = metaTags.substring(0, metaTags.length - 1);
-        }
-        const formData = {
-            _id: fileIDRef.current,
-            tags: metaTags,
-            title: metaTitle,
-            desc: metaDesc
-        };
-        Database.updateFile(formData).then((response) => {
+        }*/
+        let documentName = document.getElementById("titleInput").value;
+        let documentDescription = document.getElementById("descInput").value;
+        Database.updateFile(documentName, documentDescription).then((response) => {
             console.log(response.status);
         });
     }

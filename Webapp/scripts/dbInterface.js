@@ -101,11 +101,31 @@ export default class Database {
     }
 
     static async updateFile(formData) {
-        console.log(`${serverURL}/update/${formData._id}/${formData.title}/${formData.desc}/["tag1", "tag2"]`);
+        console.log(formData);
         let promise = undefined;
         try {
-            promise = fetch(`${serverURL}/update/${formData._id}/${formData.title}/${formData.desc}/${formData.tags}`, {
+            promise = fetch(`${serverURL}/updateDocument`, {
                 method: 'PUT',
+                body: formData,
+            });
+        } catch (error) {
+            console.log(error);
+        }
+        return promise;
+    }
+
+    static async updateFile(
+        DocumentName = "",
+        Description = ""
+    ) {
+        const formData = new FormData();
+        formData.append("DocumentName", DocumentName);
+        formData.append("Description", Description);
+
+        let promise = undefined;
+        try {
+            promise = fetch(serverURL + '/uploadFile', {
+                method: 'POST',
                 body: formData,
             });
         } catch (error) {
