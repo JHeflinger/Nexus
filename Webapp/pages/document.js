@@ -189,6 +189,7 @@ export default function Home() {
             Database.getDocumentTags(fileID).then((data) => {
                 data.json().then((data) => {
                     console.log(data);
+                    if (data.tags) {
                     let tags = data.tags;
                     for (let i = 0; i < tags.length; i++) {
                         tagData.push(tags[i]);
@@ -198,6 +199,7 @@ export default function Home() {
                         ));
                         ReactDOM.render(children, container);
                     }
+                }
                 });
             });
         }
