@@ -230,7 +230,7 @@ export default class Database {
         let promise = undefined;
         try {
             console.log("DELETING");
-            promise = fetch(`${serverURL}/delete/${objectID}`, {
+            promise = fetch(`${serverURL}/deleteFileByObjectID/${objectID}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-type': 'application/json'
