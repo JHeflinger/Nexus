@@ -3,7 +3,7 @@ GO
 
 IF EXISTS (SELECT *
 FROM sys.objects
-WHERE type = 'P' AND name = 'UpdateUserDocument')
+WHERE type = 'P' AND name = 'UpdateDocument')
 BEGIN
     DROP PROCEDURE UpdateDocument;
 END
@@ -11,7 +11,8 @@ GO
 
 CREATE PROCEDURE UpdateDocument
     @DocID INT,
-	@DocumentName VARCHAR(100)
+	@DocumentName VARCHAR(100),
+	@Description VARCHAR(2000)
 AS
 
 BEGIN
@@ -22,7 +23,7 @@ BEGIN
     END
 
     UPDATE Document
-	SET Document.DocumentName = @DocumentName
+	SET Document.DocumentName = @DocumentName, Document.[Description] = @Description
 	WHERE DocumentID = @DocID
 END;
 GO

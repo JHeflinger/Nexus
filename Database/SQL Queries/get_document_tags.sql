@@ -10,21 +10,20 @@ END
 GO
 
 CREATE PROCEDURE GetDocumentTags
-    @Username VARCHAR(50)
+    @docID INT
 AS
 
 BEGIN
-    IF (@Username IS NULL)
+    IF (@docID IS NULL)
     BEGIN
         RAISERROR('params cannot be null', 16, 1);
         RETURN 1;
     END
 	
-	SELECT COUNT(UserOwns.UserName) AS [Views]
-	FROM UserOwns
-	JOIN UserViewed ON UserViewed.DocumentID = UserOwns.DocumentID
-	WHERE UserOwns.UserName = @Username
-	GROUP BY UserOwns.UserName
+	SELECT Category.CategoryName AS [Tag]
+	FROM InACategory
+	JOIN Category ON InACategory.CategoryID = Category.CategoryID
+	WHERE InACategory.DocumentID = @docID
 
 END;
 GO
