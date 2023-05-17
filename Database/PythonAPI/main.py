@@ -262,6 +262,15 @@ async def uploadFile(
 
     # addTmpUser(uid)
 
+@app.post("/addTag/{docID}/{tag}")
+async def addTag(docID: int, tag: str):
+    Nexus = Server("titan.csse.rose-hulman.edu", "Nexus")
+    Nexus.disconnect()
+    query = 'EXEC AddDocumentTag @docID = ?, @tag = ?'
+    params = (docID, tag)
+    success, results = Nexus.execute(query, binParams=params, username="consaljj")
+    if success:
+        print(results)
 
 @app.post("/updateDocument")
 async def updateDocument(
@@ -424,7 +433,27 @@ async def getFileByObjectID(DocID: int):
         }
     else:
         return False
-
+    
+@app.get("/getDocumentTags/{DocID}")
+async def getDocumentTags(DocID: int):
+    Nexus = Server("titan.csse.rose-hulman.edu", "Nexus")
+    Nexus.disconnect()
+    query = f"EXEC GetDocumentTags @docID = ?"
+    params = (DocID)
+    success, result = Nexus.execute(query, binParams=params, username="consaljj")
+    tags = []
+    if (success):
+        if (len(result) <= 0):
+            return {}
+        print(result)
+        for i in range(len(result)):
+            tags.append(result[i][0])
+        print(tags)
+        return {
+            "tags": tags
+        }
+    else:
+        return False
 
 @app.get("/getFileRefByObjectID/{DocID}")
 async def getFileRefByObjectID():
