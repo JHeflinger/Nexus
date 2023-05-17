@@ -196,6 +196,12 @@ export default function Home() {
     }
 
     const deleteDoc = () => {
+        if (!confirm("Are you sure you want to delete this document?")) {
+            return;
+        }
+
+
+
         let url = new URLSearchParams(window.location.search);
         let newid = url.get('fileID');
         console.log("tring to delete");
