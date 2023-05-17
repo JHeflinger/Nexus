@@ -275,9 +275,10 @@ async def updateDocument(
 
     query = '''EXEC UpdateDocument
                 @DocID = ?,
-                @DocumentName = ?
+                @DocumentName = ?,
+                @Description = ?
             '''
-    params = (DocumentID, DocumentName)
+    params = (DocumentID, DocumentName, Description)
 
     success, results = Nexus.execute(query, binParams=params, username="consaljj")
     if success:
