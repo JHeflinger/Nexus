@@ -198,14 +198,9 @@ export default function Home() {
     const deleteDoc = () => {
         let url = new URLSearchParams(window.location.search);
         let newid = url.get('fileID');
-        console.log("truing to delete");
-        fetch(`http://192.168.68.128:8080/api/delete/${newid}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-type': 'application/json'
-            }
-        });
-        history.back();
+        console.log("tring to delete");
+        Database.deleteFileByObjectID(newid).then((data) => {});
+        history.back(); 
     }
 
     const cancelClick = () => {
