@@ -1,0 +1,230 @@
+@import '../styles/_vars';
+@import '../styles/utils.module.scss';
+
+.profile {
+    @extend .autoGlow;
+    @extend .twilightGlass;
+    @extend .widget;
+    height: 25vh;
+}
+
+.profile::before {
+    height: 25vh;
+}
+
+.chart {
+    width: 100%;
+    color: black;
+}
+
+.graph {
+    @extend .profile;
+    height: 66vh;
+    width: 100vw;
+    margin-top: 3vh;
+}
+
+.graph::before {
+    height: 66vh;
+    width: 63.5vw;
+}
+
+.docs {
+    position: relative;
+    width: 99%;
+    flex-grow: 1;
+    // height: calc(90% - 10vh);
+    // height: 100%;
+    // margin: 5%;
+    overflow-x: none;
+    overflow-y: scroll;
+    font-size: 20px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.docs > div {
+    padding: 10px;
+    cursor: pointer;
+    margin: 10px;
+    border-radius: 10px;
+    transition: 0.2s;
+}
+
+.docs > div:hover {
+    box-shadow: 0 0 10px $glow, inset 0 0 10px $glow;
+    transition: 0.2s;
+    background-color: rgba(255, 255, 255, 0.1);;
+}
+
+.fileIcon {
+    margin-right: 10px;
+}
+
+.pageTitle {
+    max-width: 200px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.mydocs {
+    @extend .graph;
+    // margin-left: 3vh;
+    // width: 50vw;
+    // flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-width: 300px;
+
+    overflow: hidden;
+}
+
+.mydocs::before {
+    // width: flex;
+    // flex-grow: 1;
+    width: 100%;
+    min-width: 300px;
+}
+
+.mydocs .title {
+    width: 100%;
+    margin: 15px 0;
+    text-align: center;
+    font-size: 3vh;
+    font-weight: 300;
+    line-height: 3vh;
+}
+
+.pageWrapper {
+    width: max-content;
+}
+
+.contentWrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.pfp {
+    position: absolute;
+    top: 3vh;
+    left: 3vh;
+    border-radius: 50%;
+    height: 19vh;
+    width: 19vh;
+    box-shadow: 0 0 20px $glow;
+}
+
+.name {
+    position: absolute;
+    top: 2vh;
+    left: 25vh;
+    font-weight: 300;
+    font-size: 4vh;
+}
+
+.username {
+    margin-left: 10px;
+    font-size: 2.7vh;
+    font-style: italic;
+}
+
+.joinlog {
+    position: absolute;
+    top: 8vh;
+    left: 25vh;
+    font-weight: 300;
+}
+
+.accStats {
+    position: absolute;
+    top: 11vh;
+    left: 19vh;
+    display: flex;
+    text-align: center;
+}
+
+.stat {
+    margin: 1vh 6.3vh 0 6.3vh;
+    font-weight: 900;
+    font-size: 5.8vh;
+}
+
+.stat div {
+    font-size: 2vh;
+    font-weight: 400;
+}
+
+@media (orientation: portrait) {
+    .pfp {
+        top: 2vh;
+        left: 2vh;
+        height: 11vh;
+        width: 11vh;
+    }
+
+    .name {
+        position: absolute;
+        top: 2vh;
+        left: 28vw;
+        font-weight: 900;
+        font-size: 5vw;
+    }
+
+    .username {
+        font-weight: 400;
+        font-size: 4vw; 
+        margin-left: 3px;
+    }
+
+    .joinlog {
+        position: absolute;
+        top: 5vh;
+        left: 28vw;
+        font-size: 3vw;
+        font-weight: 300;
+    }
+
+    .accStats {
+        position: absolute;
+        top: 7vh;
+        left: 23vw;
+        display: flex;
+        text-align: center;
+    }
+    
+    .stat {
+        margin: 1vw 6.3vw 0 6.3vw;
+        font-weight: 900;
+        font-size: 5.8vw;
+    }
+    
+    .stat div {
+        font-size: 3vw;
+        font-weight: 300;
+    }
+
+    .profile {
+        height: 16vh;
+    }
+
+    .graph {
+        @extend .profile;
+        height: 30vh;
+        width: 100%;
+        margin-top: 3vh;
+    }
+    
+    .mydocs {
+        @extend .graph;
+        margin: 3vh 0 0 0;
+        width: 100%;
+    }
+
+    .contentWrapper {
+        flex-direction: column;
+    }
+}

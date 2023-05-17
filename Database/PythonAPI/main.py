@@ -276,14 +276,13 @@ async def getFileIDsByUser(UID: str):
     else:
         return False
 
-
-@app.get("/getFilesBySearch/{uid}")
-async def getFilesBySearch(uid: str):
+@app.get("/getFilesBySearch/{uid}/{sortBy}/{descending}")
+async def getFilesBySearch(uid: str, sortBy: str, descending: bool):
     Nexus = Server("titan.csse.rose-hulman.edu", "Nexus")
     Nexus.disconnect()
 
-    query = "EXEC GetAvailableDocumentsFromUser @Username = ?"
-    params = (uid)
+    query = "EXEC GetAvailableDocumentsFromUser @Username = ?, @OrderBy = ?, @DecendingOrder = ?"
+    params = (uid, sortBy, descending)
     success, result = Nexus.execute(query, binParams=params,  username="consaljj")
     print(result)
     result = [list(x) for x in result]
