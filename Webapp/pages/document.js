@@ -193,9 +193,10 @@ export default function Home() {
     }, []);
 
     function hexToBytes(hex) {
+        console.log(hex);
         let bytes = [];
-        for (let c = 0; c < hex.length; c += 2)
-            bytes.push(parseInt(hex.substr(c, 2), 16));
+        for (let c = 0; c < String(hex).length; c += 2)
+            bytes.push(parseInt(String(hex).substr(c, 2), 16));
         return bytes;
     }
 
