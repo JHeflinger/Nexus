@@ -424,9 +424,17 @@ async def getFileRefByObjectID():
     return {"message": "Get File Ref By Object ID Not Implemented"}
 
 
-@app.delete("/getFileByFileID")
-async def deleteFileByObjectID():
-    return {"message": "Delete File By Object ID Not Implemented"}
+@app.delete("/deleteFileByObjectID/{DocID}")
+async def deleteFileByObjectID(DocID: int):
+    Nexus = Server("titan.csse.rose-hulman.edu", "Nexus")
+    Nexus.disconnect()
+
+    query = f"EXEC GetFileByID @docID = ?"
+    print(f"Getting File with if={DocID}")
+
+    params = (DocID)
+
+    success, result = Nexus.execute(query, binParams=params, username="consaljj")
 
 if __name__ == "__main__":
     # Run server and accept network connections
