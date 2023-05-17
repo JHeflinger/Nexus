@@ -115,16 +115,18 @@ export default class Database {
     }
 
     static async updateFile(
+        DocumentID = 0,
         DocumentName = "",
         Description = ""
     ) {
         const formData = new FormData();
+        formData.append("DocumentID", DocumentID);
         formData.append("DocumentName", DocumentName);
         formData.append("Description", Description);
 
         let promise = undefined;
         try {
-            promise = fetch(serverURL + '/uploadFile', {
+            promise = fetch(serverURL + '/updateDocument', {
                 method: 'POST',
                 body: formData,
             });
