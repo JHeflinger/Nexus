@@ -251,6 +251,14 @@ export default function Home() {
         Database.updateFile(docID, documentName, documentDescription).then((response) => {
             console.log(response.status);
         });
+
+        let tags = document.getElementById("tags").children;
+        for (var i = 0; i < tags.length; i++) {
+            let tag = tags[i].innerHTML.split(">")[2];
+            Database.addTag(docID, tag).then((response) => {
+                console.log(response.status);
+            });
+        }
     }
 
     console.log(`fileData: ${fileDataRef.current}`);

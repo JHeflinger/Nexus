@@ -187,6 +187,31 @@ export default class Database {
         return promise;
     }
 
+    static async addTag(docID, tag) {
+        let promise = undefined;
+        try {
+            promise = fetch(serverURL + `/addTag/${docID}/${tag}`, {
+                method: 'POST',
+            });
+        } catch (error) {
+            console.log(error);
+        }
+        return promise;
+    }
+
+    static async getDocumentTags(docID) {
+        let promise = undefined;
+        try {
+            promise = fetch(serverURL + `/getDocumentTags/${docID}`, {
+                method: 'GET',
+            });
+
+        } catch (error) {
+            console.log(error);
+        }
+        return promise;
+    }
+
     static async getSimpleFileByObjectID(objectID) {
         let promise = undefined;
         try {
