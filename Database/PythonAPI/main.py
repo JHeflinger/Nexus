@@ -445,8 +445,10 @@ async def getDocumentTags(DocID: int):
     if (success):
         if (len(result) <= 0):
             return {}
-        for i in range(len(result[0])):
-            tags.append(result[0][i])
+        print(result)
+        for i in range(len(result)):
+            tags.append(result[i][0])
+        print(tags)
         return {
             "tags": tags
         }

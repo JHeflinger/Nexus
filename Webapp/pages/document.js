@@ -185,6 +185,21 @@ export default function Home() {
                     document.getElementById("descInput").value = data["metadata"]["description"];
                 });
             });
+
+            Database.getDocumentTags(fileID).then((data) => {
+                data.json().then((data) => {
+                    console.log(data);
+                    let tags = data.tags;
+                    for (let i = 0; i < tags.length; i++) {
+                        tagData.push(tags[i]);
+                        let container = document.getElementById("tags");
+                        const children = tagData.map((val) => (
+                            <span onClick={() => deleteTag({ val })} className={documentStyles.tag}><span className={lato.className}>X</span>{val}</span>
+                        ));
+                        ReactDOM.render(children, container);
+                    }
+                });
+            });
         }
     }, [fileID]);
 
