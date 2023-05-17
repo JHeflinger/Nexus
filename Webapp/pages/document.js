@@ -210,6 +210,9 @@ export default function Home() {
                 const text = hexToBytes(fileDataString);
                 const url = URL.createObjectURL(new Blob([new Uint8Array(text)], { type: "application/pdf" }));
                 setFileData(url);
+
+                document.getElementById("titleInput").value = data.metadata.documentName;
+                document.getElementById("descInput").value = data.metadata.description;
             });
 
             // data.blob().then((text) => {
