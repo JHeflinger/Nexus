@@ -66,11 +66,11 @@ export default function PageAnnotation(props) {
             canvas.height = dimensionsRef.current.height;
             const ctx = canvas.getContext('2d');
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = 'rgba(0, 0, 0, 1)';
-            ctx.font = '30px Arial';
-            ctx.fillText(`Page ${props.pageNumber}`, 10, 50);
+            // ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+            // ctx.fillRect(0, 0, canvas.width, canvas.height);
+            // ctx.fillStyle = 'rgba(0, 0, 0, 1)';
+            // ctx.font = '30px Arial';
+            // ctx.fillText(`Page ${props.pageNumber}`, 10, 50);
         }
     }
 
