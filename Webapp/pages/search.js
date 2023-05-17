@@ -41,9 +41,29 @@ export default function Home() {
   const siteTitle = "Nexus: Search";
   const tagData = [];
 
-  const [likesState, setLikesFilter] = useState(0);
-  const [viewsState, setViewsFilter] = useState(0);
-  const [activeState, setActiveFilter] = useState(0);
+  const [likesState, _setLikesFilter] = useState(0);
+  const [viewsState, _setViewsFilter] = useState(0);
+  const [activeState, _setActiveFilter] = useState(0);
+
+  
+  const likesStateRef = useRef(likesState);
+  const setLikesFilter = (data) => {
+    likesStateRef.current = data;
+    _setLikesFilter(data);
+  }
+
+  
+  const viewsStateRef = useRef(viewsState);
+  const setViewsFilter = (data) => {
+    viewsStateRef.current = data;
+    _setViewsFilter(data);
+  }
+
+  const activeStateRef = useRef(activeState);
+  const setActiveFilter = (data) => {
+    activeStateRef.current = data;
+    _setActiveFilter(data);
+  }
 
   const [uid, _setUid] = useState("");
   const uidRef = useRef(uid);
@@ -134,7 +154,24 @@ export default function Home() {
   const searchDocs = () => {
     let searchText = document.getElementById("searchbar").value;
     document.getElementById("searchbar").value = "";
-    Database.getAvailableFilesByUser(uidRef.current).then((response) => {
+    let descending = false;
+    let sortBy = 'activity';
+    if (likesStateRef.current == 1) {
+      descending = false;
+      sortBy = 'likes';
+    } else if (likesStateRef.current == 2) {
+      descending = true;
+      sortBy = 'likes';
+    } else if (viewsStateRef.current == 1) {
+      descending = false;
+      sortBy = 'views';
+    } else if (viewsStateRef.current == 2) {
+      descending = true;
+      sortBy = 'views';
+    } else if (activeStateRef.current == 2) {
+      descending = true;
+    }
+    Database.getAvailableFilesByUser(uidRef.current, sortBy, descending).then((response) => {
       const files = response.json().then((data) => {
         let result = <div className={searchStyles.searchResult}><div>{}</div><br></br><span>{}</span></div>
         let resultData = [];

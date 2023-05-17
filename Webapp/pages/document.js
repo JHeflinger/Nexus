@@ -10,10 +10,23 @@ import cx from 'classnames';
 import { faEye, faHeart } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Database from '../scripts/dbInterface';
+import { getAuth } from "firebase/auth";
+import { initializeApp } from "firebase/app";
 import { pdfjs, Document, Page, PDFViewer, PDFDownloadLink } from "react-pdf";
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
 
-
+const firebaseConfig = {
+    apiKey: "AIzaSyCew1DevDcpknJ9ROwEhVhp9yPUFhtygQ4",
+    authDomain: "project-nexus-authentication.firebaseapp.com",
+    projectId: "project-nexus-authentication",
+    storageBucket: "project-nexus-authentication.appspot.com",
+    messagingSenderId: "562007904915",
+    appId: "1:562007904915:web:72f88a7f4437dc872f3366",
+    measurementId: "G-3M7WVJKP31"
+};
+  
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
 const lato = Lato({
     weight: ['100', '300', '400', '900'],
@@ -25,6 +38,13 @@ export default function Home() {
 
     const siteTitle = "DOCUMENT";
     const tagData = [];
+
+    const [uid, _setUid] = useState("");
+    const uidRef = useRef(uid);
+    const setUid = (data) => {
+    uidRef.current = data;
+        _setUid(data);
+    }
 
     const [fileData, _setFileData] = useState("");
     const fileDataRef = useRef(fileData);
@@ -93,13 +113,11 @@ export default function Home() {
     }
 
     const getLikes = (docID) => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const uid = urlParams.get('uid');
         Database.getDocumentLikes(docID).then((response) => {
             response.json().then((data) => {
                 document.getElementById("likesCount").innerHTML = data;
             });
-            Database.getDoesUserLike(uid, docID).then((response) => {
+            Database.getDoesUserLike(uidRef.current, docID).then((response) => {
                 response.json().then((data) => {
                     if (data) {
                         document.getElementById("likesdiv").style.color = "rgb(255, 59, 59)";
@@ -136,8 +154,7 @@ export default function Home() {
     const toggleLike = () => {
         const urlParams = new URLSearchParams(window.location.search);
         const docID = urlParams.get('fileID');
-        const uid = urlParams.get('uid');
-        Database.toggleDocumentLike(uid, docID).then((data) => {
+        Database.toggleDocumentLike(uidRef.current, docID).then((data) => {
             getLikes(docID);
         });
     }
@@ -155,15 +172,24 @@ export default function Home() {
                 ReactDOM.render(children, container);
             }
         });
-
+        
         const urlParams = new URLSearchParams(window.location.search);
         const docID = urlParams.get('fileID');
-        const uidLocal = urlParams.get('uid');
-        setFileID(docID);
-        fillPage(docID);
-        getLikes(docID);
-        getViews(docID);
-        addView(uidLocal, docID);
+
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+              const uidLocal = user.uid;
+              setUid(uidLocal);
+              addView(uidLocal, docID);
+              setFileID(docID);
+              fillPage(docID);
+              getLikes(docID);
+              getViews(docID);
+            } else {
+              console.log("No user signed in, please log in!");
+              router.push("/login");
+            }
+        });
     }, []);
 
 

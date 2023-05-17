@@ -126,10 +126,10 @@ export default class Database {
         return promise;
     }
 
-    static async getAvailableFilesByUser(uid) {
+    static async getAvailableFilesByUser(uid, sortBy, descending) {
         let promise = undefined;
         try {
-            promise = fetch(serverURL + `/getFilesBySearch/${uid}`, {
+            promise = fetch(serverURL + `/getFilesBySearch/${uid}/${sortBy}/${descending}`, {
                 method: 'GET',
             });
         } catch (error) {
