@@ -123,7 +123,9 @@ async def getUserAccountLikes(uid: str):
     success, result = Nexus.execute(query, username="consaljj")
     if success:
         print("user account likes: " + str(result[0][0]))
-        return result[0][0]
+        if (result.length > 0):
+            return result[0][0]
+        return 0
     
 @app.get("/getUserAccountViews/{uid}")
 async def getUserAccountViews(uid: str):
@@ -255,9 +257,24 @@ async def uploadFile(
     # addTmpUser(uid)
 
 
-@app.put("/updateFile")
-async def updateFile():
-    return {"message": "Update File Not Implemented"}
+@app.post("/updateDocument")
+async def updateDocument(
+    # form_data: UploadDocument = Depends()
+    DocumentName: Annotated[str, Form(...)],
+    Description: Annotated[str, Form(...)]
+):
+    Nexus = Server("titan.csse.rose-hulman.edu", "Nexus")
+    Nexus.disconnect()
+
+    query = '''EXEC UpdateDocument
+                @DocID = ?,
+                @DocumentName = ?
+            '''
+    params = (DocumentName, Description)
+
+    success, results = Nexus.execute(query, binParams=params, username="consaljj")
+    if success:
+        print(results)
 
 
 class UserFile(BaseModel):
