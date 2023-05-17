@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import Link from 'next/link';
+import PageAnnotation from '../components/pageAnnotation';
 import Stars from '../components/stars';
 import Dropdown from '../components/dropdown';
 import { useEffect, useState, useRef } from 'react';
@@ -207,7 +208,7 @@ export default function Home() {
         console.log("tring to delete");
         Database.deleteFileByObjectID(newid).then((data) => {
             data.json().then((jsonData) => {
-                if (jsonData["success"] == true){
+                if (jsonData["success"] == true) {
                     history.back();
                 } else {
                     console.log("Error deleting file");
@@ -301,11 +302,9 @@ export default function Home() {
                                 Array.from(Array(numberOfPages).keys()).map((pageNumber) => {
                                     return (
                                         <>
-                                            <Page
+                                            <PageAnnotation
                                                 pageNumber={pageNumber + 1}
-                                                height={710}
-                                                renderAnnotationLayer={false}
-                                                renderTextLayer={false}
+                                                key={pageNumber + 1}
                                             />
                                             <hr></hr>
                                         </>
