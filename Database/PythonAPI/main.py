@@ -124,7 +124,8 @@ async def getUserAccountLikes(uid: str):
     if success:
         print("user account likes: " + str(result[0][0]))
         if (len(result) > 0):
-            return result[0][0]
+            if (len(result[0] > 0)):
+                return result[0][0]
         return 0
     
 @app.get("/getUserAccountViews/{uid}")
