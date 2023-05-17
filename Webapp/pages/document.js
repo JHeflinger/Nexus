@@ -192,16 +192,29 @@ export default function Home() {
         });
     }, []);
 
+    function hexToBytes(hex) {
+        let bytes = [];
+        for (let c = 0; c < hex.length; c += 2)
+            bytes.push(parseInt(hex.substr(c, 2), 16));
+        return bytes;
+    }
+
 
     useEffect(() => {
         Database.getFileByObjectID(fileID).then((data) => {
             console.log("Here comes the data! (in use effect)");
-            console.log(data);
-
-            data.blob().then((text) => {
-                text = URL.createObjectURL(text);
-                setFileData(text);
+            data.json().then((data) => {
+                console.log(data);
+                const fileDataString = data["data"];
+                const text = hexToBytes(fileDataString);
+                const url = URL.createObjectURL(new Blob([new Uint8Array(text)], { type: "application/pdf" }));
+                setFileData(url);
             });
+
+            // data.blob().then((text) => {
+            //     text = URL.createObjectURL(text);
+            //     setFileData(text);
+            // });
         });
     }, [fileID]);
 

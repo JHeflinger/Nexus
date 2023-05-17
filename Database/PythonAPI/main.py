@@ -81,6 +81,7 @@ async def userExists(docid: int, username: str):
     if success:
         print(result)
 
+
 @app.post("/toggleUserLike/{username}/{docid}")
 async def toggleUserLike(docid: int, username: str):
     Nexus = Server("titan.csse.rose-hulman.edu", "Nexus")
@@ -91,6 +92,7 @@ async def toggleUserLike(docid: int, username: str):
     if success:
         print(result)
 
+
 @app.get("/getDoesUserLike/{username}/{docid}")
 async def getDoesUserLike(docid: int, username: str):
     Nexus = Server("titan.csse.rose-hulman.edu", "Nexus")
@@ -99,6 +101,7 @@ async def getDoesUserLike(docid: int, username: str):
     query = f"EXEC GetDoesUserLike @Username={username}, @docID={docid}"
     success, result = Nexus.execute(query, username="consaljj")
     return result[0][0]
+
 
 @app.get("/GetDocumentViews/{docid}")
 async def getDocumentViews(docid: int):
@@ -197,7 +200,7 @@ async def userExists(FBToken: str):
 #     Annotations: Dict[str, str]
 
 class DocAnnotations(BaseModel):
-    Annotations: Dict[str, str] #TODO: make this a list of annotations when they are implemented
+    Annotations: Dict[str, str]  # TODO: make this a list of annotations when they are implemented
 
 
 @app.post("/uploadFile")
@@ -223,11 +226,11 @@ async def uploadFile(
     print(DocumentName)
     Nexus = Server("titan.csse.rose-hulman.edu", "Nexus")
     Nexus.disconnect()
-    
+
     # Annotations = {"test": "test"}
     # Annotations = json.loads(Annotations)
 
-    #Convert Annotations to bytes
+    # Convert Annotations to bytes
     Annotations = Server.convertToBinaryData(bytes(Annotations, "utf-8"))
 
     LastModifiedDate = datetime.strptime(LastModified, "%Y-%m-%dT%H:%M:%S.%fZ")
@@ -324,28 +327,49 @@ async def getFilesBySearch(uid: str, sortBy: str, descending: bool):
 
 @app.get(
     "/getFileByObjectID/{DocID}",
-    responses={
+    # responses={
 
-        200: {
-            "content": {"application/pdf": {}},
-        }
+    #     200: {
+    #         "content": {"application/pdf": {}},
+    #     }
 
-    },
-    response_class=Response
+    # },
+    # response_class=Response
 )
 async def getFileByObjectID(DocID: int):
     Nexus = Server("titan.csse.rose-hulman.edu", "Nexus")
     Nexus.disconnect()
 
-    query = f"EXEC GetFileByID @docID={DocID}"
-    print(f"Getting File with id={DocID}")
-    success, result = Nexus.execute(query, username="consaljj")
+    query = f"EXEC GetFileByID @docID = ?"
+    print(f"Getting File with if={DocID}")
+
+    params = (DocID)
+
+    success, result = Nexus.execute(query, binParams=params, username="consaljj")
     print("Success: ", success)
-    #result = [x[0] for x in result]
-    print("Result: ", len(result))
+    # print("Result: ", result[0][-1])
+    result = [x for x in result[0]]
+
+    documentName = result[0]
+    documentData = (result[1]).hex()
+    description = result[2]
+    lastModified = result[3]
+    dateOfCreation = result[4]
+    annotations = result[5]
+    
     if success:
         # print(result)
-        return Response(content=result[0][1], media_type="application/pdf")
+        # return Response(content=result, media_type="application/pdf")
+        return {
+            "data": documentData,
+            "metadata": {
+                "documentName": documentName,
+                "description": description,
+                "lastModified": lastModified,
+                "dateOfCreation": dateOfCreation,
+                "annotations": annotations
+            }
+        }
     else:
         return False
 
