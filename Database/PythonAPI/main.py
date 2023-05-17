@@ -428,12 +428,13 @@ async def deleteFileByObjectID(DocID: int):
     Nexus = Server("titan.csse.rose-hulman.edu", "Nexus")
     Nexus.disconnect()
 
-    query = f"EXEC GetFileByID @docID = ?"
-    print(f"Getting File with if={DocID}")
+    query = f"EXEC DeleteDocumentByID @docID = ?"
+    print(f"Deleting File with if={DocID}")
 
     params = (DocID)
 
     success, result = Nexus.execute(query, binParams=params, username="consaljj")
+    return {"success": success}
 
 if __name__ == "__main__":
     # Run server and accept network connections

@@ -24,7 +24,7 @@ const firebaseConfig = {
     appId: "1:562007904915:web:72f88a7f4437dc872f3366",
     measurementId: "G-3M7WVJKP31"
 };
-  
+
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
@@ -42,7 +42,7 @@ export default function Home() {
     const [uid, _setUid] = useState("");
     const uidRef = useRef(uid);
     const setUid = (data) => {
-    uidRef.current = data;
+        uidRef.current = data;
         _setUid(data);
     }
 
@@ -140,28 +140,28 @@ export default function Home() {
                 ReactDOM.render(children, container);
             }
         });
-        
+
         const urlParams = new URLSearchParams(window.location.search);
         const docID = urlParams.get('fileID');
 
         auth.onAuthStateChanged((user) => {
             if (user) {
-              const uidLocal = user.uid;
-              setUid(uidLocal);
-              addView(uidLocal, docID);
-              setFileID(docID);
-              fillPage(docID);
-              getLikes(docID);
-              getViews(docID);
+                const uidLocal = user.uid;
+                setUid(uidLocal);
+                addView(uidLocal, docID);
+                setFileID(docID);
+                fillPage(docID);
+                getLikes(docID);
+                getViews(docID);
             } else {
-              console.log("No user signed in, please log in!");
-              router.push("/login");
+                console.log("No user signed in, please log in!");
+                router.push("/login");
             }
         });
     }, []);
 
     function hexToBytes(hex) {
-        console.log(hex);
+        // console.log(hex);
         let bytes = [];
         for (let c = 0; c < String(hex).length; c += 2)
             bytes.push(parseInt(String(hex).substr(c, 2), 16));
@@ -171,20 +171,20 @@ export default function Home() {
 
     useEffect(() => {
         if (fileID) {
-        Database.getFileByObjectID(fileID).then((data) => {
-            console.log(fileID);
-            console.log("Here comes the data! (in use effect)");
-            data.json().then((data) => {
-                console.log(data);
-                const fileDataString = data["data"];
-                const text = hexToBytes(fileDataString);
-                const url = URL.createObjectURL(new Blob([new Uint8Array(text)], { type: "application/pdf" }));
-                setFileData(url);
-                document.getElementById("titleInput").value = data["metadata"]["documentName"];
-                document.getElementById("descInput").value = data["metadata"]["description"];
+            Database.getFileByObjectID(fileID).then((data) => {
+                console.log(fileID);
+                console.log("Here comes the data! (in use effect)");
+                data.json().then((data) => {
+                    // console.log(data);
+                    const fileDataString = data["data"];
+                    const text = hexToBytes(fileDataString);
+                    const url = URL.createObjectURL(new Blob([new Uint8Array(text)], { type: "application/pdf" }));
+                    setFileData(url);
+                    document.getElementById("titleInput").value = data["metadata"]["documentName"];
+                    document.getElementById("descInput").value = data["metadata"]["description"];
+                });
             });
-        });
-    }
+        }
     }, [fileID]);
 
     const deleteTag = (tag) => {
@@ -199,8 +199,15 @@ export default function Home() {
         let url = new URLSearchParams(window.location.search);
         let newid = url.get('fileID');
         console.log("tring to delete");
-        Database.deleteFileByObjectID(newid).then((data) => {});
-        history.back(); 
+        Database.deleteFileByObjectID(newid).then((data) => {
+            data.json().then((jsonData) => {
+                if (jsonData["success"] == true){
+                    history.back();
+                } else {
+                    console.log("Error deleting file");
+                }
+            });
+        });
     }
 
     const cancelClick = () => {
@@ -238,7 +245,7 @@ export default function Home() {
     }
 
     console.log(`fileData: ${fileDataRef.current}`);
-    console.log(fileDataRef.current);
+    // console.log(fileDataRef.current);
 
     const onDocumentLoadSuccess = (pdf) => {
         console.log('Set number of pages to', pdf.numPages);
