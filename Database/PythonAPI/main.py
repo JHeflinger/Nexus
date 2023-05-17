@@ -428,7 +428,7 @@ async def deleteFileByObjectID(DocID: int):
     Nexus = Server("titan.csse.rose-hulman.edu", "Nexus")
     Nexus.disconnect()
 
-    query = f"EXEC DeleteDocumentByID @docID = ?"
+    query = f"EXEC DeleteDocumentByID @id = ?"
     print(f"Deleting File with if={DocID}")
 
     params = (DocID)
