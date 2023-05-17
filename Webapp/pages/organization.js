@@ -303,12 +303,27 @@ export default function Home() {
               </div>
             </div>
             <div className={accountStyles.contentWrapper}>
+              {/* <div className={cx(lato.className, accountStyles.graph)}>
+                <Chart
+                  options={state.options}
+                  series={state.series}
+                  type="line"
+                  width="96%"
+                  height="100%"
+                  className={accountStyles.chart}
+                />
+              </div> */}
               <div className={cx(lato.className, accountStyles.mydocs)}>
                 <div className={accountStyles.title}>MY DOCS</div>
                 <div className={accountStyles.docs}>
 
                   {userFileIDs.map(([fileId, fileName]) => {
+                    // console.log(file);
                     const fileURL = userFiles[fileId]
+                    // console.log("Loading file with id: " + fileId + " and name: " + fileName);
+                    // if (fileName !== "scanned.pdf") {
+                    // console.log(fileURL);
+                    // }
                     return (
                       <div
                         className={accountStyles.pageWrapper}

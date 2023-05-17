@@ -316,15 +316,15 @@ async def getFileByObjectID(DocID: int):
     Nexus = Server("titan.csse.rose-hulman.edu", "Nexus")
     Nexus.disconnect()
 
-    query = f"EXEC GetFileByID @docID ={DocID}"
-    print(f"Getting File with if={DocID}")
+    query = f"EXEC GetFileByID @docID={DocID}"
+    print(f"Getting File with id={DocID}")
     success, result = Nexus.execute(query, username="consaljj")
     print("Success: ", success)
-    result = [x[0] for x in result]
+    #result = [x[0] for x in result]
     print("Result: ", len(result))
     if success:
         # print(result)
-        return Response(content=result, media_type="application/pdf")
+        return Response(content=result[0][1], media_type="application/pdf")
     else:
         return False
 
