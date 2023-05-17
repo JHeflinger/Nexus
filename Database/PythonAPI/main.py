@@ -137,8 +137,10 @@ async def getUserAccountViews(uid: str):
     query = f"EXEC GetUserAccountViews @Username={uid}"
     success, result = Nexus.execute(query, username="consaljj")
     if success:
-        print("user account views: " + str(result[0][0]))
-        return result[0][0]
+        if (len(result) > 0):
+            if (len(result[0]) > 0):
+                return result[0][0]
+        return 0
 
 @app.get("/GetDocumentLikes/{docid}")
 async def getDocumentLikes(docid: int):
@@ -148,8 +150,10 @@ async def getDocumentLikes(docid: int):
     query = f"EXEC GetDocumentLikes @docID={docid}"
     success, result = Nexus.execute(query, username="consaljj")
     if success:
-        print("document likes: " + str(result[0][0]))
-        return result[0][0]
+        if (len(result) > 0):
+            if (len(result[0]) > 0):
+                return result[0][0]
+        return 0
 
 
 def addTmpUser(uid: str) -> None:
