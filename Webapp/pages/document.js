@@ -78,38 +78,6 @@ export default function Home() {
 
     const fillPage = (docID) => {
         return;
-        Database.getFileByObjectID(docID).then((response) => {
-            response.json().then((data) => {
-                setFileID(docIDs);
-                console.log("Here comes the data!");
-                console.log(data);
-                if (data.metadata.title) {
-                    document.getElementById("titleInput").value = data.metadata.title;
-                    setFileName(data.metadata.title);
-                }
-                if (data.metadata.desc) document.getElementById("descInput").value = data.metadata.desc;
-                if (data.metadata.likes) {
-                    document.getElementById("likesCount").innerHTML = data.metadata.likes;
-                } else {
-                    document.getElementById("likesCount").innerHTML = 0;
-                }
-                if (data.metadata.views) {
-                    document.getElementById("viewsCount").innerHTML = data.metadata.views;
-                } else {
-                    document.getElementById("viewsCount").innerHTML = 0;
-                }
-                if (data.metadata.tags) {
-                    data.metadata.tags.forEach(tag => {
-                        tagData.push(tag);
-                    });
-                    let container = document.getElementById("tags");
-                    const children = tagData.map((val) => (
-                        <span onClick={() => deleteTag({ val })} className={documentStyles.tag}><span className={lato.className}>X</span>{val}</span>
-                    ));
-                    ReactDOM.render(children, container);
-                }
-            });
-        });
     }
 
     const getLikes = (docID) => {
@@ -202,7 +170,9 @@ export default function Home() {
 
 
     useEffect(() => {
+        if (fileID) {
         Database.getFileByObjectID(fileID).then((data) => {
+            console.log(fileID);
             console.log("Here comes the data! (in use effect)");
             data.json().then((data) => {
                 console.log(data);
@@ -210,16 +180,11 @@ export default function Home() {
                 const text = hexToBytes(fileDataString);
                 const url = URL.createObjectURL(new Blob([new Uint8Array(text)], { type: "application/pdf" }));
                 setFileData(url);
-
-                document.getElementById("titleInput").value = data.metadata.documentName;
-                document.getElementById("descInput").value = data.metadata.description;
+                document.getElementById("titleInput").value = data["metadata"]["documentName"];
+                document.getElementById("descInput").value = data["metadata"]["description"];
             });
-
-            // data.blob().then((text) => {
-            //     text = URL.createObjectURL(text);
-            //     setFileData(text);
-            // });
         });
+    }
     }, [fileID]);
 
     const deleteTag = (tag) => {

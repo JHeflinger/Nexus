@@ -229,14 +229,18 @@ export default function Home() {
       Database.getUserAccountLikes(uidRef.current).then((response) => {
         response.json().then((data) => {
           console.log(data);
-          setNumberOfLikes(data);
+          if (data) {
+            setNumberOfLikes(data);
+          }
         });
       });
 
       Database.getUserAccountViews(uidRef.current).then((response) => {
         response.json().then((data) => {
           console.log(data);
-          setNumberOfViews(data);
+          if (data) {
+            setNumberOfViews(data);
+          }
         });
       });
 

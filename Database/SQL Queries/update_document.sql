@@ -11,24 +11,18 @@ GO
 
 CREATE PROCEDURE UpdateDocument
     @DocID INT,
-	@DocumentData VARBINARY(MAX)
+	@DocumentName VARCHAR(100)
 AS
 
 BEGIN
-    IF @DocID IS NULL
+    IF (@DocID IS NULL OR @DocumentName IS NULL)
     BEGIN
-        RAISERROR('DocumentID cannot be null', 16, 1);
+        RAISERROR('params cannot be null', 16, 1);
         RETURN 1;
     END
 
-	IF @DocumentData IS NULL
-    BEGIN
-        RAISERROR('Document Data cannot be null', 16, 1);
-        RETURN 2;
-    END
-
     UPDATE Document
-	SET DocumentData = @DocumentData
+	SET Document.DocumentName = @DocumentName
 	WHERE DocumentID = @DocID
 END;
 GO
