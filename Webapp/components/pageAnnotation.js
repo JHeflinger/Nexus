@@ -85,19 +85,14 @@ export default function PageAnnotation(props) {
 
     const draw = (e) => {
         if (e.buttons !== 1) return;
-
         const ctx = canvasRef.current.getContext('2d');
-
         ctx.beginPath();
-
         ctx.lineWidth = 5;
         ctx.lineCap = 'round';
-        ctx.strokeStyle = '#c0392b';
-
+        ctx.strokeStyle = '#000000';
         ctx.moveTo(pos.x, pos.y);
         setPos(e);
         ctx.lineTo(pos.x, pos.y);
-
         ctx.stroke();
     }
 

@@ -222,23 +222,11 @@ async def uploadFile(
     DateOfCreation: Annotated[str, Form(...)],
     Annotations: Annotated[str, Form(...)]
 ):
-    # uid = form_data.uid
-    # DocumentData = form_data.DocumentData
-    # DocumentName = form_data.DocumentName
-    # Description = form_data.Description
-    # LastModified = form_data.LastModified
-    # DateOfCreation = form_data.DateOfCreation
-    # Annotations = form_data.Annotations
 
     print(uid)
     print(DocumentName)
     Nexus = Server("titan.csse.rose-hulman.edu", "Nexus")
     Nexus.disconnect()
-
-    # Annotations = {"test": "test"}
-    # Annotations = json.loads(Annotations)
-
-    # Convert Annotations to bytes
     Annotations = Server.convertToBinaryData(bytes(Annotations, "utf-8"))
 
     LastModifiedDate = datetime.strptime(LastModified, "%Y-%m-%dT%H:%M:%S.%fZ")
