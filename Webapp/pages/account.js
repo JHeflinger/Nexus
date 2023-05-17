@@ -135,11 +135,25 @@ export default function Home() {
   const uploadIcon = <FontAwesomeIcon icon={faCloud} />
   const searchIcon = <FontAwesomeIcon icon={faSearch} />
 
-  const [numberOfDocs, _setNumberOfDocs] = useState(-1);
+  const [numberOfDocs, _setNumberOfDocs] = useState(0);
   const numberOfDocsRef = useRef(numberOfDocs);
   const setNumberOfDocs = (data) => {
     numberOfDocsRef.current = data;
     _setNumberOfDocs(data);
+  }
+
+  const [numberOfLikes, _setNumberOfLikes] = useState(0);
+  const numberOfLikesRef = useRef(numberOfLikes);
+  const setNumberOfLikes = (data) => {
+    numberOfLikesRef.current = data;
+    _setNumberOfLikes(data);
+  }
+
+  const [numberOfViews, _setNumberOfViews] = useState(0);
+  const numberOfViewsRef = useRef(numberOfViews);
+  const setNumberOfViews = (data) => {
+    numberOfViewsRef.current = data;
+    _setNumberOfViews(data);
   }
 
   const [forceReload, _setForceReload] = useState(1);
@@ -209,7 +223,21 @@ export default function Home() {
         }
         // console.log("length: " + data.length);
         setUserFileIDs(fileIDs);
-        setNumberOfDocs(data.length);
+        setNumberOfDocs(data.docs.length);
+      });
+
+      Database.getUserAccountLikes(uidRef.current).then((response) => {
+        response.json().then((data) => {
+          console.log(data);
+          setNumberOfLikes(data);
+        });
+      });
+
+      Database.getUserAccountViews(uidRef.current).then((response) => {
+        response.json().then((data) => {
+          console.log(data);
+          setNumberOfViews(data);
+        });
       });
 
     });
@@ -289,15 +317,15 @@ export default function Home() {
               <div className={accountStyles.joinlog}>Joined: January 13th 2023</div>
               <div className={accountStyles.accStats}>
                 <div className={accountStyles.stat}>
-                  0
+                  {numberOfViewsRef.current}
                   <div>views</div>
                 </div>
                 <div className={accountStyles.stat}>
-                  0
+                  {numberOfLikesRef.current}
                   <div>likes</div>
                 </div>
-                <div className={accountStyles.stat}>
-                  {numberOfDocs}
+                <div id="numDocuments" className={accountStyles.stat}>
+                  {numberOfDocsRef.current}
                   <div>documents</div>
                 </div>
               </div>

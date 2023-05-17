@@ -289,6 +289,30 @@ export default class Database {
         return promise;
     }
 
+    static async getUserAccountLikes(uid) {
+        let promise = undefined;
+        try {
+            promise = fetch(`${serverURL}/getUserAccountLikes/${uid}`, {
+                method: 'GET'
+            });
+        } catch (error) {
+            console.log(error);
+        }
+        return promise;
+    }
+
+    static async getUserAccountViews(uid) {
+        let promise = undefined;
+        try {
+            promise = fetch(`${serverURL}/getUserAccountViews/${uid}`, {
+                method: 'GET'
+            });
+        } catch (error) {
+            console.log(error);
+        }
+        return promise;
+    }
+
     static async getDocumentLikes(docid) {
         let promise = undefined;
         try {

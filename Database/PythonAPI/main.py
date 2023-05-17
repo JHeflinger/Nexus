@@ -111,6 +111,27 @@ async def getDocumentViews(docid: int):
         print("document views: " + str(result[0][0]))
         return result[0][0]
 
+@app.get("/getUserAccountLikes/{uid}")
+async def getUserAccountLikes(uid: str):
+    Nexus = Server("titan.csse.rose-hulman.edu", "Nexus")
+    Nexus.disconnect()
+
+    query = f"EXEC GetUserAccountLikes @Username={uid}"
+    success, result = Nexus.execute(query, username="consaljj")
+    if success:
+        print("user account likes: " + str(result[0][0]))
+        return result[0][0]
+    
+@app.get("/getUserAccountViews/{uid}")
+async def getUserAccountViews(uid: str):
+    Nexus = Server("titan.csse.rose-hulman.edu", "Nexus")
+    Nexus.disconnect()
+
+    query = f"EXEC GetUserAccountViews @Username={uid}"
+    success, result = Nexus.execute(query, username="consaljj")
+    if success:
+        print("user account views: " + str(result[0][0]))
+        return result[0][0]
 
 @app.get("/GetDocumentLikes/{docid}")
 async def getDocumentLikes(docid: int):
