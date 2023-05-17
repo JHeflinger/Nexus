@@ -123,7 +123,7 @@ async def getUserAccountLikes(uid: str):
     success, result = Nexus.execute(query, username="consaljj")
     if success:
         print("user account likes: " + str(result[0][0]))
-        if (result.length > 0):
+        if (len(result) > 0):
             return result[0][0]
         return 0
     
