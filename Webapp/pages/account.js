@@ -248,7 +248,7 @@ export default function Home() {
   useEffect(() => {
     // console.log("Updating files");
     for (let [fileID, fileName] of userFileIDs) {
-      Database.getFileByObjectID(fileID).then((data) => {
+      Database.getSimpleFileByObjectID(fileID).then((data) => {
         // console.log(`Getting file with id: ${fileID} and name: ${fileName}`);
 
         // data.arrayBuffer().then((buffer) => {

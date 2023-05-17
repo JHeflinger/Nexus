@@ -326,6 +326,33 @@ async def getFilesBySearch(uid: str, sortBy: str, descending: bool):
 
 
 @app.get(
+    "/getSimpleFileByObjectID/{DocID}",
+    responses={
+
+        200: {
+            "content": {"application/pdf": {}},
+        }
+
+    },
+    response_class=Response
+)
+async def getSimpleFileByObjectID(DocID: int):
+    Nexus = Server("titan.csse.rose-hulman.edu", "Nexus")
+    Nexus.disconnect()
+
+    query = f"EXEC GetFileByID @docID={DocID}"
+    print(f"Getting File with id={DocID}")
+    success, result = Nexus.execute(query, username="consaljj")
+    print("Success: ", success)
+    #result = [x[0] for x in result]
+    print("Result: ", len(result))
+    if success:
+        # print(result)
+        return Response(content=result[0][1], media_type="application/pdf")
+    else:
+        return False
+
+@app.get(
     "/getFileByObjectID/{DocID}",
     # responses={
 

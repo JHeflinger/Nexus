@@ -165,6 +165,19 @@ export default class Database {
         return promise;
     }
 
+    static async getSimpleFileByObjectID(objectID) {
+        let promise = undefined;
+        try {
+            promise = fetch(serverURL + `/getSimpleFileByObjectID/${objectID}`, {
+                method: 'GET',
+            });
+
+        } catch (error) {
+            console.log(error);
+        }
+        return promise;
+    }
+
     static async getFileRefByObjectID(objectID) {
         let promise = undefined;
         try {
