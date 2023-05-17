@@ -2,11 +2,16 @@
 @import '../styles/utils.module.scss';
 
 
-.pageAnnotationCanvas {
+.wrapper {
     position: relative;
+    display: grid;
+}
+
+.pageAnnotationCanvas {
+    position: absolute;
     z-index: 100;
-    left: 0%;
-    top: 0%;
+    // left: 0%;
+    // top: 0%;
     grid-column: 1;
     grid-row: 1;
     pointer-events: none;
