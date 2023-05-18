@@ -228,10 +228,32 @@ export default class Database {
         }
     }
 
-    static async addNewOrg(email, orgID) {
+    static async deleteOrg(oid) {
+        let promise = undefined;
+        try {
+            promise = fetch(serverURL + `/deleteOrg/${oid}`, {
+                method: 'POST',
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    static async addUserToOrg(email, orgID) {
         let promise = undefined;
         try {
             promise = fetch(serverURL + `/addUserToOrg/${orgID}/${email.replace(/\./g, '')}`, {
+                method: 'POST',
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    static async addNewOrg(uid) {
+        let promise = undefined;
+        try {
+            promise = fetch(serverURL + `/addNewOrganization/${uid}`, {
                 method: 'POST',
             });
         } catch (error) {

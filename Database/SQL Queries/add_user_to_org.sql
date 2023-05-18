@@ -18,6 +18,11 @@ BEGIN
 		RETURN (1)
 	END
 
+	IF NOT EXISTS (SELECT * FROM Users WHERE Users.FirstName = @email)
+	BEGIN
+		RETURN 2;
+	END
+
 	IF NOT EXISTS (SELECT * 
 					FROM InAnOrganization 
 					JOIN Users ON InAnOrganization.UserName = Users.UserName

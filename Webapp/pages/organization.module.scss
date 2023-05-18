@@ -17,15 +17,88 @@
     color: black;
 }
 
+.myorgs hr {
+    width: 80%;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.adduserinput {
+    color: white;
+    background-color: $dark-0;
+    border: none;
+    margin: 10px;
+    padding: 5px;
+    font-size: 16px;
+    border-radius: 10px;
+    padding-left: 10px;
+    box-shadow: rgba(255, 255, 255, 0.3) 0px 0px 10px;
+}
+
+.deletebutton {
+    margin-top: 30px;
+    width: 50%;
+    margin-left: 25%;
+    background-color: red;
+    text-align: center;
+    font-size: 18px;
+    padding: 5px;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+.updatebutton {
+    margin-top: 50px;
+    width: 50%;
+    margin-left: 25%;
+    background-color: rgb(44, 44, 247);
+    text-align: center;
+    font-size: 18px;
+    padding: 5px;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+.addUserBtn {
+    background-color: $dark-7;
+    width: 20%;
+    margin-left: 40%;
+    margin-top: 20px;
+    border-radius: 20px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.nameInput {
+    color: white;
+    background-color: $dark-0;
+    border: none;
+    margin: 10px;
+    padding: 5px;
+    font-size: 16px;
+    border-radius: 10px;
+    padding-left: 10px;
+    box-shadow: rgba(255, 255, 255, 0.3) 0px 0px 10px;
+    margin-bottom: 30px;
+}
+
+.addUserBtn:hover {
+    background-color: $dark-9;
+}
+
+.addUserBtn:active {
+    background-color: $dark-5;
+}
+
 .graph {
     @extend .profile;
-    height: 79vh;
+    height: 92vh;
     width: 100vw;
     margin-top: 3vh;
 }
 
 .graph::before {
-    height: 79vh;
+    height: 92vh;
     width: 63.5vw;
 }
 

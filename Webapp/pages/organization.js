@@ -17,13 +17,14 @@ import { faFile } from '@fortawesome/free-solid-svg-icons';
 import { faCamera } from '@fortawesome/free-solid-svg-icons';
 import { faCloud } from '@fortawesome/free-solid-svg-icons';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faUserCircle, faSignOut } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Lato } from '@next/font/google';
 import dynamic from 'next/dynamic';
-import { getAuth } from "firebase/auth";
+import { getAuth, signOut } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 import { pdfjs, Document, Page } from "react-pdf";
+import searchStyles from './search.module.scss';
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
 // pdfjs.GlobalWorkerOptions.workerSrc = worker;
 
@@ -39,6 +40,10 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const signOutIcon = <FontAwesomeIcon icon={faSignOut} />
+
+
+const accIcon = <FontAwesomeIcon className={searchStyles.accIconBtn} icon={faUserCircle} />
 
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false })
 
@@ -342,13 +347,21 @@ export default function Home() {
       });
     });
   }
+
+  const logOut = () => {
+    signOut(auth).then(() => {
+      //router.push("/login");
+    }).catch((error) => {
+      console.log("cant sign out! oopsies!");
+    });
+  }
   
   const addUserToOrg = () => {
     let email = document.getElementById("addUserInput").value;
     document.getElementById("addUserInput").value = "";
     const urlParams = new URLSearchParams(window.location.search);
     const orgID = urlParams.get('orgID');
-    Database.addNewOrg(email, orgID).then((response) => {
+    Database.addUserToOrg(email, orgID).then((response) => {
 
     });
   }
@@ -359,8 +372,20 @@ export default function Home() {
     let name = document.getElementById("orgNameInput").value;
     let desc = document.getElementById("orgDescInput").value;
     Database.updateOrg(orgID, name, desc).then((response) => {
-
+        alert("Successfully updated organization!");
     });
+  }
+
+  const deleteOrg = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const orgID = urlParams.get('orgID');
+    Database.deleteOrg(orgID).then((response) => {
+      clickAccountPageLink();
+    })
+  }
+
+  const clickAccountPageLink = () => {
+    router.push('./account');
   }
 
   return (
@@ -382,22 +407,6 @@ export default function Home() {
       <div>
         <div className='outer'>
           <div className='inner'>
-            <div className={cx(lato.className, accountStyles.profile)}>
-              <div className={accountStyles.accStats}>
-                <div className={accountStyles.stat}>
-                  {numberOfViewsRef.current}
-                  <div>views</div>
-                </div>
-                <div className={accountStyles.stat}>
-                  {numberOfLikesRef.current}
-                  <div>likes</div>
-                </div>
-                <div id="numDocuments" className={accountStyles.stat}>
-                  {numberOfDocsRef.current}
-                  <div>documents</div>
-                </div>
-              </div>
-            </div>
             <div className={accountStyles.contentWrapper}>
               <div className={cx(lato.className, accountStyles.mydocs)}>
                 <div className={accountStyles.title}>ORGANIZATION DOCS</div>
@@ -432,12 +441,14 @@ export default function Home() {
             <div className={accountStyles.contentWrapper2}>
               <div className={cx(lato.className, accountStyles.myorgs)}>
                 <div className={accountStyles.title}>SETTINGS</div>
-                <input id="addUserInput" type="text"></input>
-                <div onClick={addUserToOrg}>ADD USER</div>
-                <input id="orgNameInput" type="text"></input>
-                <textarea id="orgDescInput"></textarea>
-                <div>DELETE</div>
-                <div onClick={updateOrgData}>UPDATE</div>
+                <input id="addUserInput" className={cx(lato.className, accountStyles.adduserinput)} type="text"></input>
+                <div onClick={addUserToOrg} className={cx(lato.className, accountStyles.addUserBtn)}>ADD USER</div>
+                <hr></hr>
+                <input className={cx(lato.className, accountStyles.nameInput)} id="orgNameInput" type="text"></input>
+                <textarea className={cx(lato.className, accountStyles.nameInput)} id="orgDescInput"></textarea>
+                <hr></hr>
+                <div className={cx(lato.className, accountStyles.deletebutton)} onClick={deleteOrg}>DELETE</div>
+                <div className={cx(lato.className, accountStyles.updatebutton)} onClick={updateOrgData}>UPDATE</div>
               </div>
             </div>
           </div>
@@ -448,6 +459,8 @@ export default function Home() {
           items={{
             "TestItem2": [uploadIcon, clickFileUpload],
             "TestItem3": [searchIcon, clickSearchLink],
+            "TestItem4": [accIcon, clickAccountPageLink],
+            "TestItem5": [signOutIcon, logOut],
           }}
         />
       </div>

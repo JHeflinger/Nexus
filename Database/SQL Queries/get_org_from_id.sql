@@ -17,7 +17,7 @@ BEGIN
 		RETURN (1)
 	END
 
-	SELECT *
+	SELECT [Name], [Description]
 	FROM Organization
 	WHERE Organization.OrganizationID = @orgID
 END

@@ -172,12 +172,13 @@ export default function Home() {
       descending = true;
     }
     
+    /*
     let tagList = [];
     let tags = document.getElementById("tagContainer").children;
     for(var i=0; i<tags.length; i++){
         var tag = tags[i];
         tagList.push(tag.innerHTML.split(">")[2]);
-    }
+    }*/
     
     Database.getAvailableFilesByUser(uidRef.current, sortBy, !descending).then((response) => {
       const files = response.json().then((data) => {
@@ -233,7 +234,7 @@ export default function Home() {
         router.push("/login");
       }
     });
-
+    /*
     document.getElementById("tagInput").addEventListener("keyup", function(event) {
       event.preventDefault();
       if (event.keyCode === 13) {
@@ -245,7 +246,7 @@ export default function Home() {
         ));
         ReactDOM.render(children, container);
       }
-    });
+    });*/
   
     document.getElementById("searchbar").addEventListener("keyup", function(event) {
       event.preventDefault();
@@ -295,9 +296,9 @@ export default function Home() {
             <div id="activHL" className={cx(activHLClass, searchStyles.orderFilter)} onClick={() => orderFilterClick("activHL")}>ACTIVITY: HIGH TO LOW</div>
             <div id="activLH" className={cx(activLHClass, searchStyles.orderFilter)} onClick={() => orderFilterClick("activLH")}>ACTIVITY: LOW TO HIGH</div>
             <hr></hr>
-            <label>ADD TAG:</label>
+            {/*<label>ADD TAG:</label>
             <input id="tagInput" type="text" className={searchStyles.addTagText} placeholder="NEW TAG..." />
-            <div id="tagContainer" className={searchStyles.tagContainer}></div>
+            <div id="tagContainer" className={searchStyles.tagContainer}></div>*/}
           </div>
         </div>
         <div
@@ -306,7 +307,6 @@ export default function Home() {
           <Dropdown
             items={{
               "TestItem4": [signOutIcon, logOut],
-              "TestItem1": [scannerIcon, clickScannerLink],
               "TestItem2": [uploadIcon, clickFileUpload],
               "TestItem3": [accIcon, clickAccountPageLink],
             }}

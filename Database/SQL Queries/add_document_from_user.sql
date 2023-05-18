@@ -16,7 +16,8 @@ CREATE PROCEDURE AddDocumentFromUser
     @Desc VARCHAR(2000),
     @LastModified DATE,
     @DateOfCreation DATE,
-    @Annotations VARBINARY(MAX)
+    @Annotations VARBINARY(MAX),
+	@OrgID INT = -1
 AS
 
 BEGIN
@@ -38,5 +39,11 @@ BEGIN
         (UserName, DocumentID)
     VALUES
         (@UID, @docID);
+
+	IF (@OrgID != -1)
+	BEGIN
+		INSERT INTO OrganizationOwns (OrganizationID, DocumentID)
+		VALUES(@OrgID, @docID)
+	END
 END;
 GO

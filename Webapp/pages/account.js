@@ -16,12 +16,12 @@ import utilStyles from '../styles/utils.module.scss';
 import { faFile } from '@fortawesome/free-solid-svg-icons';
 import { faCamera } from '@fortawesome/free-solid-svg-icons';
 import { faCloud } from '@fortawesome/free-solid-svg-icons';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faSignOut } from '@fortawesome/free-solid-svg-icons';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Lato } from '@next/font/google';
 import dynamic from 'next/dynamic';
-import { getAuth } from "firebase/auth";
+import { getAuth, signOut } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 import { pdfjs, Document, Page } from "react-pdf";
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
@@ -39,7 +39,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-
+const signOutIcon = <FontAwesomeIcon icon={faSignOut} />
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false })
 
 const lato = Lato({
@@ -336,6 +336,14 @@ export default function Home() {
     });
   }
 
+  const logOut = () => {
+    signOut(auth).then(() => {
+      //router.push("/login");
+    }).catch((error) => {
+      console.log("cant sign out! oopsies!");
+    });
+  }
+
   return (
     <>
       <Head>
@@ -445,7 +453,8 @@ export default function Home() {
         <Dropdown
           items={{
             "TestItem2": [uploadIcon, clickFileUpload],
-            "TestItem3": [searchIcon, clickSearchLink]
+            "TestItem3": [searchIcon, clickSearchLink],
+            "TestItem4": [signOutIcon, logOut],
           }}
         />
       </div>
