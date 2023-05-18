@@ -75,20 +75,26 @@ export default function PageAnnotation(props) {
             if (props.initialAnnotation) {
                 console.log("initial annotation found")
                 console.log(props.initialAnnotation);
-                // const parsedData = JSON.parse(props.initialAnnotation);
+                const parsedData = JSON.parse(props.initialAnnotation);
                 // console.log(parsedData);
                 // console.log(props.initialAnnotation);
-                const parsedData = props.initialAnnotation;
+                // const parsedData = props.initialAnnotation;
                 //conver dict of points to array of points
                 const dataRay = [];
                 for (const key in parsedData.data) {
-                        const element = parsedData["data"][key];
-                        dataRay.push(element);
+                    const element = parsedData["data"][key];
+                    dataRay.push(element);
                 }
-                const newImageData = new ImageData(Uint8ClampedArray.from(dataRay), parsedData.width, parsedData.height);
-                ctx.putImageData(newImageData, 0, 0);
-                console.log("IMAGE DATA PUT");
-            }   
+                
+                if (parsedData.width !== 0 && parsedData.height !== 0 && parsedData.data) {
+                    const newImageData = new ImageData(Uint8ClampedArray.from(dataRay), parsedData.width, parsedData.height);
+                    ctx.putImageData(newImageData, 0, 0);
+                    console.log("IMAGE DATA PUT");
+                } else {
+                    console.log("Error in loading annotation data");
+                    console.log(parsedData);
+                }
+            }
         }
     }
 

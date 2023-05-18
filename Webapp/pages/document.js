@@ -312,6 +312,8 @@ export default function Home() {
 
     const updateAnnotation = (pageNumber, annotation) => {
         pageAnnotations.current[pageNumber] = annotation;
+        console.log("updated annotations:");
+        console.log(pageAnnotations.current);
     }
 
     return (
