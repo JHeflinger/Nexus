@@ -74,11 +74,26 @@ export default function PageAnnotation(props) {
             console.log(props.initialAnnotation);
             if (props.initialAnnotation) {
                 console.log("initial annotation found")
-                // const parsedData = JSON.parse(props.initialAnnotation);
-                // console.log(parsedData);
                 console.log(props.initialAnnotation);
-                const newImageData = new ImageData(parsedData.data, parsedData.width, parsedData.height);
-                // ctx.putImageData(newImageData, 0, 0);
+                const parsedData = JSON.parse(props.initialAnnotation);
+                // console.log(parsedData);
+                // console.log(props.initialAnnotation);
+                // const parsedData = props.initialAnnotation;
+                //conver dict of points to array of points
+                const dataRay = [];
+                for (const key in parsedData.data) {
+                    const element = parsedData["data"][key];
+                    dataRay.push(element);
+                }
+                
+                if (parsedData.width !== 0 && parsedData.height !== 0 && parsedData.data) {
+                    const newImageData = new ImageData(Uint8ClampedArray.from(dataRay), parsedData.width, parsedData.height);
+                    ctx.putImageData(newImageData, 0, 0);
+                    console.log("IMAGE DATA PUT");
+                } else {
+                    console.log("Error in loading annotation data");
+                    console.log(parsedData);
+                }
             }
         }
     }
@@ -94,15 +109,17 @@ export default function PageAnnotation(props) {
 
     const updateStoredAnnotations = (ctx) => {
         const imageData = ctx.getImageData(0, 0, canvasRef.current.width, canvasRef.current.height);
-        // const stringifiedData = JSON.stringify(imageData);
         const dataToSave = {
             data: imageData.data,
             width: imageData.width,
             height: imageData.height,
         }
-        props.updateAnnotation(props.pageNumber, dataToSave);
+        const stringifiedData = JSON.stringify(dataToSave);
+
+        console.log(dataToSave);
+        props.updateAnnotation(props.pageNumber, stringifiedData);
     }
-    
+
 
     const draw = (e) => {
         if (e.buttons !== 1) return;
@@ -115,7 +132,7 @@ export default function PageAnnotation(props) {
         setPos(e);
         ctx.lineTo(pos.x, pos.y);
         ctx.stroke();
-        
+
     }
 
     const update = (e) => {
@@ -142,7 +159,7 @@ export default function PageAnnotation(props) {
                 className={pageannotationStyles.pageAnnotationCanvas}
             ></canvas>
             <Page
-                
+
                 pageNumber={props.pageNumber}
                 height={dimensions.height}
                 renderAnnotationLayer={false}
