@@ -269,7 +269,7 @@ export default function Home() {
         let documentName = document.getElementById("titleInput").value;
         let documentDescription = document.getElementById("descInput").value;
         console.log("saving page annotations:");
-        console.log(pageAnnotations.current);
+        // console.log(pageAnnotations.current);
         Database.updateFile(docID, documentName, documentDescription, pageAnnotations.current).then((response) => {
             console.log(response.status);
         });
@@ -312,8 +312,8 @@ export default function Home() {
 
     const updateAnnotation = (pageNumber, annotation) => {
         pageAnnotations.current[pageNumber] = annotation;
-        console.log("updated annotations:");
-        console.log(pageAnnotations.current);
+        // console.log("updated annotations:");
+        // console.log(pageAnnotations.current);
     }
 
     return (

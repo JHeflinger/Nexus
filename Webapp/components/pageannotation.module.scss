@@ -5,6 +5,7 @@
 .wrapper {
     position: relative;
     display: grid;
+    touch-action: none;
 }
 
 .pageAnnotationCanvas {

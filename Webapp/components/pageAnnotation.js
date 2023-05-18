@@ -75,10 +75,10 @@ export default function PageAnnotation(props) {
             if (props.initialAnnotation) {
                 console.log("initial annotation found")
                 console.log(props.initialAnnotation);
-                const parsedData = JSON.parse(props.initialAnnotation);
+                // const parsedData = JSON.parse(props.initialAnnotation);
+                const parsedData = props.initialAnnotation;
                 // console.log(parsedData);
                 // console.log(props.initialAnnotation);
-                // const parsedData = props.initialAnnotation;
                 //conver dict of points to array of points
                 const dataRay = [];
                 for (const key in parsedData.data) {
@@ -114,10 +114,10 @@ export default function PageAnnotation(props) {
             width: imageData.width,
             height: imageData.height,
         }
-        const stringifiedData = JSON.stringify(dataToSave);
+        // const stringifiedData = JSON.stringify(dataToSave);
 
         console.log(dataToSave);
-        props.updateAnnotation(props.pageNumber, stringifiedData);
+        props.updateAnnotation(props.pageNumber, dataToSave);
     }
 
 
@@ -132,6 +132,8 @@ export default function PageAnnotation(props) {
         setPos(e);
         ctx.lineTo(pos.x, pos.y);
         ctx.stroke();
+        e.stopPropagation();
+        e.preventDefault();
 
     }
 
@@ -139,6 +141,8 @@ export default function PageAnnotation(props) {
         const ctx = canvasRef.current.getContext('2d');
         updateStoredAnnotations(ctx);
         console.log("UPDATING ANNOTATIONS");
+        e.stopPropagation();
+        e.preventDefault();
     }
 
 
@@ -147,11 +151,11 @@ export default function PageAnnotation(props) {
             id="pageAnnotationOuterWrapper"
             key={props.pageNumber}
             className={pageannotationStyles.wrapper}
-            onMouseDown={setPos}
-            onMouseMove={draw}
+            onPointerDown={setPos}
+            onPointerMove={draw}
             ref={ref}
-            onMouseEnter={setPos}
-            onMouseUp={update}
+            onPointerEnter={setPos}
+            onPointerUp={update}
         >
             <canvas
                 ref={canvasRef}
