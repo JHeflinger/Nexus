@@ -289,6 +289,7 @@ export default function Home() {
 
     const onDocumentLoadSuccess = (pdf) => {
         console.log('Set number of pages to', pdf.numPages);
+        setLoaded(true);
         setNumberOfPages(pdf.numPages);
 
     }
@@ -323,6 +324,8 @@ export default function Home() {
         setEraserMode(!eraserMode);
     }
 
+    const [loaded, setLoaded] = useState(false);
+
     return (
         <>
             <Head>
@@ -339,7 +342,8 @@ export default function Home() {
                 >
                     <div id="documentDocViewWrapper" className={documentStyles.docViewWrapper}>
                         <div id="documentDocViewer" className={documentStyles.docViewer}>
-                            <Document file={fileData} onLoadSuccess={onDocumentLoadSuccess}>
+                            {/* {loaded ? "" : "LOADING..."} */}
+                            <Document file={fileData} onLoadSuccess={onDocumentLoadSuccess} style={loaded? "" : "display: none;"}>
                                 {
                                     Array.from(Array(numberOfPages).keys()).map((pageNumber) => {
                                         return (

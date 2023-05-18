@@ -15,7 +15,8 @@ from fastapi.responses import JSONResponse
 
 app = FastAPI()
 
-dbName = "Nexus"
+# dbName = "Nexus"
+dbName = "Nexus_Blob"
 keyringUser = "consaljj"
 
 origins = ["*"]
