@@ -204,6 +204,19 @@ export default class Database {
         return promise;
     }
 
+    static async getFileByObjectID_NoAnno(objectID) {
+        let promise = undefined;
+        try {
+            promise = fetch(serverURL + `/getFileByObjectID_NoAnno/${objectID}`, {
+                method: 'GET',
+            });
+
+        } catch (error) {
+            console.log(error);
+        }
+        return promise;
+    }
+
     static async getOrganizationsByUser(uid) {
         let promise = undefined;
         try {

@@ -451,7 +451,7 @@ async def getSimpleFileByObjectID(DocID: int):
     Nexus = Server("titan.csse.rose-hulman.edu", dbName)
     Nexus.disconnect()
 
-    query = f"EXEC GetFileByID @docID={DocID}"
+    query = f"EXEC GetFileByIDFast @docID={DocID}"
     print(f"Getting File with id={DocID}")
     success, result = Nexus.execute(query, username=keyringUser)
     print("Success: ", success)
@@ -462,17 +462,48 @@ async def getSimpleFileByObjectID(DocID: int):
         return Response(content=result[0][1], media_type="application/pdf")
     else:
         return False
+    
+@app.get(
+    "/getFileByObjectID_NoAnno/{DocID}",
+)
+async def getFileByObjectID_NoAnno(DocID: int):
+    Nexus = Server("titan.csse.rose-hulman.edu", dbName)
+    Nexus.disconnect()
+
+    query = f"EXEC GetFileByIDFast @docID = ?"
+    print(f"Getting File with if={DocID}")
+
+    params = (DocID)
+
+    success, result = Nexus.execute(query, binParams=params, username=keyringUser)
+    print("Success: ", success)
+    # print("Result: ", result[0][-1])
+    result = [x for x in result[0]]
+
+    documentName = result[0]
+    documentData = (result[1]).hex()
+    description = result[2]
+    lastModified = result[3]
+    dateOfCreation = result[4]
+    
+    
+    if success:
+        # print(result)
+        # return Response(content=result, media_type="application/pdf")
+        return {
+            "data": documentData,
+            "metadata": {
+                "documentName": documentName,
+                "description": description,
+                "lastModified": lastModified,
+                "dateOfCreation": dateOfCreation,
+            }
+        }
+    else:
+        return False
 
 @app.get(
     "/getFileByObjectID/{DocID}",
-    # responses={
-
-    #     200: {
-    #         "content": {"application/pdf": {}},
-    #     }
-
-    # },
-    # response_class=Response
 )
 async def getFileByObjectID(DocID: int):
     Nexus = Server("titan.csse.rose-hulman.edu", dbName)
