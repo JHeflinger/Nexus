@@ -451,7 +451,7 @@ async def getSimpleFileByObjectID(DocID: int):
     Nexus = Server("titan.csse.rose-hulman.edu", dbName)
     Nexus.disconnect()
 
-    query = f"EXEC GetFileByIDFast @docID={DocID}"
+    query = f"EXEC GetFileByIDFast   @docID={DocID}"
     print(f"Getting File with id={DocID}")
     success, result = Nexus.execute(query, username=keyringUser)
     print("Success: ", success)

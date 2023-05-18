@@ -125,8 +125,9 @@ export default function PageAnnotation(props) {
         if (e.buttons !== 1) return;
         const ctx = canvasRef.current.getContext('2d');
         ctx.beginPath();
-        ctx.lineWidth = 5;
-        ctx.lineCap = 'round';
+        ctx.globalCompositeOperation = props.eraserMode ? 'destination-out' : 'source-over';
+        ctx.lineWidth = props.eraserMode ? 20 : 5;
+        ctx.lineCap = props.eraserMode ? 'square' : 'round';
         ctx.strokeStyle = '#000000';
         ctx.moveTo(pos.x, pos.y);
         setPos(e);

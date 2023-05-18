@@ -8,7 +8,8 @@ import documentStyles from './document.module.scss'
 import { Lato } from '@next/font/google';
 import ReactDOM from 'react-dom';
 import cx from 'classnames';
-import { faEye, faHeart } from '@fortawesome/free-solid-svg-icons';
+import { faEye, faHeart, faEraser, faPen } from '@fortawesome/free-solid-svg-icons';
+// import {faPen} from '@fortawesome/fontawesome-light-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Database from '../scripts/dbInterface';
 import { getAuth } from "firebase/auth";
@@ -193,16 +194,16 @@ export default function Home() {
                 data.json().then((data) => {
                     console.log(data);
                     if (data.tags) {
-                    let tags = data.tags;
-                    for (let i = 0; i < tags.length; i++) {
-                        tagData.push(tags[i]);
-                        let container = document.getElementById("tags");
-                        const children = tagData.map((val) => (
-                            <span onClick={() => deleteTag({ val })} className={documentStyles.tag}><span className={lato.className}>X</span>{val}</span>
-                        ));
-                        ReactDOM.render(children, container);
+                        let tags = data.tags;
+                        for (let i = 0; i < tags.length; i++) {
+                            tagData.push(tags[i]);
+                            let container = document.getElementById("tags");
+                            const children = tagData.map((val) => (
+                                <span onClick={() => deleteTag({ val })} className={documentStyles.tag}><span className={lato.className}>X</span>{val}</span>
+                            ));
+                            ReactDOM.render(children, container);
+                        }
                     }
-                }
                 });
             });
         }
@@ -316,6 +317,12 @@ export default function Home() {
         // console.log(pageAnnotations.current);
     }
 
+    const [eraserMode, setEraserMode] = useState(false);
+
+    const toggleEraserMode = () => {
+        setEraserMode(!eraserMode);
+    }
+
     return (
         <>
             <Head>
@@ -330,31 +337,39 @@ export default function Home() {
                     id="documentContainer"
                     className={cx('inner', documentStyles.container)}
                 >
-                    <div className={documentStyles.docViewer}>
-                        <Document file={fileData} onLoadSuccess={onDocumentLoadSuccess}>
-                            {
-                                Array.from(Array(numberOfPages).keys()).map((pageNumber) => {
-                                    return (
-                                        <>
-                                            <PageAnnotation
-                                                pageNumber={pageNumber + 1}
-                                                referenceRef={parentRef}
-                                                key={pageNumber + 1}
-                                                updateAnnotation={updateAnnotation}
-                                                initialAnnotation={pageAnnotations.current[pageNumber + 1]}
-                                            />
-                                            <hr></hr>
-                                        </>
+                    <div id="documentDocViewWrapper" className={documentStyles.docViewWrapper}>
+                        <div id="documentDocViewer" className={documentStyles.docViewer}>
+                            <Document file={fileData} onLoadSuccess={onDocumentLoadSuccess}>
+                                {
+                                    Array.from(Array(numberOfPages).keys()).map((pageNumber) => {
+                                        return (
+                                            <>
+                                                <PageAnnotation
+                                                    pageNumber={pageNumber + 1}
+                                                    referenceRef={parentRef}
+                                                    key={pageNumber + 1}
+                                                    updateAnnotation={updateAnnotation}
+                                                    initialAnnotation={pageAnnotations.current[pageNumber + 1]}
+                                                    eraserMode={eraserMode}
+                                                />
+                                                <hr></hr>
+                                            </>
+                                        )
+                                    }
                                     )
                                 }
-                                )
-
+                            </Document>
+                        </div>
+                        <div id="documentEraseButton" className={documentStyles.eraseButton} onClick={toggleEraserMode}>
+                            {
+                                eraserMode ?
+                                    <FontAwesomeIcon icon={faEraser} style={{ color: "#ffffff", }} />
+                                    :
+                                    <FontAwesomeIcon icon={faPen} style={{ color: "#ffffff", }} />
                             }
-                        </Document>
-                        {/* </PDFViewer> */}
-
-
+                        </div>
                     </div>
+
                     <div className={documentStyles.docEditor}>
                         <label htmlFor="titleInput" className={documentStyles.titleHeader}>TITLE</label>
                         <input id="titleInput" className={documentStyles.titleInput} type="text"></input>
