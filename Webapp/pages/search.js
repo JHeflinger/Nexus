@@ -171,7 +171,15 @@ export default function Home() {
     } else if (activeStateRef.current == 2) {
       descending = true;
     }
-    Database.getAvailableFilesByUser(uidRef.current, sortBy, descending).then((response) => {
+    
+    let tagList = [];
+    let tags = document.getElementById("tagContainer").children;
+    for(var i=0; i<tags.length; i++){
+        var tag = tags[i];
+        tagList.push(tag.innerHTML.split(">")[2]);
+    }
+    
+    Database.getAvailableFilesByUser(uidRef.current, sortBy, !descending).then((response) => {
       const files = response.json().then((data) => {
         let result = <div className={searchStyles.searchResult}><div>{}</div><br></br><span>{}</span></div>
         let resultData = [];

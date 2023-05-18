@@ -331,8 +331,8 @@ async def getFilesBySearch(uid: str, sortBy: str, descending: bool):
     query = "EXEC GetAvailableDocumentsFromUser @Username = ?, @OrderBy = ?, @DecendingOrder = ?"
     params = (uid, sortBy, descending)
     success, result = Nexus.execute(query, binParams=params,  username="consaljj")
-    print(result)
     result = [list(x) for x in result]
+    print(result)
     if success:
         print(result)
 

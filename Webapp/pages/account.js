@@ -338,7 +338,6 @@ export default function Home() {
               <div className={cx(lato.className, accountStyles.mydocs)}>
                 <div className={accountStyles.title}>MY DOCS</div>
                 <div className={accountStyles.docs}>
-
                   {userFileIDs.map(([fileId, fileName]) => {
                     const fileURL = userFiles[fileId]
                     return (
@@ -363,9 +362,12 @@ export default function Home() {
                     )
                   })
                   }
-
-
                 </div>
+              </div>
+            </div>
+            <div className={accountStyles.contentWrapper2}>
+              <div className={cx(lato.className, accountStyles.myorgs)}>
+                <div className={accountStyles.title}>MY ORGANIZATIONS</div>
               </div>
             </div>
           </div>
