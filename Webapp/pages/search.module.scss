@@ -95,6 +95,8 @@
     border-radius: 20px; //if u update this update dropdownWrapper positions and size too
     text-align: center;
     position: relative;
+    overflow-x: none;
+    overflow-y: scroll;
 }
 
 .tagContainer {

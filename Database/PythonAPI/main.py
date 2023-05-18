@@ -183,6 +183,28 @@ async def addUser(
     success, result = Nexus.execute(query, username="consaljj")
     return {"success": success}
 
+@app.put("/updateOrg")
+async def updateOrg(
+    oid: Annotated[int, Form(...)],
+    name: Annotated[str, Form(...)],
+    description: Annotated[str, Form(...)]
+):
+    Nexus = Server("titan.csse.rose-hulman.edu", "Nexus")
+    Nexus.disconnect()
+    query = f"EXEC UpdateOrgFromID @orgID=?, @name=?, @description=?"
+    params = (oid, name, description)
+    success, results = Nexus.execute(query, binParams=params, username="consaljj")
+    return {"success": success}
+
+@app.post("/addUserToOrg/{orgID}/{email}")
+async def addUserToOrg(orgID: int, email: str):
+    Nexus = Server("titan.csse.rose-hulman.edu", "Nexus")
+    Nexus.disconnect()
+    print(email)
+    query = f"EXEC AddUserToOrg @email={email}, @orgID={orgID}"
+    success, result = Nexus.execute(query, username="consaljj")
+    if success:
+        print(result)
 
 @app.get("/userExists/{FBToken}")
 async def userExists(FBToken: str):
@@ -197,6 +219,19 @@ async def userExists(FBToken: str):
     else:
         return False
 
+@app.get("/getOrgFromID/{orgID}")
+async def getOrgFromID(orgID: int):
+    Nexus = Server("titan.csse.rose-hulman.edu", "Nexus")
+    Nexus.disconnect()
+    query = f"EXEC GetOrgFromID @orgID={orgID}"
+    success, result = Nexus.execute(query, username="consaljj")
+    if success:
+        return {
+            "name": result[0][0],
+            "description": result[0][1]
+        }
+    else:
+        return False
 
 # class UploadDocument(BaseModel):
 #     uid: str
@@ -220,7 +255,8 @@ async def uploadFile(
     Description: Annotated[str, Form(...)],
     LastModified: Annotated[str, Form(...)],
     DateOfCreation: Annotated[str, Form(...)],
-    Annotations: Annotated[str, Form(...)]
+    Annotations: Annotated[str, Form(...)],
+    oid: Annotated[int, Form(...)]
 ):
 
     print(uid)
@@ -239,9 +275,10 @@ async def uploadFile(
                 @Desc = ?,
                 @LastModified = ?,
                 @DateOfCreation = ?,
-                @Annotations = ?
+                @Annotations = ?,
+                @OrgID = ?
             '''
-    params = (uid, Server.convertToBinaryData(DocumentData), DocumentName, Description, LastModifiedDate, DateOfCreationDate, Annotations)
+    params = (uid, Server.convertToBinaryData(DocumentData), DocumentName, Description, LastModifiedDate, DateOfCreationDate, Annotations, oid)
 
     success, results = Nexus.execute(query, binParams=params, username="consaljj")
     # success, results = Nexus.execute("SELECT * FROM dbo.Document", username="consaljj")
@@ -256,6 +293,16 @@ async def addTag(docID: int, tag: str):
     Nexus.disconnect()
     query = 'EXEC AddDocumentTag @docID = ?, @tag = ?'
     params = (docID, tag)
+    success, results = Nexus.execute(query, binParams=params, username="consaljj")
+    if success:
+        print(results)
+
+@app.post("/addNewOrganization/{uid}")
+async def addTag(uid: str):
+    Nexus = Server("titan.csse.rose-hulman.edu", "Nexus")
+    Nexus.disconnect()
+    query = 'EXEC AddNewOrganization @Username = ?'
+    params = (uid)
     success, results = Nexus.execute(query, binParams=params, username="consaljj")
     if success:
         print(results)
@@ -304,6 +351,32 @@ async def getFileIDsByUser(UID: str):
     # query = f"SELECT * FROM UserOwns WHERE UserOwns.UserName = '{UID}'"
     query = "EXEC GetUserFileIDS @Username = ?"
     params = (UID)
+    success, result = Nexus.execute(query, binParams=params,  username="consaljj")
+    print(result)
+    result = [list(x) for x in result]
+    if success:
+        print(result)
+
+        return {
+            "docs":
+                [
+                    {
+                        "fileID": x[0],
+                        "fileName": x[1]
+                    }
+                    for x in result
+                ]
+        }
+    else:
+        return False
+    
+@app.get("/getFileIDsByOrg/{OID}", response_model=UserFiles)
+async def getFileIDsByUser(OID: str):
+    Nexus = Server("titan.csse.rose-hulman.edu", "Nexus")
+    Nexus.disconnect()
+
+    query = "EXEC GetOrgFileIDS @orgID = ?"
+    params = (OID)
     success, result = Nexus.execute(query, binParams=params,  username="consaljj")
     print(result)
     result = [list(x) for x in result]
@@ -445,6 +518,30 @@ async def getDocumentTags(DocID: int):
         print(tags)
         return {
             "tags": tags
+        }
+    else:
+        return False
+    
+@app.get("/getOrganizationsByUser/{UID}")
+async def getOrganizationsByUser(UID: str):
+    Nexus = Server("titan.csse.rose-hulman.edu", "Nexus")
+    Nexus.disconnect()
+    query = f"EXEC GetUserOrganizations @Username = ?"
+    params = (UID)
+    success, result = Nexus.execute(query, binParams=params, username="consaljj")
+    orgs = []
+    if (success):
+        if (len(result) <= 0):
+            return {}
+        print(result)
+        for i in range(len(result)):
+            org = []
+            for j in range(len(result[i])):
+                org.append(result[i][j])
+            orgs.append(org)
+        print(orgs)
+        return {
+            "organizations": orgs
         }
     else:
         return False

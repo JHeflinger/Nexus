@@ -31,7 +31,9 @@ BEGIN
 			LEFT JOIN Document ON Document.DocumentID = UserOwns.DocumentID
 			LEFT JOIN UserViewed ON UserViewed.DocumentID = Document.DocumentID
 			LEFT JOIN UserLikes ON UserLikes.DocumentID = Document.DocumentID
-			WHERE UserOwns.UserName = @Username
+			LEFT JOIN OrganizationOwns ON OrganizationOwns.DocumentID = Document.DocumentID
+			LEFT JOIN InAnOrganization ON InAnOrganization.OrganizationID = OrganizationOwns.OrganizationID
+			WHERE UserOwns.UserName = @Username OR InAnOrganization.UserName = @Username
 			GROUP BY Document.DocumentID, Document.DocumentName, Document.[Description], Document.LastModified
 			ORDER BY Document.LastModified DESC
 		END
@@ -42,7 +44,9 @@ BEGIN
 			LEFT JOIN Document ON Document.DocumentID = UserOwns.DocumentID
 			LEFT JOIN UserViewed ON UserViewed.DocumentID = Document.DocumentID
 			LEFT JOIN UserLikes ON UserLikes.DocumentID = Document.DocumentID
-			WHERE UserOwns.UserName = @Username
+			LEFT JOIN OrganizationOwns ON OrganizationOwns.DocumentID = Document.DocumentID
+			LEFT JOIN InAnOrganization ON InAnOrganization.OrganizationID = OrganizationOwns.OrganizationID
+			WHERE UserOwns.UserName = @Username OR InAnOrganization.UserName = @Username
 			GROUP BY Document.DocumentID, Document.DocumentName, Document.[Description], Document.LastModified
 			ORDER BY Document.LastModified ASC
 		END
@@ -56,7 +60,9 @@ BEGIN
 			LEFT JOIN Document ON Document.DocumentID = UserOwns.DocumentID
 			LEFT JOIN UserViewed ON UserViewed.DocumentID = Document.DocumentID
 			LEFT JOIN UserLikes ON UserLikes.DocumentID = Document.DocumentID
-			WHERE UserOwns.UserName = @Username
+			LEFT JOIN OrganizationOwns ON OrganizationOwns.DocumentID = Document.DocumentID
+			LEFT JOIN InAnOrganization ON InAnOrganization.OrganizationID = OrganizationOwns.OrganizationID
+			WHERE UserOwns.UserName = @Username OR InAnOrganization.UserName = @Username
 			GROUP BY Document.DocumentID, Document.DocumentName, Document.[Description], Document.LastModified
 			ORDER BY COUNT(UserViewed.DocumentID) DESC
 		END
@@ -67,7 +73,9 @@ BEGIN
 			LEFT JOIN Document ON Document.DocumentID = UserOwns.DocumentID
 			LEFT JOIN UserViewed ON UserViewed.DocumentID = Document.DocumentID
 			LEFT JOIN UserLikes ON UserLikes.DocumentID = Document.DocumentID
-			WHERE UserOwns.UserName = @Username
+			LEFT JOIN OrganizationOwns ON OrganizationOwns.DocumentID = Document.DocumentID
+			LEFT JOIN InAnOrganization ON InAnOrganization.OrganizationID = OrganizationOwns.OrganizationID
+			WHERE UserOwns.UserName = @Username OR InAnOrganization.UserName = @Username
 			GROUP BY Document.DocumentID, Document.DocumentName, Document.[Description], Document.LastModified
 			ORDER BY COUNT(UserViewed.DocumentID) ASC
 		END
@@ -81,7 +89,9 @@ BEGIN
 			LEFT JOIN Document ON Document.DocumentID = UserOwns.DocumentID
 			LEFT JOIN UserViewed ON UserViewed.DocumentID = Document.DocumentID
 			LEFT JOIN UserLikes ON UserLikes.DocumentID = Document.DocumentID
-			WHERE UserOwns.UserName = @Username
+			LEFT JOIN OrganizationOwns ON OrganizationOwns.DocumentID = Document.DocumentID
+			LEFT JOIN InAnOrganization ON InAnOrganization.OrganizationID = OrganizationOwns.OrganizationID
+			WHERE UserOwns.UserName = @Username OR InAnOrganization.UserName = @Username
 			GROUP BY Document.DocumentID, Document.DocumentName, Document.[Description], Document.LastModified
 			ORDER BY COUNT(UserLikes.DocumentID) DESC
 		END
@@ -92,7 +102,9 @@ BEGIN
 			LEFT JOIN Document ON Document.DocumentID = UserOwns.DocumentID
 			LEFT JOIN UserViewed ON UserViewed.DocumentID = Document.DocumentID
 			LEFT JOIN UserLikes ON UserLikes.DocumentID = Document.DocumentID
-			WHERE UserOwns.UserName = @Username
+			LEFT JOIN OrganizationOwns ON OrganizationOwns.DocumentID = Document.DocumentID
+			LEFT JOIN InAnOrganization ON InAnOrganization.OrganizationID = OrganizationOwns.OrganizationID
+			WHERE UserOwns.UserName = @Username OR InAnOrganization.UserName = @Username
 			GROUP BY Document.DocumentID, Document.DocumentName, Document.[Description], Document.LastModified
 			ORDER BY COUNT(UserLikes.DocumentID) ASC
 		END

@@ -3,10 +3,10 @@ USE Nexus;
 GO
     CREATE TABLE Users (
         UserName VARCHAR(50) PRIMARY KEY,
-        FirstName VARCHAR(50),
-        MiddleName VARCHAR(50),
-        LastName VARCHAR(50),
-        Password VARCHAR(50)
+        FirstName NVARCHAR(50),
+        MiddleName NVARCHAR(50),
+        LastName NVARCHAR(50),
+        Password NVARCHAR(50)
     );
 
 GO

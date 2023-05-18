@@ -49,7 +49,7 @@ export default function Home() {
 
   const checkUserSQL = (user) => {
     console.log("Checking if user exists...");
-    Database.makeUserIfNotExists(user.uid, user.displayName).then((success) => {
+    Database.makeUserIfNotExists(user.uid, user.displayName, user.email).then((success) => {
       console.log("SQL query success:");
       console.log(success);
       const successVal = success.success;

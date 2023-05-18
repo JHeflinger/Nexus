@@ -16,7 +16,8 @@ import utilStyles from '../styles/utils.module.scss';
 import { faFile } from '@fortawesome/free-solid-svg-icons';
 import { faCamera } from '@fortawesome/free-solid-svg-icons';
 import { faCloud } from '@fortawesome/free-solid-svg-icons';
-import { faSearch } from '@fortawesome/free-solid-svg-icons'
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Lato } from '@next/font/google';
 import dynamic from 'next/dynamic';
@@ -134,6 +135,7 @@ export default function Home() {
   const scannerIcon = <FontAwesomeIcon icon={faCamera} />
   const uploadIcon = <FontAwesomeIcon icon={faCloud} />
   const searchIcon = <FontAwesomeIcon icon={faSearch} />
+  const plusIcon = <FontAwesomeIcon icon={faPlus} />
 
   const [numberOfDocs, _setNumberOfDocs] = useState(0);
   const numberOfDocsRef = useRef(numberOfDocs);
@@ -180,12 +182,25 @@ export default function Home() {
     _setUserFiles(data);
   }
 
+  const [userOrgs, _setUserOrgs] = useState({});
+  const userOrgIDsRef = useRef(userOrgs);
+  const setUserOrgs = (data) => {
+    userOrgIDsRef.current = data;
+    _setUserOrgs(data);
+  }
 
   const [userFileIDs, _setUserFileIDs] = useState([]);
   const userFilesRef = useRef(userFileIDs);
   const setUserFileIDs = (data) => {
     userFilesRef.current = data;
     _setUserFileIDs(data);
+  }
+
+  const [userOrgIDs, _setUserOrgIDs] = useState([]);
+  const userOrgsRef = useRef(userOrgIDs);
+  const setUserOrgIDs = (data) => {
+    userOrgsRef.current = data;
+    _setUserOrgIDs(data);
   }
 
   const clickFileUpload = () => {
@@ -204,6 +219,7 @@ export default function Home() {
     router.prefetch("./scanner");
     router.prefetch("./search");
     router.prefetch("./document");
+    router.prefetch("./organization");
     if (uidRef.current == "") {
       return;
     }
@@ -251,6 +267,7 @@ export default function Home() {
 
   useEffect(() => {
     // console.log("Updating files");
+    if (userFileIDs) {
     for (let [fileID, fileName] of userFileIDs) {
       Database.getSimpleFileByObjectID(fileID).then((data) => {
         // console.log(`Getting file with id: ${fileID} and name: ${fileName}`);
@@ -267,6 +284,12 @@ export default function Home() {
         });
       });
     }
+
+    if (uidRef.current == "") {
+      return;
+    }
+    updateOrgList();
+    }
   }, [userFileIDs])
 
 
@@ -279,9 +302,38 @@ export default function Home() {
     }
   }
 
+  const generateOrgOnClick = (orgID) => {
+    return () => {
+      router.push({
+        pathname: '/organization',
+        query: { orgID: orgID, uid: uidRef.current},
+      });
+    }
+  }
 
   const forceReloadCallback = () => {
     setForceReload(1 - forceReloadRef.current);
+  }
+
+  const addNewOrg = () => {
+    Database.addNewOrg(uidRef.current).then((response) => {
+      updateOrgList();
+    })
+  }
+
+  const updateOrgList = () => {
+    Database.getOrganizationsByUser(uidRef.current).then((response) => {
+      response.json().then((data) => {
+        let orgs = data.organizations;
+        if (orgs) {
+        const tmpOrgIDS = []
+        for(let i = 0; i < orgs.length; i++) {
+          tmpOrgIDS.push([orgs[i][0], orgs[i][1]]);
+        }
+        setUserOrgIDs(tmpOrgIDS);
+      }
+      });
+    });
   }
 
   return (
@@ -367,7 +419,23 @@ export default function Home() {
             </div>
             <div className={accountStyles.contentWrapper2}>
               <div className={cx(lato.className, accountStyles.myorgs)}>
-                <div className={accountStyles.title}>MY ORGANIZATIONS</div>
+                <div className={accountStyles.title}>MY ORGANIZATIONS<div onClick={addNewOrg} className={accountStyles.addOrg}><FontAwesomeIcon icon={faPlus} className={accountStyles.plusIcon}/></div></div>
+                <div className={accountStyles.docs}>
+                  {userOrgIDs.map(([orgID, orgName]) => {
+                    return (
+                      <div
+                        className={accountStyles.pageWrapper}
+                        onClick={generateOrgOnClick(orgID)}
+                        key={orgID}
+                      >
+                        <div className={accountStyles.pageTitle}>
+                          {orgName}
+                        </div>
+                      </div>
+                    )
+                  })
+                  }
+                </div>
               </div>
             </div>
           </div>
@@ -376,7 +444,6 @@ export default function Home() {
       <div className={utilStyles.dropdownWrapper}>
         <Dropdown
           items={{
-            "TestItem1": [scannerIcon, clickScannerLink],
             "TestItem2": [uploadIcon, clickFileUpload],
             "TestItem3": [searchIcon, clickSearchLink]
           }}

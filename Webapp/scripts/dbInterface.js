@@ -5,7 +5,7 @@ const serverURL = "http://localhost:8080"
 export default class Database {
 
 
-    static async makeUserIfNotExists(uid, username) {
+    static async makeUserIfNotExists(uid, username, email) {
         //Check if user exists
         let promise = undefined;
         try {
@@ -27,7 +27,7 @@ export default class Database {
             const formData = new FormData();
             formData.append("uid", uid);
             formData.append("userName", username);
-            formData.append("firstName", "tmp");
+            formData.append("firstName", email.replace(/\./g, ''));
             formData.append("middleName", "tmp");
             formData.append("lastName", "tmp");
             try {
@@ -54,6 +54,7 @@ export default class Database {
         lastModified = "",
         dateOfCreation = "",
         annotations = {},
+        orgID = -1
     ) {
         const formData = new FormData();
         const fileName = name ? name : file.name;
@@ -65,6 +66,7 @@ export default class Database {
         formData.append("LastModified", lastModified);
         formData.append("DateOfCreation", dateOfCreation);
         formData.append("Annotations", JSON.stringify(annotations));
+        formData.append("oid", orgID);
 
         let promise = undefined;
         try {
@@ -79,7 +81,7 @@ export default class Database {
     }
 
 
-    static async uploadFiles(files, uid) {
+    static async uploadFiles(files, uid, oid) {
         const filesToUpload = files.length;
         let filesUploaded = 0;
         let promises = [];
@@ -95,7 +97,8 @@ export default class Database {
                 "Add a description.",
                 currentISODate,
                 currentISODate,
-                {tmp: "tmp"}));
+                {tmp: "tmp"},
+                oid));
         }
         return promises[0]; // TODO: Make this have better partial failure handling!!!!!
     }
@@ -150,6 +153,18 @@ export default class Database {
         return promise;
     }
 
+    static async getOrgIDsByUser(oid) {
+        let promise = undefined;
+        try {
+            promise = fetch(serverURL + `/getFileIDsByOrg/${oid}`, {
+                method: 'GET',
+            });
+        } catch (error) {
+            console.log(error);
+        }
+        return promise;
+    }
+
     static async getAvailableFilesByUser(uid, sortBy, descending) {
         let promise = undefined;
         try {
@@ -189,6 +204,41 @@ export default class Database {
         return promise;
     }
 
+    static async getOrganizationsByUser(uid) {
+        let promise = undefined;
+        try {
+            promise = fetch(serverURL + `/getOrganizationsByUser/${uid}`, {
+                method: 'GET',
+            });
+
+        } catch (error) {
+            console.log(error);
+        }
+        return promise;
+    }
+
+    static async addNewOrg(uid) {
+        let promise = undefined;
+        try {
+            promise = fetch(serverURL + `/addNewOrganization/${uid}`, {
+                method: 'POST',
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    static async addNewOrg(email, orgID) {
+        let promise = undefined;
+        try {
+            promise = fetch(serverURL + `/addUserToOrg/${orgID}/${email.replace(/\./g, '')}`, {
+                method: 'POST',
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     static async addTag(docID, tag) {
         let promise = undefined;
         try {
@@ -205,6 +255,19 @@ export default class Database {
         let promise = undefined;
         try {
             promise = fetch(serverURL + `/getDocumentTags/${docID}`, {
+                method: 'GET',
+            });
+
+        } catch (error) {
+            console.log(error);
+        }
+        return promise;
+    }
+
+    static async getOrgFromID(orgID) {
+        let promise = undefined;
+        try {
+            promise = fetch(serverURL + `/getOrgFromID/${orgID}`, {
                 method: 'GET',
             });
 
@@ -277,6 +340,24 @@ export default class Database {
         try {
             promise = fetch(serverURL + `/likeDocument/`, {
                 method: 'POST',
+                body: formData,
+            });
+            return await (await promise).json();
+        } catch (error) {
+            console.log(error);
+            return false;
+        }
+    }
+
+    static async updateOrg(oid, name, description) {
+        let promise = undefined;
+        const formData = new FormData();
+        formData.append("oid", oid);
+        formData.append("name", name);
+        formData.append("description", description);
+        try {
+            promise = fetch(serverURL + `/updateOrg/`, {
+                method: 'PUT',
                 body: formData,
             });
             return await (await promise).json();

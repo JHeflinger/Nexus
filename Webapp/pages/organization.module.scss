@@ -5,11 +5,11 @@
     @extend .autoGlow;
     @extend .twilightGlass;
     @extend .widget;
-    height: 25vh;
+    height: 12vh;
 }
 
 .profile::before {
-    height: 25vh;
+    height: 12vh;
 }
 
 .chart {
@@ -19,13 +19,13 @@
 
 .graph {
     @extend .profile;
-    height: 66vh;
+    height: 79vh;
     width: 100vw;
     margin-top: 3vh;
 }
 
 .graph::before {
-    height: 66vh;
+    height: 79vh;
     width: 63.5vw;
 }
 
@@ -85,7 +85,7 @@
 .mydocs::before {
     // width: flex;
     // flex-grow: 1;
-    width: 100%;
+    width: 70%;
     min-width: 300px;
 }
 
@@ -98,14 +98,56 @@
     line-height: 3vh;
 }
 
+.myorgs {
+    @extend .graph;
+    // margin-left: 3vh;
+    // width: 50vw;
+    // flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-width: 300px;
+
+    overflow: hidden;
+}
+
+.myorgs::before {
+    // width: flex;
+    // flex-grow: 1;
+    width: calc(30% - 30px);
+    min-width: 300px;
+}
+
+.myorgs .title {
+    width: 100%;
+    margin: 15px 0;
+    text-align: center;
+    font-size: 3vh;
+    font-weight: 300;
+    line-height: 3vh;
+}
+
+.addOrg {
+    display: inline-block;
+    margin: 0 15px;
+    cursor: pointer;
+}
+
 .pageWrapper {
     width: max-content;
 }
 
 .contentWrapper {
-    display: flex;
+    display: inline-block;
     justify-content: center;
-    width: 100%;
+    width: 70%;
+}
+
+.contentWrapper2 {
+    display: inline-block;
+    justify-content: center;
+    width: calc(30% - 30px);
+    margin-left: 30px;
 }
 
 .pfp {
@@ -141,8 +183,8 @@
 
 .accStats {
     position: absolute;
-    top: 11vh;
-    left: 19vh;
+    top: 0vh;
+    left: 0vh;
     display: flex;
     text-align: center;
 }

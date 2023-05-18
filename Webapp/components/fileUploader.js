@@ -186,7 +186,14 @@ const DropZone = ({ data, dispatch, close, router, forceReload }) => {
         }
         console.log(user.uid);
         console.log(data.fileList);
-        let response = await Database.uploadFiles(files, user.uid);
+        const urlParams = new URLSearchParams(window.location.search);
+        const orgID = urlParams.get('orgID');
+        let response;
+        if (orgID) {
+            response = await Database.uploadFiles(files, user.uid, orgID);
+        }else {
+            response = await Database.uploadFiles(files, user.uid, -1);
+        }
 
         // let response = "bob";
         // console.log("Sending files");

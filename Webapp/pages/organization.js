@@ -11,12 +11,13 @@ import Database from '../scripts/dbInterface';
 
 
 import { useEffect, useRef, useState } from 'react';
-import accountStyles from './account.module.scss';
+import accountStyles from './organization.module.scss';
 import utilStyles from '../styles/utils.module.scss';
 import { faFile } from '@fortawesome/free-solid-svg-icons';
 import { faCamera } from '@fortawesome/free-solid-svg-icons';
 import { faCloud } from '@fortawesome/free-solid-svg-icons';
-import { faSearch } from '@fortawesome/free-solid-svg-icons'
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Lato } from '@next/font/google';
 import dynamic from 'next/dynamic';
@@ -134,12 +135,27 @@ export default function Home() {
   const scannerIcon = <FontAwesomeIcon icon={faCamera} />
   const uploadIcon = <FontAwesomeIcon icon={faCloud} />
   const searchIcon = <FontAwesomeIcon icon={faSearch} />
+  const plusIcon = <FontAwesomeIcon icon={faPlus} />
 
-  const [numberOfDocs, _setNumberOfDocs] = useState(-1);
+  const [numberOfDocs, _setNumberOfDocs] = useState(0);
   const numberOfDocsRef = useRef(numberOfDocs);
   const setNumberOfDocs = (data) => {
     numberOfDocsRef.current = data;
     _setNumberOfDocs(data);
+  }
+
+  const [numberOfLikes, _setNumberOfLikes] = useState(0);
+  const numberOfLikesRef = useRef(numberOfLikes);
+  const setNumberOfLikes = (data) => {
+    numberOfLikesRef.current = data;
+    _setNumberOfLikes(data);
+  }
+
+  const [numberOfViews, _setNumberOfViews] = useState(0);
+  const numberOfViewsRef = useRef(numberOfViews);
+  const setNumberOfViews = (data) => {
+    numberOfViewsRef.current = data;
+    _setNumberOfViews(data);
   }
 
   const [forceReload, _setForceReload] = useState(1);
@@ -166,12 +182,25 @@ export default function Home() {
     _setUserFiles(data);
   }
 
+  const [userOrgs, _setUserOrgs] = useState({});
+  const userOrgIDsRef = useRef(userOrgs);
+  const setUserOrgs = (data) => {
+    userOrgIDsRef.current = data;
+    _setUserOrgs(data);
+  }
 
   const [userFileIDs, _setUserFileIDs] = useState([]);
   const userFilesRef = useRef(userFileIDs);
   const setUserFileIDs = (data) => {
     userFilesRef.current = data;
     _setUserFileIDs(data);
+  }
+
+  const [userOrgIDs, _setUserOrgIDs] = useState([]);
+  const userOrgsRef = useRef(userOrgIDs);
+  const setUserOrgIDs = (data) => {
+    userOrgsRef.current = data;
+    _setUserOrgIDs(data);
   }
 
   const clickFileUpload = () => {
@@ -190,11 +219,13 @@ export default function Home() {
     router.prefetch("./scanner");
     router.prefetch("./search");
     router.prefetch("./document");
+    router.prefetch("./organization");
     if (uidRef.current == "") {
       return;
     }
-    // console.log("Getting user files from user id: " + uidRef.current)
-    Database.getFileIDsByUser(uidRef.current).then((response) => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const orgID = urlParams.get('orgID');
+    Database.getOrgIDsByUser(orgID).then((response) => {
       const files = response.json().then((data) => {
         console.log("Data:")
         console.log(data)
@@ -209,7 +240,25 @@ export default function Home() {
         }
         // console.log("length: " + data.length);
         setUserFileIDs(fileIDs);
-        setNumberOfDocs(data.length);
+        setNumberOfDocs(data.docs.length);
+      });
+
+      Database.getUserAccountLikes(uidRef.current).then((response) => {
+        response.json().then((data) => {
+          console.log(data);
+          if (data) {
+            setNumberOfLikes(data);
+          }
+        });
+      });
+
+      Database.getUserAccountViews(uidRef.current).then((response) => {
+        response.json().then((data) => {
+          console.log(data);
+          if (data) {
+            setNumberOfViews(data);
+          }
+        });
       });
 
     });
@@ -219,8 +268,9 @@ export default function Home() {
 
   useEffect(() => {
     // console.log("Updating files");
+    if (userFileIDs) {
     for (let [fileID, fileName] of userFileIDs) {
-      Database.getFileByObjectID(fileID).then((data) => {
+      Database.getSimpleFileByObjectID(fileID).then((data) => {
         // console.log(`Getting file with id: ${fileID} and name: ${fileName}`);
 
         // data.arrayBuffer().then((buffer) => {
@@ -235,6 +285,20 @@ export default function Home() {
         });
       });
     }
+
+    if (uidRef.current == "") {
+      return;
+    }
+    updateOrgList();
+    const urlParams = new URLSearchParams(window.location.search);
+    const orgID = urlParams.get('orgID');
+    Database.getOrgFromID(orgID).then((response) => {
+      response.json().then((data) => {
+        document.getElementById("orgNameInput").value = data.name;
+        document.getElementById("orgDescInput").value = data.description;
+      })
+    });
+    }
   }, [userFileIDs])
 
 
@@ -247,9 +311,56 @@ export default function Home() {
     }
   }
 
+  const generateOrgOnClick = (orgID) => {
+    return () => {
+      router.push({
+        pathname: '/organization',
+        query: { orgID: orgID, uid: uidRef.current},
+      });
+    }
+  }
 
   const forceReloadCallback = () => {
     setForceReload(1 - forceReloadRef.current);
+  }
+
+  const addNewOrg = () => {
+    Database.addNewOrg(uidRef.current).then((response) => {
+      updateOrgList();
+    })
+  }
+
+  const updateOrgList = () => {
+    Database.getOrganizationsByUser(uidRef.current).then((response) => {
+      response.json().then((data) => {
+        let orgs = data.organizations;
+        const tmpOrgIDS = []
+        for(let i = 0; i < orgs.length; i++) {
+          tmpOrgIDS.push([orgs[i][0], orgs[i][1]]);
+        }
+        setUserOrgIDs(tmpOrgIDS);
+      });
+    });
+  }
+  
+  const addUserToOrg = () => {
+    let email = document.getElementById("addUserInput").value;
+    document.getElementById("addUserInput").value = "";
+    const urlParams = new URLSearchParams(window.location.search);
+    const orgID = urlParams.get('orgID');
+    Database.addNewOrg(email, orgID).then((response) => {
+
+    });
+  }
+
+  const updateOrgData = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const orgID = urlParams.get('orgID');
+    let name = document.getElementById("orgNameInput").value;
+    let desc = document.getElementById("orgDescInput").value;
+    Database.updateOrg(orgID, name, desc).then((response) => {
+
+    });
   }
 
   return (
@@ -272,58 +383,27 @@ export default function Home() {
         <div className='outer'>
           <div className='inner'>
             <div className={cx(lato.className, accountStyles.profile)}>
-              <img
-                className={accountStyles.pfp}
-                src={pfpToDisplayRef.current}
-                alt="profile picture"
-                referrerPolicy="no-referrer"
-                width={256}
-                height={256}
-              />
-              <div className={accountStyles.name}>
-                {nameToDisplay}
-                <span className={accountStyles.username}>
-                  @{emailToDisplay.split('@')[0]}
-                </span>
-              </div>
-              <div className={accountStyles.joinlog}>Joined: January 13th 2023</div>
               <div className={accountStyles.accStats}>
                 <div className={accountStyles.stat}>
-                  0
+                  {numberOfViewsRef.current}
                   <div>views</div>
                 </div>
                 <div className={accountStyles.stat}>
-                  0
+                  {numberOfLikesRef.current}
                   <div>likes</div>
                 </div>
-                <div className={accountStyles.stat}>
-                  {numberOfDocs}
+                <div id="numDocuments" className={accountStyles.stat}>
+                  {numberOfDocsRef.current}
                   <div>documents</div>
                 </div>
               </div>
             </div>
             <div className={accountStyles.contentWrapper}>
-              {/* <div className={cx(lato.className, accountStyles.graph)}>
-                <Chart
-                  options={state.options}
-                  series={state.series}
-                  type="line"
-                  width="96%"
-                  height="100%"
-                  className={accountStyles.chart}
-                />
-              </div> */}
               <div className={cx(lato.className, accountStyles.mydocs)}>
-                <div className={accountStyles.title}>MY DOCS</div>
+                <div className={accountStyles.title}>ORGANIZATION DOCS</div>
                 <div className={accountStyles.docs}>
-
                   {userFileIDs.map(([fileId, fileName]) => {
-                    // console.log(file);
                     const fileURL = userFiles[fileId]
-                    // console.log("Loading file with id: " + fileId + " and name: " + fileName);
-                    // if (fileName !== "scanned.pdf") {
-                    // console.log(fileURL);
-                    // }
                     return (
                       <div
                         className={accountStyles.pageWrapper}
@@ -346,9 +426,18 @@ export default function Home() {
                     )
                   })
                   }
-
-
                 </div>
+              </div>
+            </div>
+            <div className={accountStyles.contentWrapper2}>
+              <div className={cx(lato.className, accountStyles.myorgs)}>
+                <div className={accountStyles.title}>SETTINGS</div>
+                <input id="addUserInput" type="text"></input>
+                <div onClick={addUserToOrg}>ADD USER</div>
+                <input id="orgNameInput" type="text"></input>
+                <textarea id="orgDescInput"></textarea>
+                <div>DELETE</div>
+                <div onClick={updateOrgData}>UPDATE</div>
               </div>
             </div>
           </div>
@@ -357,9 +446,8 @@ export default function Home() {
       <div className={utilStyles.dropdownWrapper}>
         <Dropdown
           items={{
-            "TestItem1": [scannerIcon, clickScannerLink],
             "TestItem2": [uploadIcon, clickFileUpload],
-            "TestItem3": [searchIcon, clickSearchLink]
+            "TestItem3": [searchIcon, clickSearchLink],
           }}
         />
       </div>
